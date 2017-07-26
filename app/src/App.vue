@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view></router-view>
+    <Uploader></Uploader>
   </div>
 </template>
 
 <script>
+import Uploader from './components/upload'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Uploader
+  }
 }
 </script>
 

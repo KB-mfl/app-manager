@@ -7,10 +7,12 @@
       </div>
       <div class="inputer-2">
         <p><input id="uploadLogo" type="file" name="uploadLogo" @change="getlogo($event)"></p>
+        </image>
         <p><label for="uploadLogo">Logo</label></p>
       </div>
       <div class="inputer-3">
         <p><input id="uploadimage" type="file" name="uploadimage" @change="getimage($event)"></p>
+        </image>
         <p><label for="uploadimage">Image</label></p>
       </div>
       <p><button type="submit" @click="uploadform($event)">Upload</button></p>
@@ -54,7 +56,7 @@ export default {
       }
       this.$http.post('/appmanager/addapp', formData, config)
       .then((response) => {
-        console.log(response.status)
+        console.log(status)
       })
       .catch(function (error) {
         console.log(error)
@@ -95,6 +97,11 @@ button:hover{
 
 label{
   font-size: 20px;
+}
+
+image{
+  width: 50px;
+  height: 50px;
 }
 
 .input-name{

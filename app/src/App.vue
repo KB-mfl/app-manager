@@ -1,19 +1,19 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <Uploader></Uploader>
-    <Downloader></Downloader>
+    <AddnewApp></AddnewApp>
+    <Appdownload></Appdownload>
   </div>
 </template>
 
 <script>
-import Uploader from './components/upload'
-import Downloader from './components/download'
+import AddnewApp from './components/AddnewApp'
+import Appdownload from './components/Appdownload'
 export default {
   name: 'app',
   components: {
-    Uploader,
-    Downloader
+    AddnewApp,
+    Appdownload
   }
 }
 </script>

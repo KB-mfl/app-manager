@@ -13,9 +13,9 @@ export default {
   },
   methods: {
     getApp: function () {
-      this.$http.get('/appmanager/applist')
+      this.$http.get('/download')
       .then((response) => {
-        this.$set('AppData', response.data)
+        console.log(status)
       })
       .catch(function (error) {
         console.log(error)

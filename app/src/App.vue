@@ -2,15 +2,18 @@
   <div id="app">
     <router-view></router-view>
     <Uploader></Uploader>
+    <Downloader></Downloader>
   </div>
 </template>
 
 <script>
 import Uploader from './components/upload'
+import Downloader from './components/download'
 export default {
   name: 'app',
   components: {
-    Uploader
+    Uploader,
+    Downloader
   }
 }
 </script>

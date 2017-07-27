@@ -9,6 +9,11 @@ export default new Router({
       path: '/',
       name: 'Hello',
       component: require('@/components/Hello')
+    },
+    {
+      path: '/download',
+      name: 'Download',
+      component: require('@/components/download')
     }
   ]
 })

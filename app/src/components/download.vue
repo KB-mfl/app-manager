@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     getApp: function () {
-      this.$http.get('htttp://host:port/api/appmanager/applist')
+      this.$http.get('/appmanager/applist')
       .then((response) => {
         this.$set('AppData', response.data)
       })

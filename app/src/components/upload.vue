@@ -6,14 +6,14 @@
         <p><input v-model="upload.hashname" class="input-hashname" type="text" name="hash_name" placeholder="Hash_name"></p>
       </div>
       <div class="inputer-2">
-        <p><input id="uploadLogo" type="file" name="uploadLogo"></p>
+        <p><input id="uploadLogo" type="file" name="uploadLogo" @change="getlogo($event)"></p>
         <p><label for="uploadLogo">Logo</label></p>
       </div>
       <div class="inputer-3">
-        <p><input id="uploadimage" type="file" name="uploadimage"></p>
+        <p><input id="uploadimage" type="file" name="uploadimage" @change="getimage($event)"></p>
         <p><label for="uploadimage">Image</label></p>
       </div>
-      <p><button type="submit">Upload</button></p>
+      <p><button type="submit" @click="uploadform($event)">Upload</button></p>
     </form>
   </div>
 </template>
@@ -25,8 +25,40 @@ export default {
     return {
       upload: {
         name: '',
-        hashname: ''
+        hashname: '',
+        logo: '',
+        image: ''
       }
+    }
+  },
+  methods: {
+    getlogo (event) {
+      this.logo = event.target.files[0]
+      console.log(this.logo)
+    },
+    getimage (event) {
+      this.image = event.target.files[0]
+      console.log(this.iamge)
+    },
+    uploadform (event) {
+      event.preventDefault()
+      let formData = new FormData()
+      formData.append('name', this.name)
+      formData.append('hashname', this.hashname)
+      formData.append('logo', this.logo)
+      formData.append('image', this.image)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      this.$http.post('/appmanager/addapp', formData, config)
+      .then((response) => {
+        console.log(response.status)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   }
 }
@@ -104,6 +136,7 @@ label{
   border: 0px;
   width: 100% auto;
   height: auto;
+  text-align: center;
 }
 
 #uploadLogo {

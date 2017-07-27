@@ -17,13 +17,28 @@ export default {
 }
 </script>
 <style>
-  #title{
+  .title{
     width: 100%;
     height: 400px;
+    border-bottom: 2px solid black;
   }
   #img{
     width: 200px;
     height: 200px;
     border-radius: 200px;
+    background-color: #2ab27b;
+    margin-left: 30%;
+    float: left;
+    margin-top: 20px;
+  }
+  .title h1{
+    float: left;
+    font-size: 90px;
+    margin-left: 5%;
+  }
+  .title p{
+    float: left;
+    margin-left: 50%;
+    font-size: 30px;
   }
 </style>

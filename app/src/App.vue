@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
     <Title></Title>
+    <mycontent></mycontent>
   </div>
 </template>
 
 <script>
 import Title from './components/Title'
+import mycontent from './components/mycontent'
 export default {
   name: 'app',
   components: {
-    Title
+    Title,
+    mycontent
   }
 }
 </script>

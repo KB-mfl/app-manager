@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button @click="getMessage()">get another message from api</button>
   </div>
 </template>
 
@@ -14,11 +13,6 @@ export default {
     }
   },
   methods: {
-    getMessage () {
-      this.$http.get('message').then(r => {
-        this.msg = r.data.message
-      })
-    }
   }
 }
 </script>

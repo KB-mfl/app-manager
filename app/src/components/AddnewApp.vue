@@ -84,6 +84,7 @@ button{
   border-radius: 5px;
   font-size: 15px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
 }
 
 button:hover{
@@ -97,6 +98,17 @@ button:hover{
 
 label{
   font-size: 20px;
+  cursor: pointer;
+}
+
+label:hover{
+  position: relative;
+  bottom: 2px;
+  right: 2px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
+  background-color: rgb(150,200,250);
+  color: #ffffff;
 }
 
 image{
@@ -159,6 +171,7 @@ image{
   border-radius: 5px;
   font-size: 0px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
 }
 
 #uploadLogo::-webkit-file-upload-button:hover{
@@ -181,6 +194,7 @@ image{
   border-radius: 5px;
   font-size: 0px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
 }
 
 #uploadimage::-webkit-file-upload-button:hover{

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Appinfolist from './list'
+import Appinfolist from './AppList'
 export default {
   name: 'AppList',
   data () {

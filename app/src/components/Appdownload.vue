@@ -51,5 +51,6 @@ button:hover{
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: rgb(150,200,250);
   color: #ffffff;
+  cursor: pointer;
 }
 </style>

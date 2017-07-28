@@ -4,6 +4,7 @@
     <AddnewApp></AddnewApp>
     <Appdownload></Appdownload>
     <GetAppList class="applist"></GetAppList>
+    <apphistorylist class="historylist"></apphistorylist>
   </div>
 </template>
 
@@ -11,12 +12,14 @@
 import AddnewApp from './components/AddnewApp'
 import Appdownload from './components/Appdownload'
 import GetAppList from './components/GetAppList'
+import apphistorylist from './components/AppHistoryList'
 export default {
   name: 'app',
   components: {
     AddnewApp,
     Appdownload,
-    GetAppList
+    GetAppList,
+    apphistorylist
   }
 }
 </script>
@@ -34,5 +37,10 @@ export default {
 .applist{
   position: relative;
   top: 50px;
+}
+
+.historylist{
+  position: relative;
+  top: 80px;
 }
 </style>

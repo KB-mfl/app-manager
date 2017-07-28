@@ -9,7 +9,7 @@ export default {
   name: 'download',
   data () {
     return {
-      system: '点击下载最新版本'
+      system: '您当前的操作系统是：' + navigator.platform
     }
   }
 }

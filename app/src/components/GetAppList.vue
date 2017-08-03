@@ -26,6 +26,7 @@ export default {
       this.$http.get('/appmanager/applist')
       .then((response) => {
         this.$set('AppData', response.data)
+        console.log(this.AppData)
       })
       .catch(function (response) {
         console.log(response)

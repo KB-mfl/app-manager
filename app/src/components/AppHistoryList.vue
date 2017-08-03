@@ -26,6 +26,7 @@ export default {
       this.$http.get('./history')
       .then((response) => {
         this.$set('Apphistory', response.history)
+        console.log(this.AppHistory)
       })
       .catch(function (response) {
         console.log(response)

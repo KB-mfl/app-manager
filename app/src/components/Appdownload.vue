@@ -15,7 +15,7 @@ export default {
     getApp: function () {
       this.$http.get('/download')
       .then((response) => {
-        console.log(status)
+        console.log('success')
       })
       .catch(function (error) {
         console.log(error)

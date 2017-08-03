@@ -1,17 +1,13 @@
 <template>
-  <div class="upload">
+  <div id="updatnewver">
     <form class="uploader">
       <div class="inputer-1">
-        <p><input v-model="name" class="input-name" type="text" name="name" placeholder="Name"></p>
-        <p><input v-model="hashname" class="input-hashname" type="text" name="hash_name" placeholder="Hash_name"></p>
+        <p><input v-model="version" class="input-version" type="text" name="version" placeholder="Version"></p>
+        <p><input v-model="system" class="input-system" type="text" name="system" placeholder="System"></p>
       </div>
       <div class="inputer-2">
-        <p><input id="uploadLogo" type="file" name="uploadLogo" @change="getlogo($event)"></p>
-        <p><label for="uploadLogo">Logo</label></p>
-      </div>
-      <div class="inputer-3">
-        <p><input id="uploadimage" type="file" name="uploadimage" @change="getimage($event)"></p>
-        <p><label for="uploadimage">Image</label></p>
+        <p><input id="uploadnewapp" type="file" name="uploadnewapp" @change="getnewapp($event)"></p>
+        <p><label for="uploadnewapp">New App</label></p>
       </div>
       <p><button type="submit" @click="uploadform($event)">Upload</button></p>
     </form>
@@ -20,33 +16,27 @@
 
 <script>
 export default {
-  name: 'upload',
+  name: 'uploadnewver',
   data () {
     return {
-      name: '',
-      hashname: '',
+      version: '',
+      system: '',
       upload: {
-        logo: '',
-        image: ''
+        new_app: ''
       }
     }
   },
   methods: {
-    getlogo (event) {
-      this.logo = event.target.files[0]
-      console.log(this.logo)
-    },
-    getimage (event) {
-      this.image = event.target.files[0]
-      console.log(this.image)
+    getnewapp (event) {
+      this.new_app = event.target.files[0]
+      console.log(this.new_app)
     },
     uploadform (event) {
       event.preventDefault()
       let formData = new FormData()
-      formData.append('name', this.name)
-      formData.append('hash_name', this.hashname)
-      formData.append('logo', this.logo)
-      formData.append('image', this.image)
+      formData.append('version', this.version)
+      formData.append('system', this.system)
+      formData.append('new_app', this.new_app)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -109,13 +99,13 @@ label:hover{
   color: #ffffff;
 }
 
-.input-name{
+.input-version{
   margin: 10px 0px 60px 0px;
   font-size: 20px;
   border-radius: 5px;
 }
 
-.input-name:hover{
+.input-version:hover{
   position: relative;
   bottom: 2px;
   right: 2px;
@@ -124,13 +114,13 @@ label:hover{
   background-color: rgb(150,200,250);
 }
 
-.input-hashname{
+.input-system{
   margin: 20px 0px 0px 0px;
   font-size: 20px;
   border-radius: 5px;
 }
 
-.input-hashname:hover{
+.input-system:hover{
   position: relative;
   bottom: 2px;
   right: 2px;
@@ -151,12 +141,12 @@ label:hover{
   text-align: center;
 }
 
-#uploadLogo {
+#uploadnewapp {
   font-size: 0px;
   margin: 2px 0px 2px 0px;
 }
 
-#uploadLogo::-webkit-file-upload-button {
+#uploadnewapp::-webkit-file-upload-button {
   background: #efeeee;
   color: #333;
   border: 0;
@@ -167,7 +157,7 @@ label:hover{
   cursor: pointer;
 }
 
-#uploadLogo::-webkit-file-upload-button:hover{
+#uploadnewapp::-webkit-file-upload-button:hover{
   position: relative;
   bottom: 2px;
   right: 2px;
@@ -177,24 +167,6 @@ label:hover{
 #uploadimage {
   font-size: 0px;
   margin: 2px 0px 2px 0px;
-}
-
-#uploadimage::-webkit-file-upload-button {
-  background: #efeeee;
-  color: #333;
-  border: 0;
-  padding: 50px 50px;
-  border-radius: 5px;
-  font-size: 12px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  cursor: pointer;
-}
-
-#uploadimage::-webkit-file-upload-button:hover{
-  position: relative;
-  bottom: 2px;
-  right: 2px;
-  background-color: rgb(150,200,250);
 }
 
 .inputer-1{
@@ -207,8 +179,4 @@ label:hover{
   margin: 30px 50px 0px 80px;
 }
 
-.inputer-3{
-  display: inline-block;
-  margin: 30px 50px 0px 50px;
-}
 </style>

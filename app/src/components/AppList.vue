@@ -13,6 +13,9 @@
           <td v-for="col in columns">
             {{entry[col]}}
           </td>
+          <td>
+            <button class="btn-danger" @click="deleteEntry(entry)">delete</button>
+          </td>
         </tr>
       </tbody>
     </table>

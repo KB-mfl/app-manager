@@ -12,7 +12,7 @@ export default {
   data () {
     return {
       AppData: [],
-      AppColumns: ['Id', 'Name', 'Hash_name', 'Logo_url', 'Image_url', 'Create-time', 'Delete-time', 'Updata-time']
+      AppColumns: ['Id', 'Name', 'Hash_name', 'Logo_url', 'Image_url', 'Create-time', 'Delete-time', 'Updata-time', 'Delete']
     }
   },
   components: {

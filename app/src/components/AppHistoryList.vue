@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     gethistorylist: function () {
-      this.$http.get('./history')
+      this.$http.get('history')
       .then((response) => {
         this.$set('Apphistory', response.history)
         console.log(this.AppHistory)

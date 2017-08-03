@@ -1,34 +1,20 @@
 <template>
   <div class="upload">
-    <div class="uploader">
+    <form class="uploader">
       <div class="inputer-1">
-        <p><input v-model="upload.name" class="input-name" type="text" name="name" placeholder="Name"></p>
-        <p><input v-model="upload.hashname" class="input-hashname" type="text" name="hash_name" placeholder="Hash_name"></p>
+        <p><input v-model="name" class="input-name" type="text" name="name" placeholder="Name"></p>
+        <p><input v-model="hashname" class="input-hashname" type="text" name="hash_name" placeholder="Hash_name"></p>
       </div>
       <div class="inputer-2">
-        <Upload
-          multiple
-          type="drag"
-          action="/api/appmanager/applist">
-          <div style="padding: 20px 0">
-            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-            <p>点击或将LOGO拖拽到这里上传</p>
-          </div>
-        </Upload>
+        <p><input id="uploadLogo" type="file" name="uploadLogo" @change="getlogo($event)"></p>
+        <p><label for="uploadLogo">Logo</label></p>
       </div>
       <div class="inputer-3">
-        <Upload
-          multiple
-          type="drag"
-          action="/api/appmanager/applist">
-          <div style="padding: 20px 0">
-            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-            <p>点击或将图片拖拽到这里上传</p>
-          </div>
-        </Upload>
+        <p><input id="uploadimage" type="file" name="uploadimage" @change="getimage($event)"></p>
+        <p><label for="uploadimage">Image</label></p>
       </div>
-      <p><button type="submit" @click="uploadform($event)">创建</button></p>
-    </div>
+      <p><button type="submit" @click="uploadform($event)">Upload</button></p>
+    </form>
   </div>
 </template>
 
@@ -37,18 +23,39 @@ export default {
   name: 'upload',
   data () {
     return {
+      name: '',
+      hashname: '',
       upload: {
-        name: '',
-        hashname: ''
+        logo: '',
+        image: ''
       }
     }
   },
   methods: {
+    getlogo (event) {
+      this.logo = event.target.files[0]
+      console.log(this.logo)
+    },
+    getimage (event) {
+      this.image = event.target.files[0]
+      console.log(this.image)
+    },
     uploadform (event) {
-      this.$http.post('/appmanager/applist', this.upload.name, this.upload.hashname)
+      event.preventDefault()
+      let formData = new FormData()
+      formData.append('name', this.name)
+      formData.append('hash_name', this.hashname)
+      formData.append('logo', this.logo)
+      formData.append('image', this.image)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      this.$http.post('addapp', formData, config)
       .then((response) => {
-        this.$Message.success('上传成功')
-        console.log(this.upload.name)
+        console.log('success')
+        console.log(this.logo)
       })
       .catch(function (error) {
         console.log(error)
@@ -72,9 +79,9 @@ button{
   background: #efeeee;
   color: #333;
   border: 0;
-  padding: 5px 10px;
+  padding: 10px 10px;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 15px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
 }
@@ -104,7 +111,7 @@ label:hover{
 }
 
 .input-name{
-  margin: 50px 0px;
+  margin: 10px 0px 60px 0px;
   font-size: 20px;
   border-radius: 5px;
 }
@@ -119,6 +126,7 @@ label:hover{
 }
 
 .input-hashname{
+  margin: 20px 0px 0px 0px;
   font-size: 20px;
   border-radius: 5px;
 }
@@ -147,6 +155,47 @@ label:hover{
 #uploadLogo {
   font-size: 0px;
   margin: 2px 0px 2px 0px;
+}
+
+#uploadLogo::-webkit-file-upload-button {
+  background: #efeeee;
+  color: #333;
+  border: 0;
+  padding: 60px 60px;
+  border-radius: 5px;
+  font-size: 0px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
+}
+
+#uploadLogo::-webkit-file-upload-button:hover{
+  position: relative;
+  bottom: 2px;
+  right: 2px;
+  background-color: rgb(150,200,250);
+}
+
+#uploadimage {
+  font-size: 0px;
+  margin: 2px 0px 2px 0px;
+}
+
+#uploadimage::-webkit-file-upload-button {
+  background: #efeeee;
+  color: #333;
+  border: 0;
+  padding: 60px 60px;
+  border-radius: 5px;
+  font-size: 0px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
+}
+
+#uploadimage::-webkit-file-upload-button:hover{
+  position: relative;
+  bottom: 2px;
+  right: 2px;
+  background-color: rgb(150,200,250);
 }
 
 .inputer-1{

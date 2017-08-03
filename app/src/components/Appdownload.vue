@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     getApp: function () {
-      this.$http.get('/download')
+      this.$http.get('download')
       .then((response) => {
         console.log('success')
       })

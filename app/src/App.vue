@@ -2,15 +2,18 @@
   <div id="app">
     <router-view></router-view>
     <AddnewApp></AddnewApp>
+    <Download></Download>
   </div>
 </template>
 
 <script>
+import Download from './components/Appdownload'
 import AddnewApp from './components/AddnewApp'
 export default {
   name: 'app',
   components: {
-    AddnewApp
+    AddnewApp,
+    Download
   }
 }
 </script>

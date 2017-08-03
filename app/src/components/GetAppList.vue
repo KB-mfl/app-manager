@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getapplist: function () {
-      this.$http.get('/appmanager/applist')
+      this.$http.get('applist')
       .then((response) => {
         this.$set('AppData', response.data)
         console.log(this.AppData)

@@ -2,24 +2,15 @@
   <div id="app">
     <router-view></router-view>
     <AddnewApp></AddnewApp>
-    <Appdownload></Appdownload>
-    <GetAppList class="applist"></GetAppList>
-    <apphistorylist class="historylist"></apphistorylist>
   </div>
 </template>
 
 <script>
 import AddnewApp from './components/AddnewApp'
-import Appdownload from './components/Appdownload'
-import GetAppList from './components/GetAppList'
-import apphistorylist from './components/AppHistoryList'
 export default {
   name: 'app',
   components: {
-    AddnewApp,
-    Appdownload,
-    GetAppList,
-    apphistorylist
+    AddnewApp
   }
 }
 </script>

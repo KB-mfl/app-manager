@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+<<<<<<< HEAD
     <Title></Title>
     <ul>
       <li v-on:click="show1()">下载</li>
@@ -25,10 +26,17 @@
     <upload v-if="isshow2"></upload>
     <version v-if="isshow3"></version>
     <appPicture v-if="isshow4"></appPicture>
+=======
+    <router-view></router-view>
+    <appinfolist></appinfolist>
+    <AddnewApp></AddnewApp>
+    <uploadnewapp></uploadnewapp>
+>>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
   </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import Title from './components/Title'
 
 import download from './components/download'
@@ -78,6 +86,17 @@ export default {
       this.hide()
       this.isshow4 = true
     }
+=======
+import appinfolist from './components/GetAppList'
+import AddnewApp from './components/AddnewApp'
+import uploadnewapp from './components/Uploadnewver'
+export default {
+  name: 'app',
+  components: {
+    AddnewApp,
+    appinfolist,
+    uploadnewapp
+>>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
   }
 }
 </script>
@@ -91,6 +110,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+<<<<<<< HEAD
 #app ul{
   list-style: none;
   width: 80%;
@@ -114,5 +134,16 @@ export default {
   margin-top: 200px;
 
 
+=======
+
+.applist{
+  position: relative;
+  top: 50px;
+}
+
+.historylist{
+  position: relative;
+  top: 80px;
+>>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
 }
 </style>

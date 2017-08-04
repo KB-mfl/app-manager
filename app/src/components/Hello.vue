@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+<<<<<<< HEAD
     <h1 v-text="msg"></h1>
     <input v-model="newItem" v-on:keyup.enter="addNew">
     <ul>
@@ -8,6 +9,9 @@
         {{item.label}}
       </li>
     </ul>
+=======
+    <h1>{{ msg }}</h1>
+>>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
   </div>
 </template>
 
@@ -16,6 +20,7 @@ export default {
   name: 'hello',
   data () {
     return {
+<<<<<<< HEAD
       msg: 'Hello World',
       items: [
         {
@@ -49,11 +54,16 @@ export default {
       })
       this.newItem = ''
     }
+=======
+      msg: 'App-manager'
+    }
+  },
+  methods: {
+>>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .finished{
   color: #2ab27b;

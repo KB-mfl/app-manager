@@ -157,13 +157,12 @@ label:hover{
 }
 
 #uploadLogo::-webkit-file-upload-button {
-  background: #efeeee;
+  background: #ffffff;
   color: #333;
-  border: 0;
+  border: dotted #66ccff;
   padding: 50px 50px;
   border-radius: 5px;
   font-size: 12px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
 }
 
@@ -172,6 +171,7 @@ label:hover{
   bottom: 2px;
   right: 2px;
   background-color: rgb(150,200,250);
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
 #uploadimage {
@@ -180,13 +180,12 @@ label:hover{
 }
 
 #uploadimage::-webkit-file-upload-button {
-  background: #efeeee;
+  background: #ffffff;
   color: #333;
-  border: 0;
+  border: dotted #66ccff;
   padding: 50px 50px;
   border-radius: 5px;
   font-size: 12px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
 }
 
@@ -195,6 +194,7 @@ label:hover{
   bottom: 2px;
   right: 2px;
   background-color: rgb(150,200,250);
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
 .inputer-1{

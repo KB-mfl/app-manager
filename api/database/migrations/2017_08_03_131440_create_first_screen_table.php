@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHistoriesTable extends Migration
+class CreateFirstScreenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('histories', function (Blueprint $table) {
+        Schema::create('first_screen', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('app_id');
-            $table->string('varsion');
-            $table->integer('varsion_id');
-            $table->string('file_url');
-            $table->string('system');
-            $table->softDeletes();
+            $table->string('content');
+            $table->string('image_url')->nullable();
+            $table->boolean('actived');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('histories');
+        Schema::dropIfExists('first_screen');
     }
 }

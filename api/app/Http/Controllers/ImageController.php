@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\App;
+use App\System;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller {
-    public function store(Request $request, $app_id) {
-        $app = App::find($app_id);
-        $path = $request->file('img')->store('imgs');
+    public function store(Request $request, $system_id) {
+        $system = System::find($system_id);
+        $path = $request->file('file')->store('imgs');
+        $old_path = $system->logo_url;
+        $system->logo_url = $path;
+        if($old_path != null) {
+            Storage::delete($old_path);
+        }
+        $system->save();
+        return $path;
+        /*
+
         if($request->is_logo) {
             $old_path = $app->logo_url;
             $app->logo_url = $path;
@@ -23,6 +32,12 @@ class ImageController extends Controller {
             Storage::delete($old_path);
         }
         $app->save();
-        return base_path('storage/app/').$path;
+        return $path;
+        */
+    }
+    public function show(Request $request, $system_id) {
+        $system = System::find($system_id);
+        $path = $system->logo_url;
+        return response()->file(base_path('storage/app/').$path);
     }
 }

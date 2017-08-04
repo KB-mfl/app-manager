@@ -1,43 +1,128 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <appinfolist></appinfolist>
-    <AddnewApp></AddnewApp>
-    <uploadnewapp></uploadnewapp>
+    <iTitle></iTitle>
+    <ul>
+      <li v-on:click="show1()">下载</li>
+      <li v-on:click="show2()">上传</li>
+      <li v-on:click="show3()">版本/历史</li>
+      <li v-on:click="show4()">图片</li>
+    </ul>
+    <Carousel autoplay v-model="value2" id="welcome" v-if="show">
+      <Carousel-item>
+        <div class="demo-carousel">1</div>
+      </Carousel-item>
+      <Carousel-item>
+        <div class="demo-carousel">2</div>
+      </Carousel-item>
+      <Carousel-item>
+        <div class="demo-carousel">3</div>
+      </Carousel-item>
+      <Carousel-item>
+        <div class="demo-carousel">4</div>
+      </Carousel-item>
+    </Carousel>
+    <download v-if="isshow1"></download>
+    <AddnewApp v-if="isshow2"></AddnewApp>
+    <version v-if="isshow3"></version>
+    <uploadnewapp v-if="isshow3"></uploadnewapp>
+    <appPicture v-if="isshow4"></appPicture>
   </div>
 </template>
 
 <script>
-import appinfolist from './components/GetAppList'
+import iTitle from './components/Title'
 import AddnewApp from './components/AddnewApp'
 import uploadnewapp from './components/Uploadnewver'
+import download from './components/download'
+import version from './components/version'
+import appPicture from './components/appPicture'
 export default {
   name: 'app',
   components: {
+    iTitle,
+    download,
+    version,
+    appPicture,
     AddnewApp,
-    appinfolist,
     uploadnewapp
+  },
+  data () {
+    return {
+      value2: 0,
+      show: true,
+      isshow1: false,
+      isshow2: false,
+      isshow3: false,
+      isshow4: false
+    }
+  },
+  methods: {
+    hide: function () {
+      this.isshow1 = false
+      this.isshow2 = false
+      this.isshow3 = false
+      this.isshow4 = false
+      this.show = false
+    },
+    show1: function () {
+      this.hide()
+      this.isshow1 = true
+    },
+    show2: function () {
+      this.hide()
+      this.isshow2 = true
+    },
+    show3: function () {
+      this.hide()
+      this.isshow3 = true
+    },
+    show4: function () {
+      this.hide()
+      this.isshow4 = true
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
+  height: 1500px;
 }
 
-.applist{
-  position: relative;
-  top: 50px;
+#app ul{
+  list-style: none;
+  width: 100%;
 }
 
-.historylist{
-  position: relative;
-  top: 80px;
+#app li{
+  width: 300px;
+  font-size: 40px;
+  display: inline-block;
+}
+
+#app li:hover{
+  color: #ffffff;
+  background-color: #2ab27b;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+}
+
+.demo-carousel{
+  margin: 0 auto;
+  height: 500px;
+  width: 80%;
+  background-color: #2ab27b;
+  font-size: 200px;
+}
+
+#welcome{
+  margin-left: 10%;
+  width: 80%;
+  margin-top: 150px;
 }
 </style>

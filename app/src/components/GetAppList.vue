@@ -1,7 +1,6 @@
 <template>
   <div class="AppList">
-    <Appinfolist :data-list="AppData" :columns="AppColumns">
-    </Appinfolist>
+    <Appinfolist :data-list="AppData" :columns="AppColumns"></Appinfolist>
   </div>
 </template>
 
@@ -12,7 +11,7 @@ export default {
   data () {
     return {
       AppData: [],
-      AppColumns: ['Id', 'Name', 'Hash_name', 'Logo_url', 'Image_url', 'Create-time', 'Delete-time', 'Updata-time', 'Delete']
+      AppColumns: ['Id', 'Name', 'Create-time', 'Delete-time', 'Updata-time', 'Delete']
     }
   },
   components: {
@@ -28,8 +27,8 @@ export default {
         this.$set('AppData', response.data)
         console.log(this.AppData)
       })
-      .catch(function (response) {
-        console.log(response)
+      .catch(function (error) {
+        console.log(error)
       })
     }
   }

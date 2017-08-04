@@ -25,7 +25,9 @@
 <script>
 export default {
   name: 'list',
-  props: ['dataList', 'columns']
+  props: ['dataList', 'columns'],
+  methods: {
+  }
 }
 </script>
 

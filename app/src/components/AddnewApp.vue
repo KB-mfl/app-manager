@@ -133,7 +133,7 @@ label:hover{
   width: 100% auto;
   height: auto;
   text-align: center;
-  margin-top: 150px;
+  margin-top: 100px;
 }
 
 #uploadLogo {

@@ -1,6 +1,6 @@
 <template>
   <div class="title">
-    <div id="img"></div>
+    <img id="img" src="../assets/Logo-1.png" alt="logo">
     <h1>{{system}}<p>{{version}}</p></h1>
   </div>
 </template>
@@ -18,15 +18,13 @@ export default {
 <style>
 .title{
   width: 100%;
-  height: 360px;
+  height: 320px;
   border-bottom: 2px solid black;
 }
 
 #img{
   width: 200px;
   height: 200px;
-  border-radius: 200px;
-  background-color: #2ab27b;
   display: inline-block;
   margin-bottom: 2%;
 }

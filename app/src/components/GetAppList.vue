@@ -11,20 +11,20 @@ export default {
   data () {
     return {
       AppData: [],
-      AppColumns: ['Id', 'Name', 'Create-time', 'Delete-time', 'Updata-time', 'Delete']
+      AppColumns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at']
     }
   },
   components: {
     Appinfolist
   },
-  ready: function () {
+  beforeMount: function () {
     this.getapplist()
   },
   methods: {
     getapplist: function () {
       this.$http.get('applist')
       .then((response) => {
-        this.$set('AppData', response.data)
+        this.AppData = response.data
         console.log(this.AppData)
       })
       .catch(function (error) {

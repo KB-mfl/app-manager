@@ -6,15 +6,16 @@
           <th v-for="col in columns">
             {{col}}
           </th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(index,entry) in dataList">
+        <tr v-for="AppData in dataList">
           <td v-for="col in columns">
-            {{entry[col]}}
+            {{AppData[col]}}
           </td>
           <td>
-            <button class="btn-danger" @click="deleteEntry(entry)">delete</button>
+            <button @click="deleteapp">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -35,21 +36,45 @@ export default {
 table{
   margin: 0px;
   padding: 0px;
-  font-size: 20px;
+  font-size: 25px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   width: 100%;
   border-collapse: collapse;
 }
 
 thead{
-  background-color: rgb(150,200,250);
+  background-color: #2ab27b;
   color: #ffffff;
 }
 
-th{
+button{
+  font-size: 15px;
+  width: auto;
+  height: auto;
+  background: #efeeee;
+  color: #333;
+  border: 0;
+  padding: 10px 10px;
+  margin: 20px auto;
+  border-radius: 5px;
+  font-size: 15px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
+}
+
+button:hover{
+  position: relative;
+  bottom: 1px;
+  right: 1px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  background-color: #2ab27b;
+  color: #ffffff;
 }
 
 .list{
-  width: 100%;
+  width: 80%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

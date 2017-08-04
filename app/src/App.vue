@@ -2,10 +2,10 @@
   <div id="app">
     <iTitle></iTitle>
     <ul>
-      <li v-on:click="show1()">下载</li>
+      <li v-on:click="show1()">App列表</li>
       <li v-on:click="show2()">上传</li>
-      <li v-on:click="show3()">版本/历史</li>
-      <li v-on:click="show4()">图片</li>
+      <li v-on:click="show3()">历史版本</li>
+      <li v-on:click="show4()">下载</li>
     </ul>
     <Carousel autoplay v-model="value2" id="welcome" v-if="show">
       <Carousel-item>
@@ -21,30 +21,30 @@
         <div class="demo-carousel">4</div>
       </Carousel-item>
     </Carousel>
-    <download v-if="isshow1"></download>
+    <Applist v-if="isshow1"></Applist>
+    <download v-if="isshow4"></download>
     <AddnewApp v-if="isshow2"></AddnewApp>
     <version v-if="isshow3"></version>
     <uploadnewapp v-if="isshow3"></uploadnewapp>
-    <appPicture v-if="isshow4"></appPicture>
   </div>
 </template>
 
 <script>
+import Applist from './components/GetAppList'
 import iTitle from './components/Title'
 import AddnewApp from './components/AddnewApp'
 import uploadnewapp from './components/Uploadnewver'
 import download from './components/download'
 import version from './components/version'
-import appPicture from './components/appPicture'
 export default {
   name: 'app',
   components: {
     iTitle,
     download,
     version,
-    appPicture,
     AddnewApp,
-    uploadnewapp
+    uploadnewapp,
+    Applist
   },
   data () {
     return {
@@ -110,6 +110,7 @@ export default {
   color: #ffffff;
   background-color: #2ab27b;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
 }
 
 .demo-carousel{

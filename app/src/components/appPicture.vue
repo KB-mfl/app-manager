@@ -4,42 +4,6 @@
       <img src="../assets/logo.png" height="200" width="200"/>
       <p>这是图片信息</p>
     </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
-    <div>
-      <img src="../assets/logo.png" height="200" width="200"/>
-      <p>这是图片信息</p>
-    </div>
   </div>
 </template>
 <script>

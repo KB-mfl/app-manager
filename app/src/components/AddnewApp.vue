@@ -3,7 +3,6 @@
     <form class="uploader">
       <div class="inputer-1">
         <p><input v-model="name" class="input-name" type="text" name="name" placeholder="Name"></p>
-        <p><input v-model="hashname" class="input-hashname" type="text" name="hash_name" placeholder="Hash_name"></p>
       </div>
       <div class="inputer-2">
         <p><input id="uploadLogo" type="file" name="uploadLogo" @change="getlogo($event)"></p>
@@ -24,7 +23,6 @@ export default {
   data () {
     return {
       name: '',
-      hashname: '',
       upload: {
         logo: '',
         image: ''
@@ -44,7 +42,6 @@ export default {
       event.preventDefault()
       let formData = new FormData()
       formData.append('name', this.name)
-      formData.append('hash_name', this.hashname)
       formData.append('logo', this.logo)
       formData.append('image', this.image)
       let config = {
@@ -79,6 +76,7 @@ button{
   color: #333;
   border: 0;
   padding: 10px 10px;
+  margin: 20px auto;
   border-radius: 5px;
   font-size: 15px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
@@ -90,7 +88,7 @@ button:hover{
   bottom: 2px;
   right: 2px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  background-color: rgb(150,200,250);
+  background-color: #2ab27b;
   color: #ffffff;
 }
 
@@ -105,12 +103,12 @@ label:hover{
   right: 2px;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: rgb(150,200,250);
+  background-color: #2ab27b;
   color: #ffffff;
 }
 
 .input-name{
-  margin: 10px 0px 60px 0px;
+  margin: auto 0px;
   font-size: 20px;
   border-radius: 5px;
 }
@@ -121,22 +119,8 @@ label:hover{
   right: 2px;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: rgb(150,200,250);
-}
-
-.input-hashname{
-  margin: 20px 0px 0px 0px;
-  font-size: 20px;
-  border-radius: 5px;
-}
-
-.input-hashname:hover{
-  position: relative;
-  bottom: 2px;
-  right: 2px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: rgb(150,200,250);
+  background-color: #2ab27b;
+  color: #ffffff;
 }
 
 .upload{
@@ -149,6 +133,7 @@ label:hover{
   width: 100% auto;
   height: auto;
   text-align: center;
+  margin-top: 150px;
 }
 
 #uploadLogo {
@@ -159,7 +144,7 @@ label:hover{
 #uploadLogo::-webkit-file-upload-button {
   background: #ffffff;
   color: #333;
-  border: dotted #66ccff;
+  border: dotted #2ab27b;
   padding: 50px 50px;
   border-radius: 5px;
   font-size: 12px;
@@ -170,7 +155,7 @@ label:hover{
   position: relative;
   bottom: 2px;
   right: 2px;
-  background-color: rgb(150,200,250);
+  background-color: #2ab27b;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
@@ -182,7 +167,7 @@ label:hover{
 #uploadimage::-webkit-file-upload-button {
   background: #ffffff;
   color: #333;
-  border: dotted #66ccff;
+  border: dotted #2ab27b;
   padding: 50px 50px;
   border-radius: 5px;
   font-size: 12px;
@@ -193,13 +178,15 @@ label:hover{
   position: relative;
   bottom: 2px;
   right: 2px;
-  background-color: rgb(150,200,250);
+  background-color: #2ab27b;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
 .inputer-1{
   display: inline-block;
-  margin: 0px 20px 30px 0px;
+  margin: 0px;
+  position: relative;
+  bottom: 80px;
 }
 
 .inputer-2{

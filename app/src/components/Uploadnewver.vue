@@ -3,7 +3,7 @@
     <form class="uploader">
       <div class="inputer-1">
         <p><input v-model="version" class="input-version" type="text" name="version" placeholder="Version"></p>
-        <p><input v-model="system" class="input-system" type="text" name="system" placeholder="System"></p>
+        <p><input v-model="system_id" class="input-system" type="text" name="system_id" placeholder="System_id"></p>
       </div>
       <div class="inputer-2">
         <p><input id="uploadnewapp" type="file" name="uploadnewapp" @change="getnewapp($event)"></p>
@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       version: '',
-      system: '',
+      system_id: '',
       upload: {
         new_app: ''
       }
@@ -35,14 +35,14 @@ export default {
       event.preventDefault()
       let formData = new FormData()
       formData.append('version', this.version)
-      formData.append('system', this.system)
+      formData.append('system_id', this.system_id)
       formData.append('new_app', this.new_app)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('id', formData, config)
+      this.$http.post(this.system_id, formData, config)
       .then((response) => {
         console.log('success')
       })

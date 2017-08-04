@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-<<<<<<< HEAD
-    <Title></Title>
+    <iTitle></iTitle>
     <ul>
       <li v-on:click="show1()">下载</li>
       <li v-on:click="show2()">上传</li>
@@ -23,34 +22,29 @@
       </Carousel-item>
     </Carousel>
     <download v-if="isshow1"></download>
-    <upload v-if="isshow2"></upload>
+    <AddnewApp v-if="isshow2"></AddnewApp>
     <version v-if="isshow3"></version>
+    <uploadnewapp v-if="isshow3"></uploadnewapp>
     <appPicture v-if="isshow4"></appPicture>
-=======
-    <router-view></router-view>
-    <appinfolist></appinfolist>
-    <AddnewApp></AddnewApp>
-    <uploadnewapp></uploadnewapp>
->>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
-import Title from './components/Title'
-
+import iTitle from './components/Title'
+import AddnewApp from './components/AddnewApp'
+import uploadnewapp from './components/Uploadnewver'
 import download from './components/download'
-import upload from './components/upload'
 import version from './components/version'
 import appPicture from './components/appPicture'
 export default {
   name: 'app',
   components: {
-    Title,
+    iTitle,
     download,
-    upload,
     version,
-    appPicture
+    appPicture,
+    AddnewApp,
+    uploadnewapp
   },
   data () {
     return {
@@ -86,41 +80,38 @@ export default {
       this.hide()
       this.isshow4 = true
     }
-=======
-import appinfolist from './components/GetAppList'
-import AddnewApp from './components/AddnewApp'
-import uploadnewapp from './components/Uploadnewver'
-export default {
-  name: 'app',
-  components: {
-    AddnewApp,
-    appinfolist,
-    uploadnewapp
->>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
   }
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
+  height: 1500px;
 }
-<<<<<<< HEAD
+
 #app ul{
   list-style: none;
-  width: 80%;
-  margin-left: 20%;
+  width: 100%;
 }
+
 #app li{
+  width: 300px;
   font-size: 40px;
-  float: left;
-  margin-right: 18%;
+  display: inline-block;
 }
+
+#app li:hover{
+  color: #ffffff;
+  background-color: #2ab27b;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+}
+
 .demo-carousel{
   margin: 0 auto;
   height: 500px;
@@ -128,22 +119,10 @@ export default {
   background-color: #2ab27b;
   font-size: 200px;
 }
+
 #welcome{
   margin-left: 10%;
   width: 80%;
-  margin-top: 200px;
-
-
-=======
-
-.applist{
-  position: relative;
-  top: 50px;
-}
-
-.historylist{
-  position: relative;
-  top: 80px;
->>>>>>> 888f5d30fbd3dda76054d7a541e46c206bbf3d95
+  margin-top: 150px;
 }
 </style>

@@ -13,13 +13,10 @@ class CreateAppsTable extends Migration
      */
     public function up()
     {
-        Schema::create('apps', function (Blueprint $table) {
+        Schema::create('app', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->string('name');
-            $table->string('hash_name');
-            $table->string('logo_url')->nullable();
-            $table->string('image_url')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +29,6 @@ class CreateAppsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('apps');
+        Schema::dropIfExists('app');
     }
 }

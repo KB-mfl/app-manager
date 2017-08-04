@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\App;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Validator;
 
 class AppController extends Controller {
     public function show(Request $request) {
@@ -17,18 +18,18 @@ class AppController extends Controller {
         return $apps;
     }
     public function create(Request $request) {
+      //验证信息
+      /*
+        $message = [
+            'name.required' => '名字不能为空!',
+        ];
+        Validator::make($request->all(),[
+            'name' => 'required',
+        ], $message)->validate();
+    */
         $app = new App;
         $app->user_id = 1;
         $app->name = $request->name;
-        $app->hash_name = $request->hash_name;
-        if(isset($request['logo'])) {
-            $path_logo = $request->file('logo')->store('imgs');
-            $app->logo_url = $path_logo;
-        }
-        if(isset($request['image'])) {
-            $path_img = $request->file('image')->store('imgs');
-            $app->image_url = $path_img;
-        }
         $app->save();
         return $app;
     }

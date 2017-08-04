@@ -2,6 +2,7 @@
   <div class="download">
     <h1>{{system}}</h1>
     <div id="button">Download now!</div>
+
   </div>
 </template>
 <script>
@@ -33,8 +34,8 @@ export default {
     border-radius: 40px;
   }
   #button:hover{
-    background-color: #000000;
-    opacity: 0.3;
+    background-color: #2ab27b;
+    opacity: 1;
     color: #ffffff;
   }
 </style>

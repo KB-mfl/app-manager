@@ -5,6 +5,7 @@
         {{item.label}}
       </li>
     </ul>
+
     <div class="content">
 
     </div>
@@ -46,4 +47,5 @@ export default {
     float: left;
     margin-right: 18%;
   }
+
 </style>

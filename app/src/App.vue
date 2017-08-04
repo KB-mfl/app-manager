@@ -7,7 +7,20 @@
       <li v-on:click="show3()">版本/历史</li>
       <li v-on:click="show4()">图片</li>
     </ul>
-    <h1 id="welcome" v-if="show">欢迎来到后台管理系统</h1>
+    <Carousel autoplay v-model="value2" id="welcome" v-if="show">
+      <Carousel-item>
+        <div class="demo-carousel">1</div>
+      </Carousel-item>
+      <Carousel-item>
+        <div class="demo-carousel">2</div>
+      </Carousel-item>
+      <Carousel-item>
+        <div class="demo-carousel">3</div>
+      </Carousel-item>
+      <Carousel-item>
+        <div class="demo-carousel">4</div>
+      </Carousel-item>
+    </Carousel>
     <download v-if="isshow1"></download>
     <upload v-if="isshow2"></upload>
     <version v-if="isshow3"></version>
@@ -33,6 +46,7 @@ export default {
   },
   data () {
     return {
+      value2: 0,
       show: true,
       isshow1: false,
       isshow2: false,
@@ -87,10 +101,18 @@ export default {
   float: left;
   margin-right: 18%;
 }
+.demo-carousel{
+  margin: 0 auto;
+  height: 500px;
+  width: 80%;
+  background-color: #2ab27b;
+  font-size: 200px;
+}
 #welcome{
   margin-left: 10%;
-  margin-top: 200px;
-  font-size: 100px;
   width: 80%;
+  margin-top: 200px;
+
+
 }
 </style>

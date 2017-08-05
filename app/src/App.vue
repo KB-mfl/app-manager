@@ -2,11 +2,12 @@
   <div id="app">
     <iTitle></iTitle>
     <ul>
-      <li v-on:click="show1()">下载</li>
+      <li v-on:click="show1()">App列表</li>
       <li v-on:click="show2()">上传</li>
-      <li v-on:click="show3()">版本/历史</li>
-      <li v-on:click="show4()">图片</li>
+      <li v-on:click="show3()">历史版本</li>
+      <li v-on:click="show4()">下载</li>
     </ul>
+    <hr>
     <Carousel autoplay v-model="value2" id="welcome" v-if="show">
       <Carousel-item>
         <div class="demo-carousel">1</div>
@@ -21,30 +22,27 @@
         <div class="demo-carousel">4</div>
       </Carousel-item>
     </Carousel>
-    <download v-if="isshow1"></download>
-    <AddnewApp v-if="isshow2"></AddnewApp>
-    <version v-if="isshow3"></version>
+    <Applist v-if="isshow1"></Applist>
+    <Historylist v-if="isshow3"></Historylist>
     <uploadnewapp v-if="isshow3"></uploadnewapp>
-    <appPicture v-if="isshow4"></appPicture>
+    <download v-if="isshow4"></download>
   </div>
 </template>
 
 <script>
+import Applist from './components/GetAppList'
 import iTitle from './components/Title'
-import AddnewApp from './components/AddnewApp'
 import uploadnewapp from './components/Uploadnewver'
 import download from './components/download'
-import version from './components/version'
-import appPicture from './components/appPicture'
+import Historylist from './components/AppHistoryList'
 export default {
   name: 'app',
   components: {
     iTitle,
     download,
-    version,
-    appPicture,
-    AddnewApp,
-    uploadnewapp
+    uploadnewapp,
+    Applist,
+    Historylist
   },
   data () {
     return {
@@ -92,7 +90,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 20px;
-  height: 1500px;
+  height: auto;
 }
 
 #app ul{
@@ -110,6 +108,7 @@ export default {
   color: #ffffff;
   background-color: #2ab27b;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  cursor: pointer;
 }
 
 .demo-carousel{
@@ -123,6 +122,6 @@ export default {
 #welcome{
   margin-left: 10%;
   width: 80%;
-  margin-top: 150px;
+  margin-top: 20px;
 }
 </style>

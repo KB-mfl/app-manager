@@ -1,9 +1,10 @@
 <template>
   <div class="title">
-    <div id="img"></div>
+    <img id="img" src="../assets/Logo-1.png" alt="logo">
     <h1>{{system}}<p>{{version}}</p></h1>
   </div>
 </template>
+
 <script>
 export default {
   name: 'title',
@@ -15,20 +16,18 @@ export default {
   }
 }
 </script>
+
 <style>
 .title{
   width: 100%;
-  height: 360px;
+  height: 320px;
   border-bottom: 2px solid black;
 }
 
 #img{
   width: 200px;
   height: 200px;
-  border-radius: 200px;
-  background-color: #2ab27b;
   display: inline-block;
-  margin-bottom: 2%;
 }
 
 .title h1{
@@ -38,7 +37,7 @@ export default {
 }
 
 .title p{
-  margin-top: 100px;
+  margin-top: 60px;
   font-size: 30px;
 }
 </style>

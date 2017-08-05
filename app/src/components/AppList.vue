@@ -15,7 +15,7 @@
             {{AppData[col]}}
           </td>
           <td>
-            <button @click="deleteapp">Delete</button>
+            <button @click="deleteapp(dataList)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -28,6 +28,15 @@ export default {
   name: 'list',
   props: ['dataList', 'columns'],
   methods: {
+    deleteapp: function (dataList) {
+      this.$http.delete(this.dataList.id + '/deleteapp', this.dataList.id)
+      .then((response) => {
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    }
   }
 }
 </script>
@@ -48,7 +57,6 @@ thead{
 }
 
 button{
-  font-size: 15px;
   width: auto;
   height: auto;
   background: #efeeee;

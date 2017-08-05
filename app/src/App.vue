@@ -7,6 +7,7 @@
       <li v-on:click="show3()">历史版本</li>
       <li v-on:click="show4()">下载</li>
     </ul>
+    <hr>
     <Carousel autoplay v-model="value2" id="welcome" v-if="show">
       <Carousel-item>
         <div class="demo-carousel">1</div>
@@ -22,29 +23,26 @@
       </Carousel-item>
     </Carousel>
     <Applist v-if="isshow1"></Applist>
-    <download v-if="isshow4"></download>
-    <AddnewApp v-if="isshow2"></AddnewApp>
-    <version v-if="isshow3"></version>
+    <Historylist v-if="isshow3"></Historylist>
     <uploadnewapp v-if="isshow3"></uploadnewapp>
+    <download v-if="isshow4"></download>
   </div>
 </template>
 
 <script>
 import Applist from './components/GetAppList'
 import iTitle from './components/Title'
-import AddnewApp from './components/AddnewApp'
 import uploadnewapp from './components/Uploadnewver'
 import download from './components/download'
-import version from './components/version'
+import Historylist from './components/AppHistoryList'
 export default {
   name: 'app',
   components: {
     iTitle,
     download,
-    version,
-    AddnewApp,
     uploadnewapp,
-    Applist
+    Applist,
+    Historylist
   },
   data () {
     return {
@@ -92,7 +90,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 20px;
-  height: 1500px;
+  height: auto;
 }
 
 #app ul{
@@ -124,6 +122,6 @@ export default {
 #welcome{
   margin-left: 10%;
   width: 80%;
-  margin-top: 150px;
+  margin-top: 20px;
 }
 </style>

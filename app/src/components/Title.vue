@@ -4,6 +4,7 @@
     <h1>{{system}}<p>{{version}}</p></h1>
   </div>
 </template>
+
 <script>
 export default {
   name: 'title',
@@ -15,6 +16,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .title{
   width: 100%;
@@ -26,7 +28,6 @@ export default {
   width: 200px;
   height: 200px;
   display: inline-block;
-  margin-bottom: 2%;
 }
 
 .title h1{
@@ -36,7 +37,7 @@ export default {
 }
 
 .title p{
-  margin-top: 100px;
+  margin-top: 60px;
   font-size: 30px;
 }
 </style>

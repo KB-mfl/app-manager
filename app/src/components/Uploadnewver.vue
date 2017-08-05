@@ -62,7 +62,6 @@ p{
 }
 
 button{
-  font-size: 15px;
   width: auto;
   height: auto;
   background: #efeeee;

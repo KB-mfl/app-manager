@@ -45,6 +45,9 @@ th{
 }
 
 .list{
-  width: 100%;
+  width: 80%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

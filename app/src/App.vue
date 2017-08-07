@@ -24,7 +24,6 @@
     </Carousel>
     <Applist v-if="isshow1"></Applist>
     <Historylist v-if="isshow3"></Historylist>
-    <uploadnewapp v-if="isshow3"></uploadnewapp>
     <download v-if="isshow4"></download>
   </div>
 </template>
@@ -32,7 +31,6 @@
 <script>
 import Applist from './components/GetAppList'
 import iTitle from './components/Title'
-import uploadnewapp from './components/Uploadnewver'
 import download from './components/download'
 import Historylist from './components/AppHistoryList'
 export default {
@@ -40,7 +38,6 @@ export default {
   components: {
     iTitle,
     download,
-    uploadnewapp,
     Applist,
     Historylist
   },

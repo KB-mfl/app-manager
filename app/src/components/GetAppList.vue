@@ -16,7 +16,7 @@
               {{row[col]}}
             </td>
             <td>
-              <button @click="deleteapp()">Delete</button>
+              <button @click="deleteapp(row)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -61,7 +61,7 @@ export default {
       this.$http.get('applist')
       .then((response) => {
         this.AppData = response.data
-        console.log(this.AppData)
+        console.log(response.data)
       })
       .catch(function (error) {
         console.log(error)
@@ -99,9 +99,17 @@ export default {
       })
       this.isshow = false
     },
-    deleteapp: function () {
-      this.$http.delete('deleteapp')
+    deleteapp: function (row) {
+      this.$http.delete(row.id + '/deleteapp', row.id)
       .then((response) => {
+        this.$http.get('applist')
+        .then((response) => {
+          this.AppData = response.data
+          console.log(this.AppData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         console.log('success')
       })
       .catch(function (error) {

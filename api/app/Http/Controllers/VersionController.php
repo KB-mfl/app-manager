@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class VersionController extends Controller
 {
     public function show(Request $request, $system_id) {
-        if(!isset($request['want_deleted']) || $request->want_deleted == false) {
+        if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $versions = Version::where('system_id', '=', $system_id)->take($request->limit)->get();
         }
         else {

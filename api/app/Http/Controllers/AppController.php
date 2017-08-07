@@ -9,7 +9,7 @@ use Validator;
 
 class AppController extends Controller {
     public function show(Request $request) {
-        if(!isset($request['want_deleted']) || $request->want_deleted == false) {
+        if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $apps = App::all();
         }
         else {

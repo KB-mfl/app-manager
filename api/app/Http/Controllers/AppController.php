@@ -38,7 +38,7 @@ class AppController extends Controller {
         $app->delete();
         return [];
     }
-    public function readd(Request $request, $app_id) {
+    public function read(Request $request, $app_id) {
         $app = App::onlyTrashed()->find($request->app_id);
         $app->restore();
         return $app;

@@ -25,7 +25,7 @@ Route::post('addapp', 'AppController@create');
 
 Route::delete('{app_id}/deleteapp', 'AppController@delete');
 
-Route::put('{app_id}/readdapp', 'AppController@readd');
+Route::put('{app_id}/readapp', 'AppController@read');
 
 //image
 

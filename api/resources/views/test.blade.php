@@ -13,7 +13,7 @@
         </form>
         <form action="/api/applist" method="get">
             
-            has_deleted<input type="checkbox" name="want_deleted" value="true/false">
+            has_deleted<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
         <form action="/api/1/deleteapp" method="post">
@@ -39,7 +39,7 @@
         </form>
         <form action="/api/1/system" method="get">
         
-            has_deleted:<input type="checkbox" name="want_deleted" value="true/false">
+            has_deleted:<input type="checkbox" name="want_deleted" value="true">
             list:<input type="submit">
         </form>
         <form action="/api/1/system" method="post">
@@ -64,7 +64,7 @@
         <form action="/api/3/version" method='get'>
             
             limit:<input type="text" name='limit'>
-            has_deleted:<input type="checkbox" name="want_deleted" value="true/false">
+            has_deleted:<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
         <form action="/api/3/version" method='post'>
@@ -98,7 +98,7 @@
         <h1>Data</h1>
         <form action="/api/1/data" method="get">
             
-            <input type="checkbox" name="want_deleted" value="true/false">
+            <input type="checkbox" name="want_deleted" value="true">
             <input type="submit">
         </form>
         <form action="/api/1/data" method="post">

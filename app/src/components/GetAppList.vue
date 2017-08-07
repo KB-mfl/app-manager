@@ -8,6 +8,7 @@
               {{col}}
             </th>
             <th>Delete</th>
+            <th v-if="ishow5">Revive</th>
           </tr>
         </thead>
         <tbody>
@@ -18,11 +19,17 @@
             <td>
               <button @click="deleteapp(row)">Delete</button>
             </td>
+            <td v-if="ishow5">
+              <button @click="reviveapp(row)">Revive</button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p><button type="button" name="create" @click="createnewapp">Create</button></p>
+    <p>
+      <button type="button" name="create" @click="createnewapp">Create</button>
+      <button @click="showdeleted">Revive</button>
+    </p>
     <div class="back_ground"  v-show="isshow">
     </div>
     <div class="container" v-show="isshow">
@@ -50,6 +57,7 @@ export default {
       AppData: [],
       columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
       isshow: false,
+      isshow5: false,
       name: ''
     }
   },
@@ -111,6 +119,38 @@ export default {
           console.log(error)
         })
         console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    reviveapp: function (row) {
+      this.$http.put(row.id + '/readapp', row.id)
+      .then((response) => {
+        this.$http.get('applist', {params: {want_deleted: true}})
+        .then((response) => {
+          this.AppData = response.data
+          console.log(this.AppData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    showdeleted: function () {
+      if (this.ishow5 === true) {
+        this.ishow5 = false
+      } else {
+        this.ishow5 = true
+      }
+      this.$http.get('applist', {params: {want_deleted: true}})
+      .then((response) => {
+        this.AppData = response.data
+        console.log(this.AppData)
       })
       .catch(function (error) {
         console.log(error)

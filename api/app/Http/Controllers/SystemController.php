@@ -23,7 +23,7 @@ class SystemController extends Controller
             表单验证
         */
         $system = new System;
-        $system->app_id = $request->app_id;
+        $system->app_id = $app_id;
         $system->system = $request->system;
         $system->identification = $request->identification;
         $path = $request->file('file')->store('imgs');

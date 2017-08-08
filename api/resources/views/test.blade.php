@@ -29,7 +29,7 @@
             <input type="submit">
         </form>
         <h1>system</h1>
-        <form action="/api/1/system" enctype="multipart/form-data" method="post">
+        <form action="/api/2/system" enctype="multipart/form-data" method="post">
         
             app_id:<input type="text" name="app_id">
             system:<input type="text" name="system">
@@ -37,7 +37,7 @@
             identification:<input type="text" name="identification">
             <input type="submit">
         </form>
-        <form action="/api/1/system" method="get">
+        <form action="/api/2/system" method="get">
         
             has_deleted:<input type="checkbox" name="want_deleted" value="true">
             list:<input type="submit">
@@ -91,7 +91,7 @@
             img:<input id="file" type="file" name="file"/>
             upload:<input type="submit">
         </form>
-        <form action="/api/3/image" method="get">
+        <form action="/api/4/image" method="get">
 
             show:<input type="submit">
         </form>

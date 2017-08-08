@@ -1,35 +1,41 @@
 <template>
   <div class="AppList">
-    <div class="list">
-      <table>
-        <thead>
-          <tr>
-            <th v-for="col in columns">
-              {{col}}
-            </th>
-            <th>Delete</th>
-            <th v-if="ishow5">Revive</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in AppData">
-            <td v-for="col in columns">
-              {{row[col]}}
-            </td>
-            <td>
-              <button @click="deleteapp(row)">Delete</button>
-            </td>
-            <td v-if="ishow5">
-              <button @click="reviveapp(row)">Revive</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="showapplist">
+      <div class="list">
+        <table>
+          <thead>
+            <tr>
+              <th v-for="col in columns">
+                {{col}}
+              </th>
+              <th>Delete</th>
+              <th v-if="isshownew">Revive</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in AppData">
+              <td v-for="col in columns">
+                {{row[col]}}
+              </td>
+              <td>
+                <button @click="deleteapp(row)">Delete</button>
+              </td>
+              <td v-if="isshownew">
+                <button @click="reviveapp(row)">Revive</button>
+              </td>
+              <td>
+                <button class="showsystemlist" id="showsystemlist" @click="showsystemlist(row.id)">Details</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <button type="button" name="create" @click="createnewapp">Create</button>
+        <button @click="showdeleted">Revive</button>
+      </p>
     </div>
-    <p>
-      <button type="button" name="create" @click="createnewapp">Create</button>
-      <button @click="showdeleted">Revive</button>
-    </p>
     <div class="back_ground"  v-show="isshow">
     </div>
     <div class="container" v-show="isshow">
@@ -46,6 +52,8 @@
         </div>
     </div>
     </div>
+    <router-view></router-view>
+    <p><button type="button" name="back" @click="back" v-if="showback">Back</button></p>
   </div>
 </template>
 
@@ -57,8 +65,10 @@ export default {
       AppData: [],
       columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
       isshow: false,
-      isshow5: false,
-      name: ''
+      isshownew: false,
+      showapplist: true,
+      name: '',
+      showback: false
     }
   },
   beforeMount: function () {
@@ -108,6 +118,7 @@ export default {
       this.isshow = false
     },
     deleteapp: function (row) {
+      console.log(row.id)
       this.$http.delete(row.id + '/deleteapp', row.id)
       .then((response) => {
         this.$http.get('applist')
@@ -142,10 +153,10 @@ export default {
       })
     },
     showdeleted: function () {
-      if (this.ishow5 === true) {
-        this.ishow5 = false
+      if (this.isshownew === true) {
+        this.isshownew = false
       } else {
-        this.ishow5 = true
+        this.isshownew = true
       }
       this.$http.get('applist', {params: {want_deleted: true}})
       .then((response) => {
@@ -155,6 +166,17 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    },
+    showsystemlist: function (id) {
+      console.log(id)
+      this.showapplist = false
+      this.showback = true
+      this.$router.push({path: '/Applist/' + id + '/Systemlist'})
+    },
+    back: function () {
+      this.showapplist = true
+      this.showback = false
+      this.$router.push({path: '/Applist'})
     }
   }
 }
@@ -162,7 +184,6 @@ export default {
 
 <style scoped>
 button{
-  font-size: 15px;
   width: auto;
   height: auto;
   background: #efeeee;
@@ -282,5 +303,23 @@ table{
 thead{
   background-color: #2ab27b;
   color: #ffffff;
+}
+
+.applist{
+  color: #2c3e50;
+}
+
+.applist:hover{
+  color: #2ab27b;
+}
+
+.showsystemlist{
+  width: auto;
+  height: auto;
+}
+
+label:hover {
+  color: #2ab27b;
+  cursor: pointer;
 }
 </style>

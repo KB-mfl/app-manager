@@ -163,11 +163,6 @@ label:hover{
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
-#uploadimage {
-  font-size: 0px;
-  margin: 2px 0px 2px 0px;
-}
-
 .inputer-1{
   display: inline-block;
   margin: 0px 20px 30px 0px;

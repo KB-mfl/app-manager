@@ -1,6 +1,6 @@
 <template>
   <div class="AppList">
-    <div v-if="showapplist">
+    <div>
       <div class="list">
         <table>
           <thead>
@@ -8,8 +8,8 @@
               <th v-for="col in columns">
                 {{col}}
               </th>
-              <th>Delete</th>
-              <th v-if="isshownew">Revive</th>
+              <th  v-if="isshowdel">Delete</th>
+              <th v-if="isshowdeleted">Revive</th>
               <th>Details</th>
             </tr>
           </thead>
@@ -18,10 +18,10 @@
               <td v-for="col in columns">
                 {{row[col]}}
               </td>
-              <td>
+              <td v-if="isshowdel">
                 <button @click="deleteapp(row)">Delete</button>
               </td>
-              <td v-if="isshownew">
+              <td v-if="isshowdeleted">
                 <button @click="reviveapp(row)">Revive</button>
               </td>
               <td>
@@ -33,14 +33,14 @@
       </div>
       <p>
         <button type="button" name="create" @click="createnewapp">Create</button>
-        <button @click="showdeleted">Revive</button>
+        <button @click="showdeletedapp">Revive</button>
       </p>
     </div>
     <div class="back_ground"  v-show="isshow">
     </div>
     <div class="container" v-show="isshow">
       <div class="create">
-        <p><button  class="close" type="button" name="colse" @click="colse"><Icon type="close-round" size="12"></Icon></button></p>
+        <p><button class="close" type="button" name="colse" @click="close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
             <div class="inputer-1">
@@ -50,10 +50,8 @@
             <button type="submit" @click="uploadform($event)">Save</button>
           </form>
         </div>
+      </div>
     </div>
-    </div>
-    <router-view></router-view>
-    <p><button type="button" name="back" @click="back" v-if="showback">Back</button></p>
   </div>
 </template>
 
@@ -65,10 +63,10 @@ export default {
       AppData: [],
       columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
       isshow: false,
-      isshownew: false,
-      showapplist: true,
+      isshowdeleted: false,
       name: '',
-      showback: false
+      showback: false,
+      isshowdel: true
     }
   },
   beforeMount: function () {
@@ -88,7 +86,7 @@ export default {
     createnewapp: function () {
       this.isshow = true
     },
-    colse: function () {
+    close: function () {
       this.isshow = false
     },
     uploadform (event) {
@@ -152,11 +150,11 @@ export default {
         console.log(error)
       })
     },
-    showdeleted: function () {
-      if (this.isshownew === true) {
-        this.isshownew = false
+    showdeletedapp: function () {
+      if (this.isshowdeleted === true) {
+        this.isshowdeleted = false
       } else {
-        this.isshownew = true
+        this.isshowdeleted = true
       }
       this.$http.get('applist', {params: {want_deleted: true}})
       .then((response) => {
@@ -169,14 +167,7 @@ export default {
     },
     showsystemlist: function (id) {
       console.log(id)
-      this.showapplist = false
-      this.showback = true
       this.$router.push({path: '/Applist/' + id + '/Systemlist'})
-    },
-    back: function () {
-      this.showapplist = true
-      this.showback = false
-      this.$router.push({path: '/Applist'})
     }
   }
 }
@@ -207,7 +198,7 @@ button:hover{
 }
 
 .back_ground{
-  height: 180%;
+  height: 133%;
   width: 100%;
   position: absolute;
   top: 0;
@@ -217,7 +208,7 @@ button:hover{
 }
 
 .container{
-  height: 180%;
+  height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
@@ -227,7 +218,7 @@ button:hover{
 .create{
   height: auto;
   width: 30%;
-  margin-top: 50%;
+  margin-top: 30%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);

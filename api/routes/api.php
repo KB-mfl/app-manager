@@ -73,7 +73,7 @@ Route::put('{app_id}/system', 'SystemController@restore');
 
 //download
 
-Route::get('{system_id}/download', 'DownloadController@show');
+Route::get('download', 'DownloadController@show');
 
 //version
 

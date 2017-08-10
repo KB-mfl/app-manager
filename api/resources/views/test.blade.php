@@ -22,7 +22,7 @@
             delete_id:<input type="text" name="app_id">
             <input type="submit">
         </form>
-        <form action="/api/1/readdapp" method="post">
+        <form action="/api/1/readapp" method="post">
             
             <input type="hidden" name="_method" value="PUT" size="50" />
             readdapp_id:<input type="text" name="app_id">
@@ -37,7 +37,7 @@
             identification:<input type="text" name="identification">
             <input type="submit">
         </form>
-        <form action="/api/2/system" method="get">
+        <form action="/api/1/system" method="get">
         
             has_deleted:<input type="checkbox" name="want_deleted" value="true">
             list:<input type="submit">
@@ -55,43 +55,43 @@
             <input type="submit">
         </form>
         <h1>version</h1>
-        <form action="/api/3/version" enctype="multipart/form-data" method="post">
+        <form action="/api/1/version" enctype="multipart/form-data" method="post">
             
             version:<input type="text" name="version">
             file:<input id="file" type="file" name="file"/>
 　　         <input type="submit" value="upload" />
         </form>
-        <form action="/api/3/version" method='get'>
+        <form action="/api/1/version" method='get'>
             
             limit:<input type="text" name='limit'>
             has_deleted:<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
-        <form action="/api/3/version" method='post'>
+        <form action="/api/1/version" method='post'>
             
             <input type="hidden" name="_method" value="DELETE" size="50" />
             delete_id:<input type="text" name='version_id'>
             delete:<input type="submit">
         </form>
-        <form action="/api/3/version" method='post'>
+        <form action="/api/1/version" method='post'>
             
             <input type="hidden" name="_method" value="PUT" size="50" />
             recover_id:<input type="text" name='version_id'>
             recover:<input type="submit">
         </form>
         <h1>Download</h1>
-        <form action="/api/1/download" method="get">
+        <form action="/api/download" method="get">
             
             version_id:<input type="text" name="version_id">
             get:<input type="submit">
         </form>
         <h1>Image</h1>
-        <form action="/api/3/image" enctype="multipart/form-data" method="post">
+        <form action="/api/1/image" enctype="multipart/form-data" method="post">
             
             img:<input id="file" type="file" name="file"/>
             upload:<input type="submit">
         </form>
-        <form action="/api/4/image" method="get">
+        <form action="/api/1/image" method="get">
 
             show:<input type="submit">
         </form>
@@ -161,5 +161,6 @@
             delete<input type="text" name="feedback_id">
             <input type="submit">
         </form>
+        <!--a href='192.168.1.101:8000/app/apps' download='robots.txt' target='_blank'>xiazai</a-->
     </body>
 </html>

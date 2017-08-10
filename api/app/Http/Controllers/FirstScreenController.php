@@ -23,7 +23,7 @@ class FirstScreenController extends Controller
             $fs->save();
         }
         if(isset($request['file'])) {
-            $path = $request->file('file')->store('imgs');
+            $path = $request->file('file')->store('public/imgs');
         }
         else {
             $path = null;

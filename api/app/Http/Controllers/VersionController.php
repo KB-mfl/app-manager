@@ -23,15 +23,15 @@ class VersionController extends Controller
         */
         $system = System::find($system_id);
         $now = 0;
-        foreach($system->version() as $ver) {
+        foreach($system->version()->get() as $ver) {
             if($ver->build > $now) {
                 $now = $ver->build;
             }
         }
-        $path = $request->file('file')->store('apps');
+        $path = $request->file('file')->store('public/apps');
         $version = new Version;
         $version->system_id = $system_id;
-        $version->build = $now;
+        $version->build = $now + 1;
         $version->file_url = $path;
         $version->version = $request->version;
         $version->save();

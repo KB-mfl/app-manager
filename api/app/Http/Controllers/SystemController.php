@@ -16,6 +16,11 @@ class SystemController extends Controller
         else {
             $system = System::withTrashed()->where('app_id', '=', $app_id)->get();
         }
+        foreach($system as $s) {
+            //return response()->file(realpath(base_path('storage/app')).'/'.$s->logo_url);
+            $s->logo_url = str_replace("public/", "", $s->logo_url);
+            $s->logo_url = asset('storage/'.$s->logo_url);
+        }
         return $system;
     }
     public function store(Request $request, $app_id) {
@@ -26,7 +31,7 @@ class SystemController extends Controller
         $system->app_id = $app_id;
         $system->system = $request->system;
         $system->identification = $request->identification;
-        $path = $request->file('file')->store('imgs');
+        $path = $request->file('file')->store('public/imgs');
         $system->logo_url = $path;
         $system->save();
         return $system;

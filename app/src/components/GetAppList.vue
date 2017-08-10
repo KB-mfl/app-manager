@@ -8,7 +8,7 @@
               <th v-for="col in columns">
                 {{col}}
               </th>
-              <th  v-if="isshowdel">Delete</th>
+              <th v-if="isshowdel">Delete</th>
               <th v-if="isshowdeleted">Revive</th>
               <th>Details</th>
             </tr>
@@ -153,8 +153,10 @@ export default {
     showdeletedapp: function () {
       if (this.isshowdeleted === true) {
         this.isshowdeleted = false
+        this.isshowdel = true
       } else {
         this.isshowdeleted = true
+        this.isshowdel = false
       }
       this.$http.get('applist', {params: {want_deleted: true}})
       .then((response) => {
@@ -198,7 +200,7 @@ button:hover{
 }
 
 .back_ground{
-  height: 133%;
+  height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
@@ -276,7 +278,7 @@ button:hover{
 }
 
 .list{
-  width: 80%;
+  width: 90%;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;

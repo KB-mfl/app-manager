@@ -64,13 +64,15 @@ export default {
   data () {
     return {
       Appsystem: [],
-      columns: ['id', 'app_id', 'logo_url', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      columns: ['id', 'app_id', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      imageurl: ['logo_url'],
       isshownewsystem: false,
       isshowdeletedsystem: false,
       system: '',
       identification: '',
       new_file: '',
-      isshowdele: true
+      isshowdele: true,
+      logo: []
     }
   },
   beforeMount: function () {
@@ -369,5 +371,9 @@ button:hover{
 .showversionlist{
   width: auto;
   height: auto;
+}
+
+.imageurl{
+  font-size: 5px;
 }
 </style>

@@ -22,7 +22,7 @@ export default {
   name: 'home',
   data () {
     return {
-      value2: 0
+      value2: 1
     }
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
 
 <style scoped>
 .demo-carousel{
-  margin: 0 auto;
+  margin: 0px auto;
   height: 500px;
   width: 80%;
   background-color: #2ab27b;

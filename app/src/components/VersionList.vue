@@ -24,7 +24,10 @@
               <button @click="reviveversion(row)">Revive</button>
             </td>
             <td>
-              <button class="download" id="download" @click="download(row.id)">Download</button>
+              <form id="download" action="http://192.168.1.160:8000/api/download" method="get">
+                <input type="hidden" name="version_id" v-model="version_id"></input>
+                <button class="download" @click="download(row)">Download</button>
+              </form>
             </td>
           </tr>
         </tbody>
@@ -63,12 +66,14 @@ export default {
   data () {
     return {
       Version: [],
-      columns: ['id', 'file_url', 'version', 'build', 'system_id', 'deleted_at', 'created_at'],
+      columns: ['id', 'version', 'build', 'system_id', 'deleted_at', 'created_at'],
+      imageurl: ['file_url'],
       version: '',
       new_app: '',
       isshownewversion: false,
       isshowdeletedversion: false,
-      isshowdele: true
+      isshowdele: true,
+      version_id: ''
     }
   },
   beforeMount: function () {
@@ -174,14 +179,10 @@ export default {
         console.log(error)
       })
     },
-    download: function (id) {
-      this.$http.get('/download', {params: {version_id: id}})
-      .then((response) => {
-        console.log('success')
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    download: function (row) {
+      console.log(row.id)
+      this.version_id = row.id
+      document.getElementById('download').submit()
     }
   }
 }
@@ -301,7 +302,7 @@ button:hover{
   margin: 0px;
 }
 
-.input-system{
+.input-version{
   margin-top: 0px;
   margin-bottom: 10px;
   margin-left: auto;
@@ -310,7 +311,7 @@ button:hover{
   border-radius: 5px;
 }
 
-.input-system:hover{
+.input-version:hover{
   position: relative;
   bottom: 2px;
   right: 2px;

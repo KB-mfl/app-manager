@@ -25,7 +25,7 @@
                 <button @click="ReviveApp(row)">Revive</button>
               </td>
               <td>
-                <button class="ShowSystemList" id="ShowSystemList" @click="ShowSystemList(row.id)">Details</button>
+                <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)">Details</button>
               </td>
             </tr>
           </tbody>
@@ -201,7 +201,7 @@ button:hover{
 .back_ground{
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: #000000;
@@ -211,17 +211,17 @@ button:hover{
 .container{
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 }
 
 .create{
+  position: fixed;
   height: auto;
   width: 30%;
-  margin-top: 30%;
-  margin-left: auto;
-  margin-right: auto;
+  left:35%;
+  top:40%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }
@@ -297,7 +297,7 @@ thead{
   color: #ffffff;
 }
 
-.ShowSystemList{
+.showsystemlist{
   width: auto;
   height: auto;
 }

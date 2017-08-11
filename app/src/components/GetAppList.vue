@@ -1,43 +1,56 @@
 <template>
   <div class="AppList">
-    <div class="list">
-      <table>
-        <thead>
-          <tr>
-            <th v-for="col in columns">
-              {{col}}
-            </th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in AppData">
-            <td v-for="col in columns">
-              {{row[col]}}
-            </td>
-            <td>
-              <button @click="deleteapp(row)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div>
+      <div class="list">
+        <table>
+          <thead>
+            <tr>
+              <th v-for="col in Columns">
+                {{col}}
+              </th>
+              <th v-if="IsShowDel">Delete</th>
+              <th v-if="IsShowDeleted">Revive</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in AppData">
+              <td v-for="col in Columns">
+                {{row[col]}}
+              </td>
+              <td v-if="IsShowDel">
+                <button @click="DeleteApp(row)">Delete</button>
+              </td>
+              <td v-if="IsShowDeleted">
+                <button @click="ReviveApp(row)">Revive</button>
+              </td>
+              <td>
+                <button class="ShowSystemList" id="ShowSystemList" @click="ShowSystemList(row.id)">Details</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <button type="button" name="create" @click="CreateNewApp">Create</button>
+        <button @click="ShowDeletedApp">Revive</button>
+      </p>
     </div>
-    <p><button type="button" name="create" @click="createnewapp">Create</button></p>
-    <div class="back_ground"  v-show="isshow">
+    <div class="back_ground"  v-show="IsShow">
     </div>
-    <div class="container" v-show="isshow">
+    <div class="container" v-show="IsShow">
       <div class="create">
-        <p><button  class="close" type="button" name="colse" @click="colse"><Icon type="close-round" size="12"></Icon></button></p>
+        <p><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
             <div class="inputer-1">
-              <p><input v-model="name" class="input-name" type="text" name="name" placeholder="Name"></p>
+              <p><input v-model="Name" class="input-name" type="text" name="name" placeholder="Name"></p>
             </div>
             <br>
-            <button type="submit" @click="uploadform($event)">Save</button>
+            <button type="submit" @click="UploadForm($event)">Save</button>
           </form>
         </div>
-    </div>
+      </div>
     </div>
   </div>
 </template>
@@ -48,16 +61,18 @@ export default {
   data () {
     return {
       AppData: [],
-      columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
-      isshow: false,
-      name: ''
+      Columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
+      IsShow: false,
+      IsShowDeleted: false,
+      Name: '',
+      IsShowDel: true
     }
   },
   beforeMount: function () {
-    this.getapplist()
+    this.GetAppList()
   },
   methods: {
-    getapplist: function () {
+    GetAppList: function () {
       this.$http.get('applist')
       .then((response) => {
         this.AppData = response.data
@@ -67,16 +82,16 @@ export default {
         console.log(error)
       })
     },
-    createnewapp: function () {
-      this.isshow = true
+    CreateNewApp: function () {
+      this.IsShow = true
     },
-    colse: function () {
-      this.isshow = false
+    Close: function () {
+      this.IsShow = false
     },
-    uploadform (event) {
+    UploadForm (event) {
       event.preventDefault()
       let formData = new FormData()
-      formData.append('name', this.name)
+      formData.append('name', this.Name)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -97,9 +112,10 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-      this.isshow = false
+      this.IsShow = false
     },
-    deleteapp: function (row) {
+    DeleteApp: function (row) {
+      console.log(row.id)
       this.$http.delete(row.id + '/deleteapp', row.id)
       .then((response) => {
         this.$http.get('applist')
@@ -115,6 +131,44 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    },
+    ReviveApp: function (row) {
+      this.$http.put(row.id + '/readapp', row.id)
+      .then((response) => {
+        this.$http.get('applist', {params: {want_deleted: true}})
+        .then((response) => {
+          this.AppData = response.data
+          console.log(this.AppData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    ShowDeletedApp: function () {
+      if (this.IsShowDeleted === true) {
+        this.IsShowDeleted = false
+        this.IsShowDel = true
+      } else {
+        this.IsShowDeleted = true
+        this.IsShowDel = false
+      }
+      this.$http.get('applist', {params: {want_deleted: true}})
+      .then((response) => {
+        this.AppData = response.data
+        console.log(this.AppData)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    ShowSystemList: function (id) {
+      console.log(id)
+      this.$router.push({path: '/Applist/' + id + '/Systemlist'})
     }
   }
 }
@@ -122,7 +176,6 @@ export default {
 
 <style scoped>
 button{
-  font-size: 15px;
   width: auto;
   height: auto;
   background: #efeeee;
@@ -146,7 +199,7 @@ button:hover{
 }
 
 .back_ground{
-  height: 180%;
+  height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
@@ -156,7 +209,7 @@ button:hover{
 }
 
 .container{
-  height: 180%;
+  height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
@@ -166,7 +219,7 @@ button:hover{
 .create{
   height: auto;
   width: 30%;
-  margin-top: 50%;
+  margin-top: 30%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
@@ -224,7 +277,7 @@ button:hover{
 }
 
 .list{
-  width: 80%;
+  width: 90%;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -242,5 +295,15 @@ table{
 thead{
   background-color: #2ab27b;
   color: #ffffff;
+}
+
+.ShowSystemList{
+  width: auto;
+  height: auto;
+}
+
+label:hover {
+  color: #2ab27b;
+  cursor: pointer;
 }
 </style>

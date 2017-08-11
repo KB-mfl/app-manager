@@ -20,7 +20,7 @@
         </table>
       </div>
     </div>
-    <p><button name="submit">Submit</button></p>
+    <p><button name="createnewfeedback" @click="CreateNewFeedback">Create</button></p>
   </div>
 </template>
 
@@ -47,6 +47,8 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    },
+    CreateNewApp: function () {
     }
   }
 }

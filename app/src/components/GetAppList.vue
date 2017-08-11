@@ -5,49 +5,49 @@
         <table>
           <thead>
             <tr>
-              <th v-for="col in columns">
+              <th v-for="col in Columns">
                 {{col}}
               </th>
-              <th v-if="isshowdel">Delete</th>
-              <th v-if="isshowdeleted">Revive</th>
+              <th v-if="IsShowDel">Delete</th>
+              <th v-if="IsShowDeleted">Revive</th>
               <th>Details</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in AppData">
-              <td v-for="col in columns">
+              <td v-for="col in Columns">
                 {{row[col]}}
               </td>
-              <td v-if="isshowdel">
-                <button @click="deleteapp(row)">Delete</button>
+              <td v-if="IsShowDel">
+                <button @click="DeleteApp(row)">Delete</button>
               </td>
-              <td v-if="isshowdeleted">
-                <button @click="reviveapp(row)">Revive</button>
+              <td v-if="IsShowDeleted">
+                <button @click="ReviveApp(row)">Revive</button>
               </td>
               <td>
-                <button class="showsystemlist" id="showsystemlist" @click="showsystemlist(row.id)">Details</button>
+                <button class="ShowSystemList" id="ShowSystemList" @click="ShowSystemList(row.id)">Details</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <p>
-        <button type="button" name="create" @click="createnewapp">Create</button>
-        <button @click="showdeletedapp">Revive</button>
+        <button type="button" name="create" @click="CreateNewApp">Create</button>
+        <button @click="ShowDeletedApp">Revive</button>
       </p>
     </div>
-    <div class="back_ground"  v-show="isshow">
+    <div class="back_ground"  v-show="IsShow">
     </div>
-    <div class="container" v-show="isshow">
+    <div class="container" v-show="IsShow">
       <div class="create">
-        <p><button class="close" type="button" name="colse" @click="close"><Icon type="close-round" size="12"></Icon></button></p>
+        <p><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
             <div class="inputer-1">
-              <p><input v-model="name" class="input-name" type="text" name="name" placeholder="Name"></p>
+              <p><input v-model="Name" class="input-name" type="text" name="name" placeholder="Name"></p>
             </div>
             <br>
-            <button type="submit" @click="uploadform($event)">Save</button>
+            <button type="submit" @click="UploadForm($event)">Save</button>
           </form>
         </div>
       </div>
@@ -61,19 +61,18 @@ export default {
   data () {
     return {
       AppData: [],
-      columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
-      isshow: false,
-      isshowdeleted: false,
-      name: '',
-      showback: false,
-      isshowdel: true
+      Columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
+      IsShow: false,
+      IsShowDeleted: false,
+      Name: '',
+      IsShowDel: true
     }
   },
   beforeMount: function () {
-    this.getapplist()
+    this.GetAppList()
   },
   methods: {
-    getapplist: function () {
+    GetAppList: function () {
       this.$http.get('applist')
       .then((response) => {
         this.AppData = response.data
@@ -83,16 +82,16 @@ export default {
         console.log(error)
       })
     },
-    createnewapp: function () {
-      this.isshow = true
+    CreateNewApp: function () {
+      this.IsShow = true
     },
-    close: function () {
-      this.isshow = false
+    Close: function () {
+      this.IsShow = false
     },
-    uploadform (event) {
+    UploadForm (event) {
       event.preventDefault()
       let formData = new FormData()
-      formData.append('name', this.name)
+      formData.append('name', this.Name)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -113,9 +112,9 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-      this.isshow = false
+      this.IsShow = false
     },
-    deleteapp: function (row) {
+    DeleteApp: function (row) {
       console.log(row.id)
       this.$http.delete(row.id + '/deleteapp', row.id)
       .then((response) => {
@@ -133,7 +132,7 @@ export default {
         console.log(error)
       })
     },
-    reviveapp: function (row) {
+    ReviveApp: function (row) {
       this.$http.put(row.id + '/readapp', row.id)
       .then((response) => {
         this.$http.get('applist', {params: {want_deleted: true}})
@@ -150,13 +149,13 @@ export default {
         console.log(error)
       })
     },
-    showdeletedapp: function () {
-      if (this.isshowdeleted === true) {
-        this.isshowdeleted = false
-        this.isshowdel = true
+    ShowDeletedApp: function () {
+      if (this.IsShowDeleted === true) {
+        this.IsShowDeleted = false
+        this.IsShowDel = true
       } else {
-        this.isshowdeleted = true
-        this.isshowdel = false
+        this.IsShowDeleted = true
+        this.IsShowDel = false
       }
       this.$http.get('applist', {params: {want_deleted: true}})
       .then((response) => {
@@ -167,7 +166,7 @@ export default {
         console.log(error)
       })
     },
-    showsystemlist: function (id) {
+    ShowSystemList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + id + '/Systemlist'})
     }
@@ -298,15 +297,7 @@ thead{
   color: #ffffff;
 }
 
-.applist{
-  color: #2c3e50;
-}
-
-.applist:hover{
-  color: #2ab27b;
-}
-
-.showsystemlist{
+.ShowSystemList{
   width: auto;
   height: auto;
 }

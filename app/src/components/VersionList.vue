@@ -4,54 +4,54 @@
       <table>
         <thead>
           <tr>
-            <th v-for="col in columns">
+            <th v-for="col in Columns">
               {{col}}
             </th>
-            <th v-if="isshowdele">Delete</th>
-            <th v-if="isshowdeletedversion">Revive</th>
+            <th v-if="IsShowDele">Delete</th>
+            <th v-if="IsShowDeletedVersion">Revive</th>
             <th>Download</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="row in Version">
-            <td v-for="col in columns">
+            <td v-for="col in Columns">
               {{row[col]}}
             </td>
-            <td v-if="isshowdele">
-              <button @click="deleteversion(row)">Delete</button>
+            <td v-if="IsShowDele">
+              <button @click="DeleteVersion(row)">Delete</button>
             </td>
-            <td v-if="isshowdeletedversion">
-              <button @click="reviveversion(row)">Revive</button>
+            <td v-if="IsShowDeletedVersion">
+              <button @click="ReviveVersion(row)">Revive</button>
             </td>
             <td>
               <form id="download" action="http://192.168.1.160:8000/api/download" method="get">
                 <input type="hidden" name="version_id" v-model="version_id"></input>
-                <button class="download" @click="download(row)">Download</button>
+                <button class="download" @click="Download(row)">Download</button>
               </form>
             </td>
           </tr>
         </tbody>
       </table>
       <p>
-        <button type="button" name="create" @click="createnewversion">Create</button>
-        <button @click="showdeletedversion">Revive</button>
+        <button type="button" name="create" @click="CreateNewVersion">Create</button>
+        <button @click="ShowDeletedVersion">Revive</button>
       </p>
-      <div class="back_ground" v-show="isshownewversion">
+      <div class="back_ground" v-show="IsShowNewVersion">
       </div>
-      <div class="container" v-show="isshownewversion">
+      <div class="container" v-show="IsShowNewVersion">
         <div class="create">
-          <p class="close"><button class="close" type="button" name="colse" @click="close"><Icon type="close-round" size="12"></Icon></button></p>
+          <p class="close"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
           <div class="upload">
             <form class="uploader">
               <div class="inputer-1">
                 <p><input v-model="version" class="input-version" type="text" name="version" placeholder="Version"></p>
               </div>
               <div class="inputer-2">
-                <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="getnewfile($event)"></p>
+                <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
                 <p><label for="uploadnewfile">New File</label></p>
               </div>
               <br>
-              <button type="submit" @click="uploadform($event)">Save</button>
+              <button type="submit" @click="UploadForm($event)">Save</button>
             </form>
           </div>
         </div>
@@ -66,21 +66,21 @@ export default {
   data () {
     return {
       Version: [],
-      columns: ['id', 'version', 'build', 'system_id', 'deleted_at', 'created_at'],
+      Columns: ['id', 'version', 'build', 'system_id', 'deleted_at', 'created_at'],
       imageurl: ['file_url'],
       version: '',
       new_app: '',
-      isshownewversion: false,
-      isshowdeletedversion: false,
-      isshowdele: true,
+      IsShowNewVersion: false,
+      IsShowDeletedVersion: false,
+      IsShowDele: true,
       version_id: ''
     }
   },
   beforeMount: function () {
-    this.getversionlist()
+    this.GetVersionList()
   },
   methods: {
-    getversionlist: function () {
+    GetVersionList: function () {
       this.$http.get(this.$route.params.systemid + '/version')
       .then((response) => {
         this.Version = response.data
@@ -90,17 +90,17 @@ export default {
         console.log(error)
       })
     },
-    createnewversion: function () {
-      this.isshownewversion = true
+    CreateNewVersion: function () {
+      this.IsShowNewVersion = true
     },
-    close: function () {
-      this.isshownewversion = false
+    Close: function () {
+      this.IsShowNewVersion = false
     },
-    getnewfile (event) {
+    GetNewFile (event) {
       this.new_app = event.target.files[0]
       console.log(this.new_app)
     },
-    uploadform (event) {
+    UploadForm (event) {
       event.preventDefault()
       let formData = new FormData()
       formData.append('system_id', this.$route.params.systemid)
@@ -126,9 +126,9 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-      this.isshownewversion = false
+      this.IsShowNewVersion = false
     },
-    deleteversion: function (row) {
+    DeleteVersion: function (row) {
       this.$http.delete(this.$route.params.systemid + '/version', {params: {version_id: row.id}})
       .then((response) => {
         this.$http.get(this.$route.params.systemid + '/version')
@@ -145,7 +145,7 @@ export default {
         console.log(error)
       })
     },
-    reviveversion: function (row) {
+    ReviveVersion: function (row) {
       this.$http.put(this.$route.params.systemid + '/version', {version_id: row.id})
       .then((response) => {
         this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true}})
@@ -162,13 +162,13 @@ export default {
         console.log(error)
       })
     },
-    showdeletedversion: function () {
-      if (this.isshowdeletedversion === true) {
-        this.isshowdeletedversion = false
-        this.isshowdele = true
+    ShowDeletedVersion: function () {
+      if (this.IsShowDeletedVersion === true) {
+        this.IsShowDeletedVersion = false
+        this.IsShowDele = true
       } else {
-        this.isshowdeletedversion = true
-        this.isshowdele = false
+        this.IsShowDeletedVersion = true
+        this.IsShowDele = false
       }
       this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true}})
       .then((response) => {
@@ -179,7 +179,7 @@ export default {
         console.log(error)
       })
     },
-    download: function (row) {
+    Download: function (row) {
       console.log(row.id)
       this.version_id = row.id
       document.getElementById('download').submit()

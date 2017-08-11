@@ -4,41 +4,41 @@
       <table>
         <thead>
           <tr>
-            <th v-for="col in columns">
+            <th v-for="col in Columns">
               {{col}}
             </th>
-            <th v-if="isshowdele">Delete</th>
-            <th v-if="isshowdeletedsystem">Revive</th>
+            <th v-if="IsShowDele">Delete</th>
+            <th v-if="IsShowDeletedSystem">Revive</th>
             <th>Details</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in Appsystem">
-            <td v-for="col in columns">
+          <tr v-for="row in AppSystem">
+            <td v-for="col in Columns">
               {{row[col]}}
             </td>
-            <td v-if="isshowdele">
-              <button @click="deletesystem(row)">Delete</button>
+            <td v-if="IsShowDele">
+              <button @click="DeleteSystem(row)">Delete</button>
             </td>
-            <td v-if="isshowdeletedsystem">
-              <button @click="revivesystem(row)">Revive</button>
+            <td v-if="IsShowDeletedSystem">
+              <button @click="ReviveSystem(row)">Revive</button>
             </td>
             <td>
-              <button class="showversionlist" id="showversionlist" @click="showversionlist(row.id)">Details</button>
+              <button class="showversionlist" id="showversionlist" @click="ShowVersionList(row.id)">Details</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      <button type="button" name="create" @click="createnewsystem">Create</button>
-      <button @click="showdeletedsystem">Revive</button>
+      <button type="button" name="create" @click="CreateNewSystem">Create</button>
+      <button @click="ShowDeletedSystem">Revive</button>
     </p>
-    <div class="back_ground" v-show="isshownewsystem">
+    <div class="back_ground" v-show="IsShowNewSystem">
     </div>
-    <div class="container" v-show="isshownewsystem">
+    <div class="container" v-show="IsShowNewSystem">
       <div class="create">
-        <p class="close"><button class="close" type="button" name="colse" @click="close"><Icon type="close-round" size="12"></Icon></button></p>
+        <p class="close"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
             <div class="inputer-1">
@@ -46,12 +46,12 @@
               <p><input v-model="identification" class="input-identification" type="text" name="identification" placeholder="Identification"></p>
             </div>
             <div class="inputer-2">
-              <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="getnewfile($event)"></p>
+              <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
               <p><label for="uploadnewfile">New File</label></p>
             </div>
             <br>
-            <button type="submit" @click="uploadform($event)">Save</button>
-          </form>
+            <button type="submit" @click="UploadForm($event)">Save</button>
+         </form>
         </div>
       </div>
     </div>
@@ -63,23 +63,22 @@ export default {
   name: 'appsystemlist',
   data () {
     return {
-      Appsystem: [],
-      columns: ['id', 'app_id', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
-      imageurl: ['logo_url'],
-      isshownewsystem: false,
-      isshowdeletedsystem: false,
+      AppSystem: [],
+      Columns: ['id', 'app_id', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      Imageurl: ['logo_url'],
+      IsShowNewSystem: false,
+      IsShowDeletedSystem: false,
+      IsShowDele: true,
       system: '',
       identification: '',
-      new_file: '',
-      isshowdele: true,
-      logo: []
+      new_file: ''
     }
   },
   beforeMount: function () {
-    this.getsystemlist()
+    this.GetSystemList()
   },
   methods: {
-    getsystemlist: function () {
+    GetSystemList: function () {
       this.$http.get(this.$route.params.id + '/system')
       .then((response) => {
         this.Appsystem = response.data
@@ -89,7 +88,7 @@ export default {
         console.log(error)
       })
     },
-    deletesystem: function (row) {
+    DeleteSystem: function (row) {
       this.$http.delete(this.$route.params.id + '/system', {params: {system_id: row.id}})
       .then((response) => {
         this.$http.get(this.$route.params.id + '/system')
@@ -106,13 +105,13 @@ export default {
         console.log(error)
       })
     },
-    showdeletedsystem: function () {
-      if (this.isshowdeletedsystem === true) {
-        this.isshowdeletedsystem = false
-        this.isshowdele = true
+    ShowDeletedSystem: function () {
+      if (this.IsShowDeletedSystem === true) {
+        this.IsShowDeletedSystem = false
+        this.IsShowDele = true
       } else {
-        this.isshowdeletedsystem = true
-        this.isshowdele = false
+        this.IsShowDeletedSystem = true
+        this.IsShowDele = false
       }
       this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true}})
       .then((response) => {
@@ -123,7 +122,7 @@ export default {
         console.log(error)
       })
     },
-    revivesystem: function (row) {
+    ReviveSystem: function (row) {
       this.$http.put(this.$route.params.id + '/system', {system_id: row.id})
       .then((response) => {
         this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true}})
@@ -140,17 +139,17 @@ export default {
         console.log(error)
       })
     },
-    createnewsystem: function () {
-      this.isshownewsystem = true
+    CreateNewSystem: function () {
+      this.IsShowNewSystem = true
     },
-    close: function () {
-      this.isshownewsystem = false
+    Close: function () {
+      this.IsShowNewSystem = false
     },
-    getnewfile (event) {
+    GetNewFile (event) {
       this.new_file = event.target.files[0]
       console.log(this.new_file)
     },
-    uploadform (event) {
+    UploadForm (event) {
       event.preventDefault()
       let formData = new FormData()
       formData.append('app_id', this.$route.params.id)
@@ -177,9 +176,9 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-      this.isshownewsystem = false
+      this.IsShowNewSystem = false
     },
-    showversionlist: function (id) {
+    ShowVersionList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + id + '/Versionlist'})
     }
@@ -237,7 +236,7 @@ button:hover{
 }
 
 .back_ground{
-  height: 133%;
+  height: 100%;
   width: 100%;
   position: absolute;
   top: 0;

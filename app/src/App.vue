@@ -3,6 +3,7 @@
     <router-link class="home" to="/"><iTitle></iTitle></router-link>
     <p>
       <router-link class="ilink" to="/Applist">App列表</router-link>
+      <router-link class="ilink" to="/Data">数据列表</router-link>
       <router-link class="ilink" to="/Feedback">用户反馈</router-link>
     </p>
     <hr>
@@ -50,7 +51,7 @@ export default {
 
 .ilink:hover{
   color: #ffffff;
-  background-color: #2ab27b;
+  background-color: #5e79e6;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
@@ -59,6 +60,6 @@ export default {
 }
 
 .home:hover{
-  color: #2ab27b;
+  color: #66ccff;
 }
 </style>

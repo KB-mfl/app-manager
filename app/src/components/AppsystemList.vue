@@ -9,6 +9,7 @@
             </th>
             <th v-if="IsShowDele">Delete</th>
             <th v-if="IsShowDeletedSystem">Revive</th>
+            <th>AddLogo</th>
             <th>Details</th>
           </tr>
         </thead>
@@ -22,6 +23,9 @@
             </td>
             <td v-if="IsShowDeletedSystem">
               <button @click="ReviveSystem(row)">Revive</button>
+            </td>
+            <td>
+              <button @click="AddLogo(row)">Add</button>
             </td>
             <td>
               <button class="showversionlist" id="showversionlist" @click="ShowVersionList(row.id)">Details</button>
@@ -47,10 +51,28 @@
             </div>
             <div class="inputer-2">
               <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
-              <p><label for="uploadnewfile">New File</label></p>
+              <p><label for="uploadnewfile">Logo</label></p>
             </div>
             <br>
             <button type="submit" @click="UploadForm($event)">Save</button>
+         </form>
+        </div>
+      </div>
+    </div>
+    <div class="back_ground" v-show="IsShowNewLogo">
+    </div>
+    <div class="container" v-show="IsShowNewLogo">
+      <div class="create">
+        <p class="close"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
+        <div class="upload">
+          <form class="uploader">
+            <div class="inputer-2">
+              <p><input v-model="Systemid" type="hidden" name="system_id"></p>
+              <p><input id="uploadnewfile" type="file" name="uploadnewapp" @change="GetNewLogo($event)"></p>
+              <p><label for="uploadnewfile">Logo</label></p>
+            </div>
+            <br>
+            <button type="submit" @click="UploadNewLogo($event)">Save</button>
          </form>
         </div>
       </div>
@@ -69,6 +91,8 @@ export default {
       IsShowNewSystem: false,
       IsShowDeletedSystem: false,
       IsShowDele: true,
+      IsShowNewLogo: false,
+      Systemid: '',
       system: '',
       identification: '',
       new_file: ''
@@ -181,6 +205,41 @@ export default {
     ShowVersionList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + id + '/Versionlist'})
+    },
+    AddLogo: function (row) {
+      this.IsShowNewLogo = true
+      this.Systemid = row.id
+    },
+    GetNewLogo: function () {
+      this.new_logo = event.target.files[0]
+      console.log(this.new_logo)
+    },
+    UploadNewLogo (event) {
+      event.preventDefault()
+      let formData = new FormData()
+      formData.append('file', this.new_logo)
+      formData.append('system_id', this.Systemid)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      this.$http.post(this.Systemid + '/image', formData, config)
+      .then((response) => {
+        this.$http.get(this.$route.params.id + '/system')
+        .then((response) => {
+          this.Appsystem = response.data
+          console.log(this.Appsystem)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+      this.IsShowNewLogo = false
     }
   }
 }
@@ -197,17 +256,15 @@ table{
 }
 
 thead{
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
   font-size: 20px;
-}
-
-td{
 }
 
 .list{
   width: 90%;
   margin-top: 20px;
+  margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -231,7 +288,7 @@ button:hover{
   bottom: 1px;
   right: 1px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
@@ -272,7 +329,7 @@ button:hover{
 }
 
 .close{
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .create p button{
@@ -319,7 +376,7 @@ button:hover{
   right: 2px;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .input-identification{
@@ -337,7 +394,7 @@ button:hover{
   right: 2px;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .inputer-2{
@@ -352,7 +409,7 @@ button:hover{
 #uploadnewfile::-webkit-file-upload-button{
   background: #ffffff;
   color: #333;
-  border: dotted #2ab27b;
+  border: dotted #2257c9;
   padding: 30px 100px;
   border-radius: 5px;
   font-size: 12px;
@@ -363,7 +420,7 @@ button:hover{
   position: relative;
   bottom: 1px;
   right: 1px;
-  background-color: #2ab27b;
+  background-color: #2257c9;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 

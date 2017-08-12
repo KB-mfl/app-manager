@@ -10,6 +10,7 @@
               </th>
               <th v-if="IsShowDel">Delete</th>
               <th v-if="IsShowDeleted">Revive</th>
+              <th>Firstscreen</th>
               <th>Details</th>
             </tr>
           </thead>
@@ -23,6 +24,9 @@
               </td>
               <td v-if="IsShowDeleted">
                 <button @click="ReviveApp(row)">Revive</button>
+              </td>
+              <td>
+                <button @click="Firstscreen(row)"></button>
               </td>
               <td>
                 <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)">Details</button>
@@ -169,6 +173,10 @@ export default {
     ShowSystemList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + id + '/Systemlist'})
+    },
+    Firstscreen: function (row) {
+      console.log(row.id)
+      this.$router.push({path: '/Applist/' + row.id + '/Firstscreen'})
     }
   }
 }
@@ -194,7 +202,7 @@ button:hover{
   bottom: 1px;
   right: 1px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
@@ -228,7 +236,7 @@ button:hover{
 
 .create p{
   height: auto;
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .create p button{
@@ -272,13 +280,14 @@ button:hover{
   bottom: 2px;
   right: 2px;
   border-radius: 5px;
-  box-shadow: 1px 1px 2px #2ab27b, 0 0 3px #2ab27b;
+  box-shadow: 1px 1px 2px #2257c9, 0 0 3px #2257c9;
   color: #000000;
 }
 
 .list{
   width: 90%;
   margin-top: 20px;
+  margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -293,7 +302,7 @@ table{
 }
 
 thead{
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
@@ -303,7 +312,7 @@ thead{
 }
 
 label:hover {
-  color: #2ab27b;
+  color: #2257c9;
   cursor: pointer;
 }
 </style>

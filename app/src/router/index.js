@@ -5,6 +5,8 @@ import Home from '../components/Home'
 import Systemlist from '../components/AppsystemList'
 import Feedback from '../components/Feedback'
 import Versionlist from '../components/VersionList'
+import Data from '../components/Data'
+import Firstscreen from '../components/Firstscreen'
 
 Vue.use(Router)
 
@@ -35,6 +37,16 @@ export default new Router({
       path: '/Feedback',
       name: 'Feedback',
       component: Feedback
+    },
+    {
+      path: '/Data',
+      name: 'Data',
+      component: Data
+    },
+    {
+      path: '/Applist/:id/Firstscreen',
+      name: 'Firstscreen',
+      component: Firstscreen
     }
   ]
 })

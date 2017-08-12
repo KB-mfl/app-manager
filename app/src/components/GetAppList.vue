@@ -10,6 +10,7 @@
               </th>
               <th v-if="IsShowDel">Delete</th>
               <th v-if="IsShowDeleted">Revive</th>
+              <th>Firstscreen</th>
               <th>Details</th>
             </tr>
           </thead>
@@ -25,7 +26,10 @@
                 <button @click="ReviveApp(row)">Revive</button>
               </td>
               <td>
-                <button class="ShowSystemList" id="ShowSystemList" @click="ShowSystemList(row.id)">Details</button>
+                <button @click="Firstscreen(row)"></button>
+              </td>
+              <td>
+                <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)">Details</button>
               </td>
             </tr>
           </tbody>
@@ -169,6 +173,10 @@ export default {
     ShowSystemList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + id + '/Systemlist'})
+    },
+    Firstscreen: function (row) {
+      console.log(row.id)
+      this.$router.push({path: '/Applist/' + row.id + '/Firstscreen'})
     }
   }
 }
@@ -194,14 +202,14 @@ button:hover{
   bottom: 1px;
   right: 1px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
 .back_ground{
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: #000000;
@@ -211,24 +219,24 @@ button:hover{
 .container{
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 }
 
 .create{
+  position: fixed;
   height: auto;
   width: 30%;
-  margin-top: 30%;
-  margin-left: auto;
-  margin-right: auto;
+  left:35%;
+  top:40%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }
 
 .create p{
   height: auto;
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .create p button{
@@ -272,13 +280,14 @@ button:hover{
   bottom: 2px;
   right: 2px;
   border-radius: 5px;
-  box-shadow: 1px 1px 2px #2ab27b, 0 0 3px #2ab27b;
+  box-shadow: 1px 1px 2px #2257c9, 0 0 3px #2257c9;
   color: #000000;
 }
 
 .list{
   width: 90%;
   margin-top: 20px;
+  margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -293,17 +302,17 @@ table{
 }
 
 thead{
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
-.ShowSystemList{
+.showsystemlist{
   width: auto;
   height: auto;
 }
 
 label:hover {
-  color: #2ab27b;
+  color: #2257c9;
   cursor: pointer;
 }
 </style>

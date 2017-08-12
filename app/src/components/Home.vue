@@ -22,10 +22,20 @@ export default {
   name: 'home',
   data () {
     return {
-      value2: 1
+      value2: 1,
+      i: 300
     }
   },
+  mounted: function () {
+    this.movedown()
+  },
   methods: {
+    movedown: function () {
+      while (this.i > 0) {
+        window.scrollBy(0, +1)
+        this.i--
+      }
+    }
   }
 }
 </script>
@@ -35,13 +45,14 @@ export default {
   margin: 0px auto;
   height: 500px;
   width: 80%;
-  background-color: #2ab27b;
+  background-color: #2257c9;
   font-size: 200px;
 }
 
 #welcome{
   margin-left: 10%;
   width: 80%;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>

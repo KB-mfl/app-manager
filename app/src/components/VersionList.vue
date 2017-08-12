@@ -32,31 +32,31 @@
           </tr>
         </tbody>
       </table>
-      <p>
-        <button type="button" name="create" @click="CreateNewVersion">Create</button>
-        <button @click="ShowDeletedVersion">Revive</button>
-      </p>
-      <div class="back_ground" v-show="IsShowNewVersion">
-      </div>
-      <div class="container" v-show="IsShowNewVersion">
-        <div class="create">
-          <p class="close"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
-          <div class="upload">
-            <form class="uploader">
-              <div class="inputer-1">
-                <p><input v-model="version" class="input-version" type="text" name="version" placeholder="Version"></p>
-              </div>
-              <div class="inputer-2">
-                <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
-                <p><label for="uploadnewfile">New File</label></p>
-              </div>
-              <br>
-              <button type="submit" @click="UploadForm($event)">Save</button>
-            </form>
-          </div>
+    </div>
+    <p>
+      <button type="button" name="create" @click="CreateNewVersion">Create</button>
+      <button @click="ShowDeletedVersion">Revive</button>
+    </p>
+    <div class="back_ground" v-show="IsShowNewVersion">
+    </div>
+    <div class="container" v-show="IsShowNewVersion">
+      <div class="create">
+        <p class="close"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
+        <div class="upload">
+          <form class="uploader">
+            <div class="inputer-1">
+              <p><input v-model="version" class="input-version" type="text" name="version" placeholder="Version"></p>
+            </div>
+            <div class="inputer-2">
+              <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
+              <p><label for="uploadnewfile">New Version</label></p>
+            </div>
+            <br>
+            <button type="submit" @click="UploadForm($event)">Save</button>
+          </form>
         </div>
       </div>
-    </div>
+    </div>  
   </div>
 </template>
 
@@ -192,6 +192,7 @@ export default {
 .list{
   width: 90%;
   margin-top: 20px;
+  margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -206,7 +207,7 @@ table{
 }
 
 thead{
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
@@ -229,14 +230,14 @@ button:hover{
   bottom: 1px;
   right: 1px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
   color: #ffffff;
 }
 
 .back_ground{
-  height: 133%;
+  height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: #000000;
@@ -246,7 +247,7 @@ button:hover{
 .container{
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 }
@@ -256,11 +257,11 @@ button:hover{
 }
 
 .create{
+  position: fixed;
   height: auto;
   width: 30%;
-  margin-top: 30%;
-  margin-left: auto;
-  margin-right: auto;
+  left:35%;
+  top:40%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }
@@ -270,7 +271,7 @@ button:hover{
 }
 
 .close{
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .create p button{
@@ -317,7 +318,7 @@ button:hover{
   right: 2px;
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: #2ab27b;
+  background-color: #2257c9;
 }
 
 .inputer-2{
@@ -332,7 +333,7 @@ button:hover{
 #uploadnewfile::-webkit-file-upload-button{
   background: #ffffff;
   color: #333;
-  border: dotted #2ab27b;
+  border: dotted #2257c9;
   padding: 30px 100px;
   border-radius: 5px;
   font-size: 12px;
@@ -343,7 +344,7 @@ button:hover{
   position: relative;
   bottom: 1px;
   right: 1px;
-  background-color: #2ab27b;
+  background-color: #2257c9;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 </style>

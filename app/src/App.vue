@@ -2,9 +2,7 @@
   <div id="app">
     <router-link class="home" to="/"><iTitle></iTitle></router-link>
     <p>
-      <router-link class="ilink" to="/Applist">App列表</router-link>
-      <router-link class="ilink" to="/Data">数据列表</router-link>
-      <router-link class="ilink" to="/Feedback">用户反馈</router-link>
+      <router-link class="ilink" to="/Applist">App</router-link>
     </p>
     <hr>
     <router-view></router-view>
@@ -44,7 +42,7 @@ export default {
 
 .ilink{
   color: #2c3e50;
-  width: 300px;
+  width: 64%;
   font-size: 40px;
   display: inline-block;
 }

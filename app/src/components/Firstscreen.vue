@@ -19,7 +19,7 @@
             <td v-if="IsShowDel">
               <button @click="DeleteFSPush(row)">Delete</button>
             </td>
-            <td v-if="IsShowAll">
+            <td v-if="IsShowActive">
               <button @click="ActiveFSPush(row)">Active</button>
             </td>
           </tr>
@@ -29,6 +29,7 @@
     <p>
       <button type="button" name="create" @click="CreateNewFSPush">Create</button>
       <button @click="ShowActive">Active</button>
+      <button @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewFSPush">
     </div>
@@ -58,10 +59,9 @@ export default {
   data () {
     return {
       Firstscreen: [],
-      Columns: ['id', 'app_id', 'created_at', 'updated_at'],
+      Columns: ['id', 'app_id', 'created_at', 'updated_at', 'actived'],
       FirstscreenContent: ['content'],
       Imageurl: ['image'],
-      Actived: ['actived'],
       Appid: '',
       Content: '',
       IsShowDel: true,
@@ -70,11 +70,11 @@ export default {
     }
   },
   beforeMount: function () {
-    this.GetFirstcreen()
+    this.GetFirstscreen()
   },
   methods: {
-    GetFirstcreen: function () {
-      this.$http.get('first_screen', {params: {app_id: this.$router.params.id}})
+    GetFirstscreen: function () {
+      this.$http.get('/' + this.$route.params.id + '/first_screen')
       .then((response) => {
         this.Firstscreen = response.data
         console.log(this.Firstscreen)
@@ -93,9 +93,9 @@ export default {
       }
     },
     DeleteFSPush: function (row) {
-      this.$http.delete('first_screen', {params: {first_screen_id: row.id}})
+      this.$http.delete('/' + this.$route.params.id + '/first_screen', {params: {first_screen_id: row.id}})
       .then((response) => {
-        this.$http.get('firsts_creen', {params: {app_id: this.$router.params.id}})
+        this.$http.get('/' + this.$route.params.id + '/first_screen')
         .then((response) => {
           this.Firstscreen = response.data
           console.log(this.Firstscreen)
@@ -110,9 +110,9 @@ export default {
       })
     },
     ActiveFSPush: function (row) {
-      this.$http.put('first_screen', {first_screen_id: row.id})
+      this.$http.put('/' + this.$route.params.id + '/first_screen', {first_screen_id: row.id})
       .then((response) => {
-        this.$http.get('first_screen', {params: {app_id: this.$router.params.id}})
+        this.$http.get('/' + this.$route.params.id + '/first_screen')
         .then((response) => {
           this.Firstscreen = response.data
           console.log(this.Firstscreen)
@@ -147,9 +147,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('first_screen', formData, config)
+      this.$http.post('/' + this.$route.params.id + '/first_screen', formData, config)
       .then((response) => {
-        this.$http.get('first_screen', {params: {app_id: this.$router.params.id}})
+        this.$http.get('/' + this.$route.params.id + '/first_screen')
         .then((response) => {
           this.Firstscreen = response.data
           console.log(this.Firstscreen)
@@ -163,6 +163,9 @@ export default {
         console.log(error)
       })
       this.IsShowNewFSPush = false
+    },
+    Back: function () {
+      this.$router.push({path: '/Applist'})
     }
   }
 }
@@ -172,7 +175,7 @@ export default {
 table{
   margin: 0px;
   padding: 0px;
-  font-size: 15px;
+  font-size: 18px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   width: 100%;
   border-collapse: collapse;

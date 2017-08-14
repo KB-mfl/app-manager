@@ -34,12 +34,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/Feedback',
+      path: '/Applist/:id/Feedback',
       name: 'Feedback',
       component: Feedback
     },
     {
-      path: '/Data',
+      path: '/Applist/:id/Data',
       name: 'Data',
       component: Data
     },

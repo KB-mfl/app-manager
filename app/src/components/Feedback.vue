@@ -1,33 +1,31 @@
 <template>
   <div class="Feedback">
-    <div>
-      <div class="list">
-        <table>
-          <thead>
-            <tr>
-              <th v-for="col in Columns">
-                {{col}}
-              </th>
-              <th>Create</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in Feedback">
-              <td v-for="col in Columns">
-                {{row[col]}}
-              </td>
-              <td>
-                <button name="createnewfeedback" @click="CreateNewFeedback(row)">Create</button>
-              </td>
-              <td>
-                <button name="deletefeedback" @click="DeleteFeedback(row)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="list">
+      <table>
+        <thead>
+          <tr>
+            <th v-for="col in Columns">
+              {{col}}
+            </th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in Feedback">
+            <td v-for="col in Columns">
+              {{row[col]}}
+            </td>
+            <td>
+              <button name="deletefeedback" @click="DeleteFeedback(row)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <p>
+      <button name="createnewfeedback" @click="CreateNewFeedback(row)">Create</button>
+      <button @click="Back">Back</button>
+    </p>
     <div class="back_ground"  v-show="IsShowNewFeedback">
     </div>
     <div class="container" v-show="IsShowNewFeedback">
@@ -72,7 +70,7 @@ export default {
   },
   methods: {
     GetFeedbackList: function () {
-      this.$htttp.get('feedback')
+      this.$http.get('/' + this.$route.params.id + '/feedback')
       .then((response) => {
         this.Feedback = response.data
         console.log(this.Feedback)
@@ -103,9 +101,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('feedback', formData, config)
+      this.$http.post('/' + this.$route.params.id + '/feedback', formData, config)
       .then((response) => {
-        this.$htttp.get('feedback')
+        this.$http.get('/' + this.$route.params.id + '/feedback')
         .then((response) => {
           this.Feedback = response.data
           console.log(this.Feedback)
@@ -120,9 +118,9 @@ export default {
       this.IsShowNewFeedback = false
     },
     DeleteFeedback: function (row) {
-      this.$http.delete('feedback', {params: {feedback_id: row.feedback_id}})
+      this.$http.delete('/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.feedback_id}})
       .then((response) => {
-        this.$htttp.get('feedback')
+        this.$http.get('/' + this.$route.params.id + '/feedback')
         .then((response) => {
           this.Feedback = response.data
           console.log(this.Feedback)
@@ -134,6 +132,9 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    },
+    Back: function () {
+      this.$router.push({path: '/Applist'})
     }
   }
 }

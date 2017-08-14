@@ -37,6 +37,7 @@
     <p>
       <button type="button" name="create" @click="CreateNewSystem">Create</button>
       <button @click="ShowDeletedSystem">Revive</button>
+      <button @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewSystem">
     </div>
@@ -46,7 +47,9 @@
         <div class="upload">
           <form class="uploader">
             <div class="inputer-1">
-              <p><input v-model="system" class="input-system" type="text" name="system" placeholder="System"></p>
+              <Select v-model="system" style="width:56%">
+                  <Option v-for="item in SystemList" :value="item.value" :key="item.value"></Option>
+              </Select>
               <p><input v-model="identification" class="input-identification" type="text" name="identification" placeholder="Identification"></p>
             </div>
             <div class="inputer-2">
@@ -95,7 +98,24 @@ export default {
       Systemid: '',
       system: '',
       identification: '',
-      new_file: ''
+      new_file: '',
+      SystemList: [
+        {
+          value: 'Windows'
+        },
+        {
+          value: 'Mac'
+        },
+        {
+          value: 'Linux'
+        },
+        {
+          value: 'iOS'
+        },
+        {
+          value: 'Android'
+        }
+      ]
     }
   },
   beforeMount: function () {
@@ -105,8 +125,8 @@ export default {
     GetSystemList: function () {
       this.$http.get(this.$route.params.id + '/system')
       .then((response) => {
-        this.Appsystem = response.data
-        console.log(this.Appsystem)
+        this.AppSystem = response.data
+        console.log(this.AppSystem)
       })
       .catch(function (error) {
         console.log(error)
@@ -117,8 +137,8 @@ export default {
       .then((response) => {
         this.$http.get(this.$route.params.id + '/system')
         .then((response) => {
-          this.Appsystem = response.data
-          console.log(this.Appsystem)
+          this.AppSystem = response.data
+          console.log(this.AppSystem)
         })
         .catch(function (error) {
           console.log(error)
@@ -139,8 +159,8 @@ export default {
       }
       this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true}})
       .then((response) => {
-        this.Appsystem = response.data
-        console.log(this.Appsystem)
+        this.AppSystem = response.data
+        console.log(this.AppSystem)
       })
       .catch(function (error) {
         console.log(error)
@@ -151,8 +171,8 @@ export default {
       .then((response) => {
         this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true}})
         .then((response) => {
-          this.Appsystem = response.data
-          console.log(this.Appsystem)
+          this.AppSystem = response.data
+          console.log(this.AppSystem)
         })
         .catch(function (error) {
           console.log(error)
@@ -168,6 +188,7 @@ export default {
     },
     Close: function () {
       this.IsShowNewSystem = false
+      this.IsShowNewLogo = false
     },
     GetNewFile (event) {
       this.new_file = event.target.files[0]
@@ -189,8 +210,8 @@ export default {
       .then((response) => {
         this.$http.get(this.$route.params.id + '/system')
         .then((response) => {
-          this.Appsystem = response.data
-          console.log(this.Appsystem)
+          this.AppSystem = response.data
+          console.log(this.AppSystem)
         })
         .catch(function (error) {
           console.log(error)
@@ -228,8 +249,8 @@ export default {
       .then((response) => {
         this.$http.get(this.$route.params.id + '/system')
         .then((response) => {
-          this.Appsystem = response.data
-          console.log(this.Appsystem)
+          this.AppSystem = response.data
+          console.log(this.AppSystem)
         })
         .catch(function (error) {
           console.log(error)
@@ -240,6 +261,9 @@ export default {
         console.log(error)
       })
       this.IsShowNewLogo = false
+    },
+    Back: function () {
+      this.$router.push({path: '/Applist'})
     }
   }
 }
@@ -249,7 +273,7 @@ export default {
 table{
   margin: 0px;
   padding: 0px;
-  font-size: 15px;
+  font-size: 18px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   width: 100%;
   border-collapse: collapse;
@@ -319,7 +343,7 @@ button:hover{
   height: auto;
   width: 30%;
   left:35%;
-  top:40%;
+  top:30%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }

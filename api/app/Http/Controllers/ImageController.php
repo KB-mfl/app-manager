@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class ImageController extends Controller {
     public function store(Request $request, $system_id) {
         $system = System::find($system_id);
-        $path = $request->file('file')->store('imgs');
+        $path = $request->file('file')->store('public/imgs');
         $old_path = $system->logo_url;
         $system->logo_url = $path;
         if($old_path != null) {

@@ -29,7 +29,7 @@
             <input type="submit">
         </form>
         <h1>system</h1>
-        <form action="/api/2/system" enctype="multipart/form-data" method="post">
+        <form action="/api/1/system" enctype="multipart/form-data" method="post">
         
             app_id:<input type="text" name="app_id">
             system:<input type="text" name="system">

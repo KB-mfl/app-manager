@@ -36,6 +36,7 @@
     <p>
       <button type="button" name="create" @click="CreateNewVersion">Create</button>
       <button @click="ShowDeletedVersion">Revive</button>
+      <button @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewVersion">
     </div>
@@ -56,7 +57,7 @@
           </form>
         </div>
       </div>
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -183,6 +184,9 @@ export default {
       console.log(row.id)
       this.version_id = row.id
       document.getElementById('download').submit()
+    },
+    Back: function () {
+      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist'})
     }
   }
 }

@@ -12,6 +12,8 @@
               <th v-if="IsShowDeleted">Revive</th>
               <th>Firstscreen</th>
               <th>Details</th>
+              <th>Data</th>
+              <th>Feedback</th>
             </tr>
           </thead>
           <tbody>
@@ -26,10 +28,16 @@
                 <button @click="ReviveApp(row)">Revive</button>
               </td>
               <td>
-                <button @click="Firstscreen(row)"></button>
+                <button @click="Firstscreen(row)">Firstscreen</button>
               </td>
               <td>
                 <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)">Details</button>
+              </td>
+              <td>
+                <button @click="Data(row)">Data</button>
+              </td>
+              <td>
+                <button @click="Feedback(row)">Feedback</button>
               </td>
             </tr>
           </tbody>
@@ -177,6 +185,14 @@ export default {
     Firstscreen: function (row) {
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Firstscreen'})
+    },
+    Data: function (row) {
+      console.log(row.id)
+      this.$router.push({path: '/Applist/' + row.id + '/Data'})
+    },
+    Feedback: function (row) {
+      console.log(row.id)
+      this.$router.push({path: '/Applist/' + row.id + '/Feedback'})
     }
   }
 }
@@ -295,7 +311,7 @@ button:hover{
 table{
   margin: 0px;
   padding: 0px;
-  font-size: 25px;
+  font-size: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   width: 100%;
   border-collapse: collapse;

@@ -30,6 +30,7 @@
       <p>
         <button type="button" name="create" @click="CreateNewData">Create</button>
         <button @click="ShowEdit">Edit</button>
+        <button @click="Back">Back</button>
       </p>
     </div>
     <div class="back_ground" v-show="IsShow">
@@ -57,6 +58,7 @@
         <div class="upload">
           <form class="uploader">
             <div class="inputer-1">
+              <p><input v-model="Id" type="hidden" name="data_id"></p>
               <p><input v-model="Keys" class="input-key" type="text" name="key" :placeholder="Keys"></p>
               <p><input v-model="Values" class="input-value" type="text" name="value" :placeholder="Values"></p>
             </div>
@@ -75,11 +77,12 @@ export default {
   data () {
     return {
       Data: [],
-      Columns: ['key', 'value', 'created_at', 'updated_at'],
+      Columns: ['id', 'key', 'value', 'created_at', 'updated_at'],
       Key: '',
       Value: '',
       Keys: '',
       Values: '',
+      Id: '',
       IsShow: false,
       IsShowDel: true,
       IsShowEdit: false,
@@ -91,7 +94,7 @@ export default {
   },
   methods: {
     GetData: function () {
-      this.$http.get('data')
+      this.$http.get('/' + this.$route.params.id + '/data')
       .then((response) => {
         this.Data = response.data
         console.log(this.Data)
@@ -101,9 +104,9 @@ export default {
       })
     },
     DeleteData: function (row) {
-      this.$http.delete('data', {params: {key: row.key}})
+      this.$http.delete('/' + this.$route.params.id + '/data', {params: {data_id: row.id}})
       .then((response) => {
-        this.$http.get('data')
+        this.$http.get('/' + this.$route.params.id + '/data')
         .then((response) => {
           this.Data = response.data
           console.log(this.Data)
@@ -121,6 +124,7 @@ export default {
     },
     Close: function () {
       this.IsShow = false
+      this.IsShowEditor = false
     },
     UploadForm (event) {
       event.preventDefault()
@@ -132,9 +136,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('data', formData, config)
+      this.$http.post('/' + this.$route.params.id + '/data', formData, config)
       .then((response) => {
-        this.$http.get('data')
+        this.$http.get('/' + this.$route.params.id + '/data')
         .then((response) => {
           this.Data = response.data
           console.log(this.Data)
@@ -161,20 +165,13 @@ export default {
       this.IsShowEditor = true
       this.Keys = row.key
       this.Values = row.value
+      this.Id = row.id
     },
     Reset (event) {
       event.preventDefault()
-      let formData = new FormData()
-      formData.append('key', this.Keys)
-      formData.append('value', this.Values)
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      this.$http.put('data', formData, config)
+      this.$http.put('/' + this.$route.params.id + '/data', {'data_id': this.Id, 'key': this.Keys, 'value': this.Values})
       .then((response) => {
-        this.$http.get('data')
+        this.$http.get('/' + this.$route.params.id + '/data')
         .then((response) => {
           this.Data = response.data
           console.log(this.Data)
@@ -187,6 +184,9 @@ export default {
         console.log(error)
       })
       this.IsShowEditor = false
+    },
+    Back: function () {
+      this.$router.push({path: '/Applist'})
     }
   }
 }

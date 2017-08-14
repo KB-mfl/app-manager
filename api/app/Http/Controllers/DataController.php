@@ -35,13 +35,14 @@ class DataController extends Controller {
         return $data;
     }
     public function change(Request $request, $app_id) {
-        $data = Data::where('key', '=', $request->key)->first();
+        $data = Data::find($request['data_id']);
+        $data->key = $request->key;
         $data->value = $request->value;
         $data->save();
         return $data;
     }
     public function delete(Request $request, $app_id) {
-        $data = Data::where('key', '=', $request->key)->first();
+        $data = Data::find($request->data_id);
         $data->delete();
         return [];
     }

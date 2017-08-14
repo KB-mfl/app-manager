@@ -264,8 +264,8 @@ button:hover{
   position: fixed;
   height: auto;
   width: 30%;
-  left:35%;
-  top:40%;
+  left: 35%;
+  top: 25%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }

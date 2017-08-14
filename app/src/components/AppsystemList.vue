@@ -15,7 +15,7 @@
         </thead>
         <tbody>
           <tr v-for="row in AppSystem">
-            <td v-for="col in Columns">
+            <td v-for="col in Columns" @mouseenter="ShowLogo(row.system)" @mouseleave="HideLogo()">
               {{row[col]}}
             </td>
             <td v-if="IsShowDele">
@@ -80,6 +80,24 @@
         </div>
       </div>
     </div>
+    <div class="logo" v-show="IsShowLogo">
+      <table>
+        <thead>
+          <tr>
+            <th v-for="col in Imageurl">
+              {{col}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in AppSystem" v-if="row.system == sys">
+            <td v-for="col in Imageurl">
+              {{row[col]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -95,8 +113,10 @@ export default {
       IsShowDeletedSystem: false,
       IsShowDele: true,
       IsShowNewLogo: false,
+      IsShowLogo: false,
       Systemid: '',
       system: '',
+      sys: '',
       identification: '',
       new_file: '',
       SystemList: [
@@ -110,7 +130,7 @@ export default {
           value: 'Linux'
         },
         {
-          value: 'iOS'
+          value: 'IOS'
         },
         {
           value: 'Android'
@@ -264,6 +284,13 @@ export default {
     },
     Back: function () {
       this.$router.push({path: '/Applist'})
+    },
+    ShowLogo: function (system) {
+      this.IsShowLogo = true
+      this.sys = system
+    },
+    HideLogo: function () {
+      this.IsShowLogo = false
     }
   }
 }
@@ -365,6 +392,17 @@ button:hover{
   border-radius: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
+}
+
+.logo{
+  position: fixed;
+  height: 400px;
+  width: 21%;
+  left: 74%;
+  top: 20%;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  background-color: #ffffff;
+  word-break:break-all;
 }
 
 .upload{

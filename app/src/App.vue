@@ -2,7 +2,7 @@
   <div id="app">
     <router-link class="home" to="/"><iTitle></iTitle></router-link>
     <p>
-      <router-link class="ilink" to="/Applist">App</router-link>
+      <router-link class="ilink" to="/Applist">应用列表</router-link>
     </p>
     <hr>
     <router-view></router-view>

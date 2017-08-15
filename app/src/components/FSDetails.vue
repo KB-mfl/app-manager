@@ -84,7 +84,6 @@ thead{
 
 .list{
   width: 90%;
-  margin-top: 20px;
   margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;

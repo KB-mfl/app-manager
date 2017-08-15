@@ -20,13 +20,12 @@ export default {
 #footer {
   width: 100%;
   height: 100px;
-  margin-top: 20px;
-  background-color: #5e79e6;
+  background-color: #2257c9;
 }
 
 .words{
   font-size: 16px;
-  color: #000000;
+  color: #FFF;
   position: relative;
   top: 44px;
 }

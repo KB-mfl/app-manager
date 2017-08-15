@@ -15,7 +15,7 @@
         </thead>
         <tbody>
           <tr v-for="row in AppSystem">
-            <td v-for="col in Columns" @mouseenter="ShowLogo(row.system)" @mouseleave="HideLogo()">
+            <td class="animation" v-for="col in Columns" @mouseenter="ShowLogo(row.system)" @mouseleave="HideLogo()">
               {{row[col]}}
             </td>
             <td v-if="IsShowDele">
@@ -171,20 +171,28 @@ export default {
     },
     ShowDeletedSystem: function () {
       if (this.IsShowDeletedSystem === true) {
+        this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: false}})
+        .then((response) => {
+          this.AppSystem = response.data
+          console.log(this.AppSystem)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.IsShowDeletedSystem = false
         this.IsShowDele = true
       } else {
+        this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true}})
+        .then((response) => {
+          this.AppSystem = response.data
+          console.log(this.AppSystem)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.IsShowDeletedSystem = true
         this.IsShowDele = false
       }
-      this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true}})
-      .then((response) => {
-        this.AppSystem = response.data
-        console.log(this.AppSystem)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
     },
     ReviveSystem: function (row) {
       this.$http.put(this.$route.params.id + '/system', {system_id: row.id})
@@ -398,7 +406,7 @@ button:hover{
   position: fixed;
   height: 400px;
   width: 21%;
-  left: 74%;
+  right: 0%;
   top: 20%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
@@ -423,24 +431,6 @@ button:hover{
   margin: 0px;
 }
 
-.input-system{
-  margin-top: 0px;
-  margin-bottom: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 20px;
-  border-radius: 5px;
-}
-
-.input-system:hover{
-  position: relative;
-  bottom: 2px;
-  right: 2px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: #2257c9;
-}
-
 .input-identification{
   margin-top: 10px;
   margin-bottom: 0px;
@@ -448,6 +438,7 @@ button:hover{
   margin-right: auto;
   font-size: 20px;
   border-radius: 5px;
+  width: 56%;
 }
 
 .input-identification:hover{
@@ -472,7 +463,7 @@ button:hover{
   background: #ffffff;
   color: #333;
   border: dotted #2257c9;
-  padding: 30px 100px;
+  padding: 30px 103px;
   border-radius: 5px;
   font-size: 12px;
   cursor: pointer;

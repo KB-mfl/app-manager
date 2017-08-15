@@ -10,9 +10,9 @@
               </th>
               <th v-if="IsShowDel">Delete</th>
               <th v-if="IsShowDeleted">Revive</th>
-              <th>Firstscreen</th>
               <th>Details</th>
               <th>Data</th>
+              <th>Firstscreen</th>
               <th>Feedback</th>
             </tr>
           </thead>
@@ -28,16 +28,16 @@
                 <button @click="ReviveApp(row)">Revive</button>
               </td>
               <td>
-                <button @click="Firstscreen(row)">Firstscreen</button>
+                <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)"><span>Details</span></button>
               </td>
               <td>
-                <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)">Details</button>
+                <button @click="Data(row)"><span>Data</span></button>
               </td>
               <td>
-                <button @click="Data(row)">Data</button>
+                <button @click="Firstscreen(row)"><span>Firstscreen</span></button>
               </td>
               <td>
-                <button @click="Feedback(row)">Feedback</button>
+                <button @click="Feedback(row)"><span>Feedback</span></button>
               </td>
             </tr>
           </tbody>
@@ -55,9 +55,6 @@
         <p><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
-            <div class="inputer-1">
-              <p><input v-model="Name" class="input-name" type="text" name="name" placeholder="Name"></p>
-            </div>
             <br>
             <button type="submit" @click="UploadForm($event)">Save</button>
           </form>
@@ -163,20 +160,28 @@ export default {
     },
     ShowDeletedApp: function () {
       if (this.IsShowDeleted === true) {
+        this.$http.get('applist', {params: {want_deleted: false}})
+        .then((response) => {
+          this.AppData = response.data
+          console.log(this.AppData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.IsShowDeleted = false
         this.IsShowDel = true
       } else {
+        this.$http.get('applist', {params: {want_deleted: true}})
+        .then((response) => {
+          this.AppData = response.data
+          console.log(this.AppData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.IsShowDeleted = true
         this.IsShowDel = false
       }
-      this.$http.get('applist', {params: {want_deleted: true}})
-      .then((response) => {
-        this.AppData = response.data
-        console.log(this.AppData)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
     },
     ShowSystemList: function (id) {
       console.log(id)
@@ -200,28 +205,26 @@ export default {
 
 <style scoped>
 button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #73C5FF;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.showsystemlist{
   width: auto;
   height: auto;
-  background: #efeeee;
-  color: #333;
-  border: 0;
-  padding: 10px 10px;
-  margin: 20px auto;
-  border-radius: 5px;
-  font-size: 15px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  cursor: pointer;
 }
 
-button:hover{
-  position: relative;
-  bottom: 1px;
-  right: 1px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  background-color: #2257c9;
-  color: #ffffff;
-}
-
+/*-----创建-----*/
 .back_ground{
   height: 100%;
   width: 100%;
@@ -255,7 +258,7 @@ button:hover{
   background-color: #2257c9;
 }
 
-.create p button{
+.close{
   margin: 1% 0 1% 92%;
   background: #efeeee;
   padding: 0px 7px;
@@ -264,6 +267,23 @@ button:hover{
   border-radius: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
+}
+
+.close:hover{
+  -webkit-animation: close 2s;
+  background-color: #5e79e6;
+}
+
+@-webkit-keyframes close{
+  0% {-webkit-transform:rotate(0deg);transform:rotate(0deg);}
+  12.5% {-webkit-transform:rotate(90deg);transform:rotate(90deg);}
+  25% {-webkit-transform:rotate(180deg);transform:rotate(180deg);}
+  37.5% {-webkit-transform:rotate(270deg);transform:rotate(270deg);}
+  50% {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
+  62.5% {-webkit-transform:rotate(270deg);transform:rotate(270deg);}
+  75% {-webkit-transform:rotate(180deg);transform:rotate(180deg);}
+  87.5% {-webkit-transform:rotate(90deg);transform:rotate(90deg);}
+  100% {-webkit-transform:rotate(0deg);transform:rotate(0deg);}
 }
 
 .upload{
@@ -280,55 +300,133 @@ button:hover{
   margin: 0px auto;
 }
 
-.inputer-1{
-  display: inline-block;
-  margin: 0px;
-}
-
-.input-name{
-  margin: auto 0px;
-  font-size: 20px;
-  border-radius: 5px;
-}
-
-.input-name:hover{
-  position: relative;
-  bottom: 2px;
-  right: 2px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 2px #2257c9, 0 0 3px #2257c9;
-  color: #000000;
-}
-
+/*-----输入框-----*/
+/*-----表格-----*/
 .list{
-  width: 90%;
-  margin-top: 20px;
+  width: 100%;
+  margin-top:  20px;
   margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
 }
 
-table{
-  margin: 0px;
-  padding: 0px;
-  font-size: 20px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  width: 100%;
+table thead, table tr {
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-top-color: #2257c9;
+}
+
+table {
+  width: 95%;
+  margin: 0px auto;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #2257c9;
   border-collapse: collapse;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
-thead{
-  background-color: #2257c9;
-  color: #ffffff;
+table td{
+  text-transform: Capitalize;
+  padding: 5px 10px;
+  font-size: 15px;
+  font-family: Verdana;
 }
 
-.showsystemlist{
+table th{
+  text-transform: Capitalize;
+  padding: 5px 10px;
+  font-size: 20px;
+  font-family: Verdana;
+}
+
+table tr:nth-child(even){
+  background: #73C5FF;
+  color: #FFF;
+}
+
+table tr:nth-child(even) button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #73C5FF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
   width: auto;
-  height: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
 }
 
-label:hover {
-  color: #2257c9;
+table tr:nth-child(even) button span{
   cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+table tr:nth-child(even) button span:after{
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+table tr:nth-child(even) button:hover span{
+  padding-right: 25px;
+}
+
+table tr:nth-child(even) button:hover span:after{
+  opacity: 1;
+  right: 0;
+}
+
+table tr:nth-child(odd){
+  background: #FFF;
+  color: #2257c9;
+}
+
+table tr:nth-child(odd) button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #73C5FF;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+table tr:nth-child(odd) button span{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+table tr:nth-child(odd) button span:after{
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+table tr:nth-child(odd) button:hover span{
+  padding-right: 25px;
+}
+
+table tr:nth-child(odd) button:hover span:after{
+  opacity: 1;
+  right: 0;
 }
 </style>

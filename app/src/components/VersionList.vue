@@ -165,20 +165,28 @@ export default {
     },
     ShowDeletedVersion: function () {
       if (this.IsShowDeletedVersion === true) {
+        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: false}})
+        .then((response) => {
+          this.Version = response.data
+          console.log(this.Versionm)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.IsShowDeletedVersion = false
         this.IsShowDele = true
       } else {
+        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true}})
+        .then((response) => {
+          this.Version = response.data
+          console.log(this.Versionm)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
         this.IsShowDeletedVersion = true
         this.IsShowDele = false
       }
-      this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true}})
-      .then((response) => {
-        this.Version = response.data
-        console.log(this.Versionm)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
     },
     Download: function (row) {
       console.log(row.id)

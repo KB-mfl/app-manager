@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 //改动Auth\SessionGuard
 use App\User;
+use App\ApiToken;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+
+use Ramsey\Uuid\Uuid;
+use Carbon\Carbon;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -27,7 +31,7 @@ class UserController extends Controller
         return $user;
     }
     public function login(Request $request) {
-        if(Auth::attempt([
+  /*      if(Auth::attempt([
             'name' => $request->name,
             'password' => $request->password
         ])) {
@@ -48,12 +52,37 @@ class UserController extends Controller
                     ];
             return Session::getId();
             return 'true';
-            */
+            *
         }
         //'sessionId' => Session::getId(),
         //return 'false';
         return ['status' => Auth::check(),
                 'name' => $request->name];
+
+    */
+
+        //
+        if(Auth::attempt([
+            'name' => $request->name,
+            'password' => $request->password,
+        ])) {
+            $user = Auth::user();
+            $apiToken = new ApiToken();
+            $apiToken->token = Uuid::uuid4()->toString();
+            $apiToken->ip = $request->server('REMOTE_ADDR', null);
+            $apiToken->expired_at = Carbon::now()->addMinutes(30);
+            $user->apitokens()->save($apiToken);
+            return response([
+                'status' => Auth::check(),
+                'apiToken' => $apiToken->token,
+                'name' => $user->name,
+            ]);
+        }
+        return ['status' => Auth::check(),
+                'name' => $request->name,
+                'apiToken' => '',
+                ];
+
     }
     /*
     public function check(Request $request) {

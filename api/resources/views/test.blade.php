@@ -33,7 +33,7 @@
         </form>
         <form action="/api/applist" method="get">
             <input type="hidden" name="name" value="admin">
-            <input type="hidden" name="password" value="admin">
+            <input type="hidden" name="apitoken" value="f846b380-2fbc-442a-8c8b-071db1c1feee">
             has_deleted<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
@@ -79,7 +79,7 @@
         <form action="/api/1/version" enctype="multipart/form-data" method="post">
             
             <input type="hidden" name="name" value="admin">
-            <input type="hidden" name="password" value="admin">
+            <input type="hidden" name="apitoken" value="f846b380-2fbc-442a-8c8b-071db1c1feee">
             version:<input type="text" name="version">
             file:<input id="file" type="file" name="file"/>
 　　         <input type="submit" value="upload" />

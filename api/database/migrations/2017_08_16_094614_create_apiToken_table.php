@@ -17,7 +17,7 @@ class CreateApiTokenTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('token');
-            $table->string('ip');
+            $table->string('ip')->nullable();
             $table->timestamp('expired_at');
             $table->timestamps();
         });

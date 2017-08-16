@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class FirstScreenController extends Controller
 {
     public function show(Request $request, $app_id) {
-        $app = App::find($app_id);
+        $app = App::withTrashed()->find($app_id);
         $first_screens = $app->first_screen;
         return $first_screens;
     }
@@ -17,7 +17,7 @@ class FirstScreenController extends Controller
         /*
             表单验证
         */
-        $app = App::find($app_id);
+        $app = App::withTrashed()->find($app_id);
         foreach($app->first_screen as $fs) {
             $fs->actived = false;
             $fs->save();
@@ -37,7 +37,7 @@ class FirstScreenController extends Controller
         return $first_screen;
     }
     public function active(Request $request, $app_id) {
-        $app = App::find($app_id);
+        $app = App::withTrashed()->find($app_id);
         foreach($app->first_screen as $fs) {
             $fs->actived = false;
             $fs->save();

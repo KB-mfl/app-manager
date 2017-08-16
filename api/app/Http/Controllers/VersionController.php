@@ -21,7 +21,7 @@ class VersionController extends Controller
         /*
             表单验证
         */
-        $system = System::find($system_id);
+        $system = System::withTrashed()->find($system_id);
         $now = 0;
         foreach($system->version()->get() as $ver) {
             if($ver->build > $now) {

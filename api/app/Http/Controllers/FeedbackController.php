@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 class FeedbackController extends Controller
 {
     public function showApp(Request $request, $app_id) {
-        $app = App::find($app_id);
+        $app = App::withTrashed()->find($app_id);
         $feedbacks = $app->feedback;
         return $feedbacks;
     }
     public function showUser(Request $request, $user_id) {
-        $user = User::find($user_id);
+        $user = User::withTrashed()->find($user_id);
         $feedbacks = $user->feedback;
         return $feedbacks;
     }
@@ -39,7 +39,7 @@ class FeedbackController extends Controller
         return;
     }
     public function delete(Request $request, $app_id) {
-        $feedback = Feedback::find($request->feedback_id);
+        $feedback = Feedback::withTrashed()->find($request->feedback_id);
         $this->clear($feedback);
         return [];
     }

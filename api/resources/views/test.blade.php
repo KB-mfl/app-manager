@@ -5,6 +5,26 @@
         <title>后台测试</title>
     </head>
     <body>
+        <h1>user</h1>
+        <form action="/api/register" method="post">
+            name:<input type="text" name="name">
+            password:<input type="password" placeholder="password" name="password">
+            admin<input type="checkbox" name="admin" value="true">
+            <input type="submit" value="register">
+        </form>
+        <form action="/login" method="post">
+            name:<input type="text" name="name">
+            password:<input type="password" placeholder="password" name="password">
+            <input type="submit" value="login">
+        </form>
+        <form action="/check" method="get">
+            <input type="submit" value="check">
+        </form>
+        <form action="/logout" method="post">
+            <input type="submit" value="logout">
+        </form>
+
+
         <h1>app</h1>
         <form action="/api/addapp" enctype="multipart/form-data" method="post">
             
@@ -12,7 +32,8 @@
             <input type="submit">
         </form>
         <form action="/api/applist" method="get">
-            
+            <input type="hidden" name="name" value="admin">
+            <input type="hidden" name="password" value="admin">
             has_deleted<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
@@ -57,6 +78,8 @@
         <h1>version</h1>
         <form action="/api/1/version" enctype="multipart/form-data" method="post">
             
+            <input type="hidden" name="name" value="admin">
+            <input type="hidden" name="password" value="admin">
             version:<input type="text" name="version">
             file:<input id="file" type="file" name="file"/>
 　　         <input type="submit" value="upload" />

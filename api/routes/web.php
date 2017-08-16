@@ -13,6 +13,18 @@
 
 Route::any('/test', function() {
     return view('test');
-});
+})->name('mytest');
+
+Route::any('/test2', function() {
+    return view('test2');
+})->name('mytest2');
 
 
+
+Route::post('register', 'UserController@register');
+
+Route::post('login', 'UserController@login');
+
+Route::post('logout', 'UserController@logout');
+
+Route::get('check', 'UserController@check');

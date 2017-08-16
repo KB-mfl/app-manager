@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class DataController extends Controller {
     public function show(Request $request, $app_id) {
-        $app = App::where('id', '=', $app_id)->first();
+        $app = App::withTrashed()->where('id', '=', $app_id)->first();
         $datas = $app->data()->get();
         return $datas;
     }

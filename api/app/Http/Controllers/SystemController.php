@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class SystemController extends Controller
 {
     public function show(Request $request, $app_id) {
-        $app = App::find($app_id);
+        $app = App::withTrashed()->find($app_id);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $system = $app->system()->get();
         }

@@ -1,0 +1,108 @@
+<template>
+  <div class="navbar">
+    <div class="buttons">
+      <div class="home">
+        <button name="home" @click="Home"><span>Home</span></button>
+      </div>
+      <div class="applist">
+        <button name="applist" @click="Applist"><span>我的应用</span></button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'navbar',
+  data () {
+    return {
+    }
+  },
+  methods: {
+    Home: function () {
+      this.$router.push({path: '/'})
+    },
+    Applist: function () {
+      this.$router.push({path: '/Applist'})
+    }
+  }
+}
+</script>
+
+<style scoped>
+.navbar{
+  height: 55px;
+  width: 100%;
+  background-color: #F4F4F4;
+  -webkit-animation: shownav 4s;
+  -webkit-animation-delay: -1s;
+}
+
+@-webkit-keyframes shownav{
+  0% {opacity: 0;}
+  12.5% {opacity: 0;}
+  25% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.buttons{
+  width: 100%;
+  height: auto;
+}
+
+button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #F4F4F4;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  outline: none;
+}
+
+button span{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+button span:after{
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+button:hover span{
+  padding-right: 25px;
+}
+
+button:hover span:after{
+  opacity: 1;
+  right: 0;
+}
+
+.home{
+  display: inline-block;
+  height: auto;
+  width: 6%;
+  float: left;
+  margin-left: 10%;
+}
+
+.applist{
+  display: inline-block;
+  height: auto;
+  width: 9%;
+  float: left;
+}
+</style>

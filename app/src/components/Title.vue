@@ -1,6 +1,6 @@
 <template>
   <div class="iTitle">
-    <div v-bind:class="{title: isActive}"></div>
+    <div class="title"></div>
     <div class="content">
       <img id="img" src="../assets/Logo-1.png" alt="logo">
       <h1>{{system}}<p>{{version}}</p></h1>
@@ -14,8 +14,7 @@ export default {
   data () {
     return {
       system: '后台管理系统',
-      version: 'v1.0.0.1',
-      isActive: true
+      version: 'v1.0.0.1'
     }
   }
 }
@@ -34,11 +33,6 @@ export default {
   0% {opacity: 0;}
   12.5% {opacity: 0;}
   25% {opacity: 0;}
-  37.5% {opacity: 0.17;}
-  50% {opacity: 0.34;}
-  62.5% {opacity: 0.51;}
-  75% {opacity: 0.68;}
-  87.5% {opacity: 0.85;}
   100% {opacity: 1;}
 }
 
@@ -51,8 +45,8 @@ export default {
 }
 
 @-webkit-keyframes logo{
-  0% {-webkit-transform:rotate(-360deg);}
-  100% {-webkit-transform:rotate(0deg);}
+  0% {-webkit-transform:rotate(-180deg);transform:rotate(-180deg);}
+  100% {-webkit-transform:rotate(0deg);transform:rotate(0deg);}
 }
 
 .content{
@@ -67,6 +61,12 @@ export default {
   font-size: 90px;
   margin-left: 3%;
   display: inline-block;
+  -webkit-animation: words 3s;
+}
+
+@-webkit-keyframes words{
+  0% {-webkit-transform:scale(0);transform:scale(0);}
+  100% {-webkit-transform:scale(1);transform:scale(1);}
 }
 
 .content p{

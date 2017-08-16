@@ -11,9 +11,6 @@
               <th v-if="IsShowDel">Delete</th>
               <th v-if="IsShowDeleted">Revive</th>
               <th>Details</th>
-              <th>Data</th>
-              <th>Firstscreen</th>
-              <th>Feedback</th>
             </tr>
           </thead>
           <tbody>
@@ -28,35 +25,37 @@
                 <button @click="ReviveApp(row)">Revive</button>
               </td>
               <td>
-                <button class="showsystemlist" id="showsystemlist" @click="ShowSystemList(row.id)"><span>Details</span></button>
-              </td>
-              <td>
-                <button @click="Data(row)"><span>Data</span></button>
-              </td>
-              <td>
-                <button @click="Firstscreen(row)"><span>Firstscreen</span></button>
-              </td>
-              <td>
-                <button @click="Feedback(row)"><span>Feedback</span></button>
+                <div class="dropdown">
+                  <button class="showdropdownlist">Details</button>
+                  <div class="dropdownlist">
+                      <button @click="ShowSystemList(row.id)"><span>Systemlist</span></button>
+                      <button @click="Data(row)"><span>Data</span></button>
+                      <button @click="Firstscreen(row)"><span>Firstscreen</span></button>
+                      <button @click="Feedback(row)"><span>Feedback</span></button>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <p>
-        <button type="button" name="create" @click="CreateNewApp">Create</button>
-        <button @click="ShowDeletedApp">Revive</button>
+        <button class="btn-create" type="button" name="create" @click="CreateNewApp">Create</button>
+        <button class="btn-revive" @click="ShowDeletedApp">Revive</button>
       </p>
     </div>
     <div class="back_ground"  v-show="IsShow">
     </div>
-    <div class="container" v-show="IsShow">
+    <div class="container" v-show="IsShow" @click="Inputback">
       <div class="create">
-        <p><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
+        <p class="close-p"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
-            <br>
-            <button type="submit" @click="UploadForm($event)">Save</button>
+            <div class="inputer">
+              <p class="input-p">Name</p>
+              <input class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="app-name" v-model="Name"></input>
+            </div>
+            <button class="btn-save" type="submit" @click="UploadForm($event)">Save</button>
           </form>
         </div>
       </div>
@@ -71,11 +70,16 @@ export default {
     return {
       AppData: [],
       Columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
+      Status: [],
       IsShow: false,
       IsShowDeleted: false,
       Name: '',
-      IsShowDel: true
+      IsShowDel: true,
+      IsActive: false
     }
+  },
+  created: function () {
+    this.GetStatus()
   },
   beforeMount: function () {
     this.GetAppList()
@@ -90,6 +94,19 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    },
+    GetStatus: function () {
+      this.$http.get('check')
+      .then((response) => {
+        this.Status = response.data
+        console.log(this.Status.status)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+      if (this.Status.status === 'false') {
+        this.$router.push({path: '/'})
+      }
     },
     CreateNewApp: function () {
       this.IsShow = true
@@ -198,6 +215,9 @@ export default {
     Feedback: function (row) {
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Feedback'})
+    },
+    Inputback: function () {
+      this.IsActive = true
     }
   }
 }
@@ -219,11 +239,50 @@ button{
   margin: 5px;
 }
 
-.showsystemlist{
+.btn-create{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
   width: auto;
-  height: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
 }
 
+.btn-revive{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn-save{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
 /*-----创建-----*/
 .back_ground{
   height: 100%;
@@ -245,7 +304,7 @@ button{
 
 .create{
   position: fixed;
-  height: auto;
+  height: 27%;
   width: 30%;
   left:35%;
   top:40%;
@@ -255,7 +314,6 @@ button{
 
 .create p{
   height: auto;
-  background-color: #2257c9;
 }
 
 .close{
@@ -267,6 +325,10 @@ button{
   border-radius: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
+}
+
+.close-p{
+  background-color: #2257c9;
 }
 
 .close:hover{
@@ -301,6 +363,70 @@ button{
 }
 
 /*-----输入框-----*/
+.inputer{
+  height: auto;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+.input-p{
+  font-size: 20px;
+  color: #2257c9;
+  margin-bottom: 2%;
+}
+
+input:-webkit-autofill{
+-webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+-webkit-text-fill-color: #000000;
+}
+
+.input-default{
+  width: 30%;
+  font-size: 15px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+}
+
+.input-default:focus{
+  width: 30%;
+  font-size: 15px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  outline: none;
+  -webkit-animation: actived 0.5s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes actived{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  100% {-webkit-transform:scale(1.5);transform:scale(1.5);}
+}
+
+.inputback{
+  width: 30%;
+  font-size: 15px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  outline: none;
+  -webkit-animation: back 1s;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-delay: -0.5s;
+}
+
+@-webkit-keyframes back{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  50% {-webkit-transform:scale(1.5);transform:scale(1.5);}
+  100% {-webkit-transform:scale(1);transform:scale(1);}
+}
 /*-----表格-----*/
 .list{
   width: 100%;
@@ -317,7 +443,7 @@ table thead, table tr {
 }
 
 table {
-  width: 95%;
+  width: 80%;
   margin: 0px auto;
   border-bottom-width: 2px;
   border-bottom-style: solid;
@@ -428,5 +554,52 @@ table tr:nth-child(odd) button:hover span{
 table tr:nth-child(odd) button:hover span:after{
   opacity: 1;
   right: 0;
+}
+
+/*-----下拉菜单-----*/
+table tr:nth-child(even) .dropdown{
+  position: relative;
+  display: inline-block;
+}
+
+table tr:nth-child(even) .dropdownlist{
+  display: none;
+  position: absolute;
+  background-color: #FFF;
+  width: auto;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px #66ccff;
+  z-index: 999;
+}
+
+table tr:nth-child(even) .dropdownlist button{
+  display: block;
+}
+
+table tr:nth-child(even) .dropdown:hover .dropdownlist{
+  display: block;
+}
+
+table tr:nth-child(odd) .dropdown{
+  position: relative;
+  display: inline-block;
+}
+
+table tr:nth-child(odd) .dropdownlist{
+  display: none;
+  position: absolute;
+  background-color: #73C5FF;
+  width: auto;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px #66ccff;
+  z-index: 999;
+}
+
+table tr:nth-child(odd) .dropdownlist button{
+  display: block;
+}
+
+table tr:nth-child(odd) .dropdown:hover .dropdownlist{
+  display: block;
 }
 </style>

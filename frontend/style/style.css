@@ -1,0 +1,94 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.container{
+    width: 100%;
+}
+.header{
+    width: 100%;
+    background: url("../img/千库网-办公桌上的物品.jpg") fixed center no-repeat;
+    background-size: cover;
+    position: absolute;
+}
+.header-content h1{
+    color: #ffffff;
+    font-size: 80px;
+    margin-top: 20%;
+    margin-left: 20%;
+    position: relative;
+}
+.btn{
+    text-decoration: none;
+    float: left;
+    margin-left: 20%;
+
+}
+#btn{
+    width: 200px;
+    height: 80px;
+    border-radius: 40px;
+
+    margin-top: 2%;
+    margin-left: 25%;
+    position: relative;
+
+}
+#btn p{
+    text-align: center;
+    font-size: 30px;
+    line-height: 80px;
+    color: #ffffff;
+}
+#btn:hover{
+    background-color: darkgrey;
+}
+.btn2{
+    text-decoration: none;
+    float: left;
+    margin-left: 3%;
+
+
+}
+#btn2{
+    width: 150px;
+    height: 80px;
+    border-radius: 40px;
+    border: 0 0 2 0px solid #;
+    margin-top: 2%;
+    margin-left: 25%;
+    position: relative;
+
+}
+#btn2 p{
+    text-align: center;
+    font-size: 30px;
+    line-height: 80px;
+    color: #ffffff;
+}
+#btn2:hover{
+    background-color: darkgrey;
+}
+.btn3{
+    text-decoration: none;
+    float: left;
+
+}
+#btn3{
+    width: 150px;
+    height: 80px;
+    border-radius: 40px;
+    border: 0 0 2 0px solid #;
+    margin-top: 2%;
+    margin-left: 25%;
+    position: relative;
+}
+#btn3 p{
+    text-align: center;
+    font-size: 30px;
+    line-height: 80px;
+    color: #ffffff;
+}
+#btn3:hover{
+    background-color: darkgrey;

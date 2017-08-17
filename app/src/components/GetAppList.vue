@@ -1,5 +1,6 @@
 <template>
   <div class="AppList">
+    <Navbar></Navbar>
     <div>
       <div class="list">
         <table>
@@ -64,8 +65,12 @@
 </template>
 
 <script>
+import Navbar from './Navbar'
 export default {
   name: 'AppList',
+  components: {
+    Navbar
+  },
   data () {
     return {
       AppData: [],
@@ -75,18 +80,22 @@ export default {
       IsShowDeleted: false,
       Name: '',
       IsShowDel: true,
-      IsActive: false
+      IsActive: true
     }
   },
-  created: function () {
-    this.GetStatus()
-  },
   beforeMount: function () {
+    console.log(localStorage)
+    this.state = localStorage.state
+    this.apiToken = localStorage.apiToken
+    this.username = localStorage.username
+    if (this.state !== 'true') {
+      this.$router.push({path: '/Login'})
+    }
     this.GetAppList()
   },
   methods: {
     GetAppList: function () {
-      this.$http.get('applist')
+      this.$http.get('applist', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.AppData = response.data
         console.log(response.data)
@@ -94,19 +103,6 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-    },
-    GetStatus: function () {
-      this.$http.get('check')
-      .then((response) => {
-        this.Status = response.data
-        console.log(this.Status.status)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-      if (this.Status.status === 'false') {
-        this.$router.push({path: '/'})
-      }
     },
     CreateNewApp: function () {
       this.IsShow = true
@@ -118,6 +114,8 @@ export default {
       event.preventDefault()
       let formData = new FormData()
       formData.append('name', this.Name)
+      formData.append('username', this.username)
+      formData.append('apiToken', this.apiToken)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -126,7 +124,7 @@ export default {
       this.$http.post('addapp', formData, config)
       .then((response) => {
         console.log('success')
-        this.$http.get('applist')
+        this.$http.get('applist', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -142,9 +140,9 @@ export default {
     },
     DeleteApp: function (row) {
       console.log(row.id)
-      this.$http.delete(row.id + '/deleteapp', row.id)
+      this.$http.delete(row.id + '/deleteapp', {params: {app_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('applist')
+        this.$http.get('applist', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -159,9 +157,9 @@ export default {
       })
     },
     ReviveApp: function (row) {
-      this.$http.put(row.id + '/readapp', row.id)
+      this.$http.put(row.id + '/readapp', {app_id: row.id, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get('applist', {params: {want_deleted: true}})
+        this.$http.get('applist', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -177,7 +175,7 @@ export default {
     },
     ShowDeletedApp: function () {
       if (this.IsShowDeleted === true) {
-        this.$http.get('applist', {params: {want_deleted: false}})
+        this.$http.get('applist', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -188,7 +186,7 @@ export default {
         this.IsShowDeleted = false
         this.IsShowDel = true
       } else {
-        this.$http.get('applist', {params: {want_deleted: true}})
+        this.$http.get('applist', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -252,6 +250,8 @@ button{
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
 }
 
 .btn-revive{
@@ -267,6 +267,8 @@ button{
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
 }
 
 .btn-save{
@@ -282,6 +284,60 @@ button{
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-create:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+
+.btn-revive:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-save:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
 }
 /*-----创建-----*/
 .back_ground{
@@ -388,6 +444,10 @@ input:-webkit-autofill{
   border-top: 2px solid;
   border-bottom: 2px solid;
   border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .input-default:focus{
@@ -398,6 +458,10 @@ input:-webkit-autofill{
   border-top: 2px solid;
   border-bottom: 2px solid;
   border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
   outline: none;
   -webkit-animation: actived 0.5s;
   -webkit-animation-fill-mode: forwards;
@@ -416,6 +480,10 @@ input:-webkit-autofill{
   border-top: 2px solid;
   border-bottom: 2px solid;
   border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
   outline: none;
   -webkit-animation: back 1s;
   -webkit-animation-fill-mode: forwards;

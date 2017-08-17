@@ -7,6 +7,9 @@
       <div class="applist">
         <button name="applist" @click="Applist"><span>我的应用</span></button>
       </div>
+      <div v-if="this.state === 'true'" class="logout">
+        <button name="logout" @click="Logout"><span>退出</span></button>
+      </div>
     </div>
   </div>
 </template>
@@ -18,12 +21,20 @@ export default {
     return {
     }
   },
+  beforeMount: function () {
+    this.state = localStorage.state
+  },
   methods: {
     Home: function () {
       this.$router.push({path: '/'})
     },
     Applist: function () {
       this.$router.push({path: '/Applist'})
+    },
+    Logout: function () {
+      localStorage.state = ''
+      console.log(localStorage)
+      this.$router.push({path: '/Login'})
     }
   }
 }
@@ -45,6 +56,29 @@ export default {
   100% {opacity: 1;}
 }
 
+.home{
+  display: inline-block;
+  height: auto;
+  width: 6%;
+  float: left;
+  margin-left: 10%;
+}
+
+.applist{
+  display: inline-block;
+  height: auto;
+  width: 12%;
+  float: left;
+}
+
+.logout{
+  display: inline-block;
+  height: auto;
+  width: 9%;
+  float: right;
+  margin-right: 10%;
+}
+
 .buttons{
   width: 100%;
   height: auto;
@@ -57,7 +91,7 @@ button{
   border: none;
   color: #2257c9;
   text-align: center;
-  font-size: 15px;
+  font-size: 20px;
   padding: 10px;
   width: auto;
   transition: all 0.5s;
@@ -89,20 +123,5 @@ button:hover span{
 button:hover span:after{
   opacity: 1;
   right: 0;
-}
-
-.home{
-  display: inline-block;
-  height: auto;
-  width: 6%;
-  float: left;
-  margin-left: 10%;
-}
-
-.applist{
-  display: inline-block;
-  height: auto;
-  width: 9%;
-  float: left;
 }
 </style>

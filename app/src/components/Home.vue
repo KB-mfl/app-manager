@@ -1,11 +1,16 @@
 <template>
   <div id="home">
+    <Navbar></Navbar>
   </div>
 </template>
 
 <script>
+import Navbar from './Navbar'
 export default {
   name: 'home',
+  components: {
+    Navbar
+  },
   data () {
     return {
       i: 300

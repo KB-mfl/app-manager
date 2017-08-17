@@ -14,13 +14,13 @@ export default {
   data () {
     return {
       system: '后台管理系统',
-      version: 'v1.0.0.1'
+      version: 'v1.0.1'
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .title{
   width: 100%;
   height: 300px;

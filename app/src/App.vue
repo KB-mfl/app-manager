@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <iTitle></iTitle>
-    <Navbar></Navbar>
     <div class="main">
       <router-view></router-view>
     </div>
@@ -12,13 +11,11 @@
 <script>
 import iTitle from './components/Title'
 import iFooter from './components/Footer'
-import Navbar from './components/Navbar'
 export default {
   name: 'app',
   components: {
     iTitle,
-    iFooter,
-    Navbar
+    iFooter
   },
   data () {
     return {

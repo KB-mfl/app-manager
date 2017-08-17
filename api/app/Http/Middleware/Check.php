@@ -27,17 +27,18 @@ class Check
         ])) {
             return $next($request);
         }
-        return abort(403);
+        return abort(401);
         */
+        //return $next($request);
         //
-        $apiToken = ApiToken::where('token', '=', $request->apitoken)->first();
-        $user = User::where('name', '=', $request->name)->first();
-        if(!$user || !$apiToken) abort(403);
-        if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now()) {
+        $apiToken = ApiToken::where('token', '=', $request->apiToken)->first();
+        $user = User::where('username', '=', $request->username)->first();
+        if(!$user || !$apiToken) abort(401);
+        if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now() && $apiToken->ip === $request->server('REMOTE_ADDR', null)) {
             $apiToken->expired_at = Carbon::now()->addMinutes(30);
             $apiToken->save();
             return $next($request);
         }
-        else abort(403);
+        else abort(401);
     }
 }

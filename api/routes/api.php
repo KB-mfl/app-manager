@@ -25,13 +25,11 @@ Route::post('register', 'UserController@register');
 
 Route::post('login', 'UserController@login');
 
-Route::post('logout', 'UserController@logout');
-
-Route::get('check', 'UserController@check');
+//Route::post('logout', 'UserController@logout');
 
 //app
 
-Route::get('applist', 'AppController@show');
+Route::get('applist', 'AppController@show')->middleware('AddTime');
 
 Route::post('addapp', 'AppController@create')->middleware('Check');
 
@@ -41,13 +39,13 @@ Route::put('{app_id}/readapp', 'AppController@read')->middleware('Check');
 
 //image
 
-Route::get('{system_id}/image', 'ImageController@show');
+Route::get('{system_id}/image', 'ImageController@show')->middleware('AddTime');
 
 Route::post('{system_id}/image', 'ImageController@store')->middleware('Check');
 
 //data
 
-Route::get('{app_id}/data', 'DataController@show');
+Route::get('{app_id}/data', 'DataController@show')->middleware('AddTime');
 
 Route::post('{app_id}/data', 'DataController@store')->middleware('Check');
 
@@ -57,7 +55,7 @@ Route::delete('{app_id}/data', 'DataController@delete')->middleware('Check');
 
 //feedback
 
-Route::get('{app_id}/feedback', 'FeedbackController@showApp');
+Route::get('{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTime');
 
 Route::post('{app_id}/feedback', 'FeedbackController@store')->middleware('Check');
 
@@ -65,7 +63,7 @@ Route::delete('{app_id}/feedback', 'FeedbackController@delete')->middleware('Che
 
 //first_screen
 
-Route::get('{app_id}/first_screen', 'FirstScreenController@show');
+Route::get('{app_id}/first_screen', 'FirstScreenController@show')->middleware('AddTime');
 
 Route::post('{app_id}/first_screen', 'FirstScreenController@store')->middleware('Check');
 
@@ -75,7 +73,7 @@ Route::delete('{app_id}/first_screen', 'FirstScreenController@delete')->middlewa
 
 //system
 
-Route::get('{app_id}/system', 'SystemController@show');
+Route::get('{app_id}/system', 'SystemController@show')->middleware('AddTime');
 
 Route::post('{app_id}/system', 'SystemController@store')->middleware('Check');
 
@@ -85,11 +83,11 @@ Route::put('{app_id}/system', 'SystemController@restore')->middleware('Check');
 
 //download
 
-Route::get('download', 'DownloadController@show');
+Route::get('download', 'DownloadController@show')->middleware('AddTime');
 
 //version
 
-Route::get('{system_id}/version', 'VersionController@show');
+Route::get('{system_id}/version', 'VersionController@show')->middleware('AddTime');
 
 Route::post('{system_id}/version', 'VersionController@store')->middleware('Check');
 

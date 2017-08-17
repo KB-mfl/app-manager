@@ -15,11 +15,17 @@ class CreateUsersTable extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('username')->unique();
             $table->string('password');
             $table->boolean('admin');
             $table->timestamps();
         });
+        DB::table('user')->insert([
+            'username' => 'admin',
+            'password' => bcrypt('admin'),
+            'admin' => true,
+        ]);
+
     }
 
     /**

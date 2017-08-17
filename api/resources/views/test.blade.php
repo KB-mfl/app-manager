@@ -7,13 +7,13 @@
     <body>
         <h1>user</h1>
         <form action="/api/register" method="post">
-            name:<input type="text" name="name">
+            name:<input type="text" name="username">
             password:<input type="password" placeholder="password" name="password">
             admin<input type="checkbox" name="admin" value="true">
             <input type="submit" value="register">
         </form>
         <form action="/login" method="post">
-            name:<input type="text" name="name">
+            name:<input type="text" name="username">
             password:<input type="password" placeholder="password" name="password">
             <input type="submit" value="login">
         </form>
@@ -32,8 +32,8 @@
             <input type="submit">
         </form>
         <form action="/api/applist" method="get">
-            <input type="hidden" name="name" value="admin">
-            <input type="hidden" name="apitoken" value="f846b380-2fbc-442a-8c8b-071db1c1feee">
+            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="apiToken" value="8679eeb3-33d2-48b2-9ae6-816b34287f6f">
             has_deleted<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
@@ -78,7 +78,7 @@
         <h1>version</h1>
         <form action="/api/1/version" enctype="multipart/form-data" method="post">
             
-            <input type="hidden" name="name" value="admin">
+            <input type="hidden" name="username" value="admin">
             <input type="hidden" name="apitoken" value="f846b380-2fbc-442a-8c8b-071db1c1feee">
             version:<input type="text" name="version">
             file:<input id="file" type="file" name="file"/>

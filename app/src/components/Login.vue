@@ -61,9 +61,11 @@ export default {
         console.log(localStorage, this.state)
         if (this.state === 'false') {
           alert('密码与用户名不符，请重新输入')
+          this.$Loading.error()
         }
         if (this.state === 'true') {
           this.$router.push({path: '/Applist'})
+          this.$Loading.finish()
         }
       })
       .catch(function (error) {

@@ -1,5 +1,6 @@
 <template>
   <div class="versionlist">
+    <Navbar></Navbar>
     <div class="list">
       <table>
         <thead>
@@ -26,7 +27,7 @@
             <td>
               <form id="download" action="http://192.168.1.160:8000/api/download" method="get">
                 <input type="hidden" name="version_id" v-model="version_id"></input>
-                <button class="download" @click="Download(row)">Download</button>
+                <button @click="Download(row)"><span>Download</span></button>
               </form>
             </td>
           </tr>
@@ -34,26 +35,29 @@
       </table>
     </div>
     <p>
-      <button type="button" name="create" @click="CreateNewVersion">Create</button>
-      <button @click="ShowDeletedVersion">Revive</button>
-      <button @click="Back">Back</button>
+      <button class="btn-create" @click="CreateNewVersion">Create</button>
+      <button class="btn-revive" @click="ShowDeletedVersion">Revive</button>
+      <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewVersion">
     </div>
-    <div class="container" v-show="IsShowNewVersion">
+    <div class="container" v-show="IsShowNewVersion" @click="Inputback">
       <div class="create">
-        <p class="close"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
+        <p class="close-p"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
           <form class="uploader">
-            <div class="inputer-1">
-              <p><input v-model="version" class="input-version" type="text" name="version" placeholder="Version"></p>
-            </div>
-            <div class="inputer-2">
+            <div class="inputer">
+              <p class="input-p">Version</p>
+              <p><input v-model="version" class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="version"></p>
               <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
-              <p><label for="uploadnewfile">New Version</label></p>
+              <p>{{this.new_app.name}}</p>
+              <p>
+                <Progress :percent="percent" :stroke-width="3">
+                  <Icon v-if="this.percent === 100" type="checkmark-circled"></Icon>
+                </Progress>
+              </p>
             </div>
-            <br>
-            <button type="submit" @click="UploadForm($event)">Save</button>
+            <button class="btn-upload" type="submit" @click="UploadForm($event)">Upload</button>
           </form>
         </div>
       </div>
@@ -62,8 +66,12 @@
 </template>
 
 <script>
+import Navbar from './Navbar'
 export default {
   name: 'versionlist',
+  components: {
+    Navbar
+  },
   data () {
     return {
       Version: [],
@@ -74,15 +82,25 @@ export default {
       IsShowNewVersion: false,
       IsShowDeletedVersion: false,
       IsShowDele: true,
-      version_id: ''
+      IsActive: true,
+      version_id: '',
+      percent: 0
     }
   },
   beforeMount: function () {
+    console.log(localStorage)
+    this.state = localStorage.state
+    this.apiToken = localStorage.apiToken
+    this.username = localStorage.username
+    if (this.state !== 'true') {
+      this.$router.push({path: '/Login'})
+      this.$Loading.error()
+    }
     this.GetVersionList()
   },
   methods: {
     GetVersionList: function () {
-      this.$http.get(this.$route.params.systemid + '/version')
+      this.$http.get(this.$route.params.systemid + '/version', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Version = response.data
         console.log(this.Version)
@@ -107,6 +125,8 @@ export default {
       formData.append('system_id', this.$route.params.systemid)
       formData.append('version', this.version)
       formData.append('file', this.new_app)
+      formData.append('username', this.username)
+      formData.append('apiToken', this.apiToken)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -114,7 +134,7 @@ export default {
       }
       this.$http.post(this.$route.params.systemid + '/version', formData, config)
       .then((response) => {
-        this.$http.get(this.$route.params.systemid + '/version')
+        this.$http.get(this.$route.params.systemid + '/version', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
@@ -122,7 +142,6 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
-        console.log('success')
       })
       .catch(function (error) {
         console.log(error)
@@ -130,9 +149,9 @@ export default {
       this.IsShowNewVersion = false
     },
     DeleteVersion: function (row) {
-      this.$http.delete(this.$route.params.systemid + '/version', {params: {version_id: row.id}})
+      this.$http.delete(this.$route.params.systemid + '/version', {params: {version_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get(this.$route.params.systemid + '/version')
+        this.$http.get(this.$route.params.systemid + '/version', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
@@ -147,9 +166,9 @@ export default {
       })
     },
     ReviveVersion: function (row) {
-      this.$http.put(this.$route.params.systemid + '/version', {version_id: row.id})
+      this.$http.put(this.$route.params.systemid + '/version', {version_id: row.id, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true}})
+        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
@@ -165,7 +184,7 @@ export default {
     },
     ShowDeletedVersion: function () {
       if (this.IsShowDeletedVersion === true) {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: false}})
+        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Versionm)
@@ -176,7 +195,7 @@ export default {
         this.IsShowDeletedVersion = false
         this.IsShowDele = true
       } else {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true}})
+        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Versionm)
@@ -195,57 +214,168 @@ export default {
     },
     Back: function () {
       this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist'})
+      this.$Loading.finish()
+    },
+    Inputback: function () {
+      this.IsActive = true
     }
   }
 }
 </script>
 
 <style scoped>
-.list{
-  width: 90%;
-  margin-top: 20px;
-  margin-bottom: 200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-table{
-  margin: 0px;
-  padding: 0px;
-  font-size: 20px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead{
-  background-color: #2257c9;
-  color: #ffffff;
-}
-
 button{
-  width: auto;
-  height: auto;
-  background: #efeeee;
-  color: #333;
-  border: 0;
-  padding: 10px 10px;
-  margin: 20px auto;
-  border-radius: 5px;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #73C5FF;
+  border: none;
+  color: #FFF;
+  text-align: center;
   font-size: 15px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
   cursor: pointer;
+  margin: 5px;
 }
 
-button:hover{
-  position: relative;
-  bottom: 1px;
-  right: 1px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+.btn-create{
+  display: inline-block;
+  border-radius: 4px;
   background-color: #2257c9;
-  color: #ffffff;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
 }
 
+.btn-revive{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-upload{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-back{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-create:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+
+.btn-revive:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-upload:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-back:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+/*-----创建-----*/
 .back_ground{
   height: 100%;
   width: 100%;
@@ -264,16 +394,12 @@ button:hover{
   left: 0;
 }
 
-.container button{
-  margin: 0px auto 10px auto;
-}
-
 .create{
   position: fixed;
   height: auto;
   width: 30%;
-  left: 35%;
-  top: 25%;
+  left:35%;
+  top:30%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }
@@ -283,10 +409,6 @@ button:hover{
 }
 
 .close{
-  background-color: #2257c9;
-}
-
-.create p button{
   margin: 1% 0 1% 92%;
   background: #efeeee;
   padding: 0px 7px;
@@ -295,6 +417,27 @@ button:hover{
   border-radius: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
+}
+
+.close-p{
+  background-color: #2257c9;
+}
+
+.close:hover{
+  -webkit-animation: close 2s;
+  background-color: #5e79e6;
+}
+
+@-webkit-keyframes close{
+  0% {-webkit-transform:rotate(0deg);transform:rotate(0deg);}
+  12.5% {-webkit-transform:rotate(90deg);transform:rotate(90deg);}
+  25% {-webkit-transform:rotate(180deg);transform:rotate(180deg);}
+  37.5% {-webkit-transform:rotate(270deg);transform:rotate(270deg);}
+  50% {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
+  62.5% {-webkit-transform:rotate(270deg);transform:rotate(270deg);}
+  75% {-webkit-transform:rotate(180deg);transform:rotate(180deg);}
+  87.5% {-webkit-transform:rotate(90deg);transform:rotate(90deg);}
+  100% {-webkit-transform:rotate(0deg);transform:rotate(0deg);}
 }
 
 .upload{
@@ -311,52 +454,278 @@ button:hover{
   margin: 0px auto;
 }
 
-.inputer-1{
-  margin: 0px;
-}
-
-.input-version{
-  margin-top: 0px;
-  margin-bottom: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 20px;
-  border-radius: 5px;
-}
-
-.input-version:hover{
-  position: relative;
-  bottom: 2px;
-  right: 2px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 2px rgba(0,0,0,.1), 0 0 3px rgba(0,0,0,.12);
-  background-color: #2257c9;
-}
-
-.inputer-2{
-  margin: 10px 0px 0px 0px;
-}
-
 #uploadnewfile{
   font-size: 0px;
-  margin: 0px auto;
+  margin: 20px auto 0px auto;
 }
 
 #uploadnewfile::-webkit-file-upload-button{
-  background: #ffffff;
-  color: #333;
-  border: dotted #2257c9;
-  padding: 30px 100px;
+  background: #66ccff;
+  color: #FFF;
+  border: 1px solid #66ccff;
+  padding: 10px 50px;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
+  outline: none;
 }
 
 #uploadnewfile::-webkit-file-upload-button:hover{
-  position: relative;
-  bottom: 1px;
-  right: 1px;
-  background-color: #2257c9;
+  background-color: #FFF;
+  color: #66ccff;
+  outline: none;
+}
+/*-----输入框-----*/
+.inputer{
+  height: auto;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+.input-p{
+  font-size: 20px;
+  color: #2257c9;
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+input:-webkit-autofill{
+-webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+-webkit-text-fill-color: #000000;
+}
+
+.input-default{
+  width: 30%;
+  font-size: 15px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.input-default:focus{
+  width: 30%;
+  font-size: 15px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
+  outline: none;
+  -webkit-animation: actived 0.5s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes actived{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  100% {-webkit-transform:scale(1.5);transform:scale(1.5);}
+}
+
+.inputback{
+  width: 30%;
+  font-size: 15px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
+  outline: none;
+  -webkit-animation: back 1s;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-delay: -0.5s;
+}
+
+@-webkit-keyframes back{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  50% {-webkit-transform:scale(1.5);transform:scale(1.5);}
+  100% {-webkit-transform:scale(1);transform:scale(1);}
+}
+/*-----表格-----*/
+.list{
+  width: 100%;
+  margin-top:  20px;
+  margin-bottom: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table thead, table tr {
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-top-color: #2257c9;
+}
+
+table {
+  width: 80%;
+  margin: 0px auto;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #2257c9;
+  border-collapse: collapse;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+}
+
+table td{
+  text-transform: Capitalize;
+  padding: 5px 10px;
+  font-size: 15px;
+  font-family: Verdana;
+}
+
+table th{
+  text-transform: Capitalize;
+  padding: 5px 10px;
+  font-size: 20px;
+  font-family: Verdana;
+}
+
+table tr:nth-child(even){
+  background: #73C5FF;
+  color: #FFF;
+}
+
+table tr:nth-child(even) button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #73C5FF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+table tr:nth-child(even) button span{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+table tr:nth-child(even) button span:after{
+  content: '▼';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+table tr:nth-child(even) button:hover span{
+  padding-right: 25px;
+}
+
+table tr:nth-child(even) button:hover span:after{
+  opacity: 1;
+  right: 0;
+}
+
+table tr:nth-child(odd){
+  background: #FFF;
+  color: #2257c9;
+}
+
+table tr:nth-child(odd) button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #73C5FF;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+table tr:nth-child(odd) button span{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+table tr:nth-child(odd) button span:after{
+  content: '▼';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+table tr:nth-child(odd) button:hover span{
+  padding-right: 25px;
+}
+
+table tr:nth-child(odd) button:hover span:after{
+  opacity: 1;
+  right: 0;
+}
+
+/*-----下拉菜单-----*/
+table tr:nth-child(even) .dropdown{
+  position: relative;
+  display: inline-block;
+}
+
+table tr:nth-child(even) .dropdownlist{
+  display: none;
+  position: absolute;
+  background-color: #FFF;
+  width: auto;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px #66ccff;
+  z-index: 999;
+}
+
+table tr:nth-child(even) .dropdownlist button{
+  display: block;
+}
+
+table tr:nth-child(even) .dropdown:hover .dropdownlist{
+  display: block;
+}
+
+table tr:nth-child(odd) .dropdown{
+  position: relative;
+  display: inline-block;
+}
+
+table tr:nth-child(odd) .dropdownlist{
+  display: none;
+  position: absolute;
+  background-color: #73C5FF;
+  width: auto;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px #66ccff;
+  z-index: 999;
+}
+
+table tr:nth-child(odd) .dropdownlist button{
+  display: block;
+}
+
+table tr:nth-child(odd) .dropdown:hover .dropdownlist{
+  display: block;
 }
 </style>

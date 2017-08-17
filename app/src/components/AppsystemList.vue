@@ -135,6 +135,7 @@ export default {
     this.username = localStorage.username
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
+      this.$Loading.error()
     }
     this.GetSystemList()
   },
@@ -253,6 +254,7 @@ export default {
     ShowVersionList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + id + '/Versionlist'})
+      this.$Loading.finish()
     },
     AddLogo: function (row) {
       this.IsShowNewLogo = true
@@ -293,6 +295,7 @@ export default {
     },
     Back: function () {
       this.$router.push({path: '/Applist'})
+      this.$Loading.finish()
     },
     Inputback: function () {
       this.IsActive = true

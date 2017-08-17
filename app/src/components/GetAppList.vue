@@ -90,6 +90,7 @@ export default {
     this.username = localStorage.username
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
+      this.$Loading.error()
     }
     this.GetAppList()
   },
@@ -201,18 +202,22 @@ export default {
     ShowSystemList: function (id) {
       console.log(id)
       this.$router.push({path: '/Applist/' + id + '/Systemlist'})
+      this.$Loading.finish()
     },
     Firstscreen: function (row) {
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Firstscreen'})
+      this.$Loading.finish()
     },
     Data: function (row) {
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Data'})
+      this.$Loading.finish()
     },
     Feedback: function (row) {
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Feedback'})
+      this.$Loading.finish()
     },
     Inputback: function () {
       this.IsActive = true

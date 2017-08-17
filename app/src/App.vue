@@ -1,11 +1,9 @@
 <template>
   <div id="app">
-    <router-link class="home" to="/"><iTitle></iTitle></router-link>
-    <p>
-      <router-link class="ilink" to="/Applist">App</router-link>
-    </p>
-    <hr>
-    <router-view></router-view>
+    <iTitle></iTitle>
+    <div class="main">
+      <router-view></router-view>
+    </div>
     <iFooter></iFooter>
   </div>
 </template>
@@ -35,8 +33,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
-  margin-bottom: 0px;
+  margin: 0px;
   height: auto;
 }
 
@@ -53,11 +50,8 @@ export default {
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
 }
 
-.home{
-  color: #2c3e50;
-}
-
-.home:hover{
-  color: #66ccff;
+.main{
+  width: 100%;
+  height: auto;
 }
 </style>

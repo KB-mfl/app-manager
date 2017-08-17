@@ -12,7 +12,7 @@
         </thead>
         <tbody>
           <tr v-for="row in Feedback">
-            <td v-for="col in Columns">
+            <td v-for="col in Columns" @mouseenter="ShowContent(row.id)" @mouseleave="HideContent()">
               {{row[col]}}
             </td>
             <td>
@@ -46,6 +46,24 @@
         </div>
       </div>
     </div>
+    <div class="content" v-show="IsShowContent">
+      <table>
+        <thead>
+          <tr>
+            <th v-for="col in Feedbackcontent">
+              {{col}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in Feedback" v-if="row.id == Id">
+            <td v-for="col in Feedbackcontent">
+              {{row[col]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -55,14 +73,16 @@ export default {
   data () {
     return {
       Feedback: [],
-      Columns: ['id', 'user_id', 'app_id', 'feedback_id', 'title', 'created_at', 'updated_at'],
+      Columns: ['id', 'user_id', 'app_id', 'title', 'created_at', 'updated_at'],
       Feedbackcontent: ['content'],
       Title: '',
       Content: '',
       Userid: '',
       Appid: '',
+      Id: '',
       Feedbackid: '',
-      IsShowNewFeedback: false
+      IsShowNewFeedback: false,
+      IsShowContent: false
     }
   },
   beforeMount: function () {
@@ -135,6 +155,13 @@ export default {
     },
     Back: function () {
       this.$router.push({path: '/Applist'})
+    },
+    ShowContent: function (id) {
+      this.IsShowContent = true
+      this.Id = id
+    },
+    HideContent: function () {
+      this.IsShowContent = false
     }
   }
 }
@@ -231,6 +258,17 @@ thead{
   border-radius: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   cursor: pointer;
+}
+
+.content{
+  position: fixed;
+  height: 400px;
+  width: 21%;
+  right: 0%;
+  top: 20%;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
+  background-color: #ffffff;
+  word-break:break-all;
 }
 
 .close{

@@ -9,6 +9,7 @@
             </th>
             <th v-if="IsShowDel">Delete</th>
             <th v-if="IsShowActive">Active</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +22,9 @@
             </td>
             <td v-if="IsShowActive">
               <button @click="ActiveFSPush(row)">Active</button>
+            </td>
+            <td>
+              <button @click="ShowDetails(row)">Details</button>
             </td>
           </tr>
         </tbody>
@@ -61,7 +65,7 @@ export default {
       Firstscreen: [],
       Columns: ['id', 'app_id', 'created_at', 'updated_at', 'actived'],
       FirstscreenContent: ['content'],
-      Imageurl: ['image'],
+      Imageurl: ['image_url'],
       Appid: '',
       Content: '',
       IsShowDel: true,
@@ -166,6 +170,9 @@ export default {
     },
     Back: function () {
       this.$router.push({path: '/Applist'})
+    },
+    ShowDetails: function (row) {
+      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Firstscreen/' + row.id})
     }
   }
 }

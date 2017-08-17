@@ -7,6 +7,7 @@ import store from './store'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import Router from 'vue-router'
+import State from './components/State'
 
 Vue.use(iView)
 Vue.use(Router)
@@ -16,6 +17,8 @@ Vue.config.productionTip = false
 import axios from 'axios'
 axios.defaults.baseURL = '/api/'
 Vue.$http = Vue.prototype.$http = axios
+
+Vue.prototype.GLOBAL = State
 
 /* eslint-disable no-new */
 new Vue({

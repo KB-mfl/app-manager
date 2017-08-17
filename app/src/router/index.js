@@ -7,6 +7,9 @@ import Feedback from '../components/Feedback'
 import Versionlist from '../components/VersionList'
 import Data from '../components/Data'
 import Firstscreen from '../components/Firstscreen'
+import FSDetails from '../components/FSDetails'
+import Register from '../components/Register'
+import Login from '../components/Login'
 
 Vue.use(Router)
 
@@ -47,6 +50,21 @@ export default new Router({
       path: '/Applist/:id/Firstscreen',
       name: 'Firstscreen',
       component: Firstscreen
+    },
+    {
+      path: '/Applist/:id/Firstscreen/:firstscreenid',
+      name: 'FSDeatails',
+      component: FSDetails
+    },
+    {
+      path: '/Register',
+      name: 'Register',
+      component: Register
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

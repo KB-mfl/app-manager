@@ -10,7 +10,9 @@ export default {
     return {
       apiToken: '',
       username: '',
-      state: ''
+      state: '',
+      appname: '',
+      system: ''
     }
   }
 }

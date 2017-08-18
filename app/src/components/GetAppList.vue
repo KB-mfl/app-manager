@@ -29,7 +29,7 @@
                 <div class="dropdown">
                   <button class="showdropdownlist">Details</button>
                   <div class="dropdownlist">
-                      <button @click="ShowSystemList(row.id)"><span>Systemlist</span></button>
+                      <button @click="ShowSystemList(row)"><span>Systemlist</span></button>
                       <button @click="Data(row)"><span>Data</span></button>
                       <button @click="Firstscreen(row)"><span>Firstscreen</span></button>
                       <button @click="Feedback(row)"><span>Feedback</span></button>
@@ -42,7 +42,7 @@
       </div>
       <p>
         <button class="btn-create" type="button" name="create" @click="CreateNewApp">Create</button>
-        <button class="btn-revive" @click="ShowDeletedApp">Revive</button>
+        <button class="btn-revive" @click="ShowDeletedApp">Revive / Delete</button>
       </p>
     </div>
     <div class="back_ground"  v-show="IsShow">
@@ -75,7 +75,6 @@ export default {
     return {
       AppData: [],
       Columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
-      Status: [],
       IsShow: false,
       IsShowDeleted: false,
       Name: '',
@@ -199,22 +198,26 @@ export default {
         this.IsShowDel = false
       }
     },
-    ShowSystemList: function (id) {
-      console.log(id)
-      this.$router.push({path: '/Applist/' + id + '/Systemlist'})
+    ShowSystemList: function (row) {
+      console.log(row.id)
+      localStorage.appname = row.name
+      this.$router.push({path: '/Applist/' + row.id + '/Systemlist'})
       this.$Loading.finish()
     },
     Firstscreen: function (row) {
       console.log(row.id)
+      localStorage.appname = row.name
       this.$router.push({path: '/Applist/' + row.id + '/Firstscreen'})
       this.$Loading.finish()
     },
     Data: function (row) {
+      localStorage.appname = row.name
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Data'})
       this.$Loading.finish()
     },
     Feedback: function (row) {
+      localStorage.appname = row.name
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Feedback'})
       this.$Loading.finish()
@@ -365,7 +368,7 @@ button{
 
 .create{
   position: fixed;
-  height: 27%;
+  height: auto;
   width: 30%;
   left:35%;
   top:40%;

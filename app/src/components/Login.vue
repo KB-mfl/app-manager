@@ -3,7 +3,7 @@
     <Navbar></Navbar>
     <div class="title">
       <span>登陆</span>
-    </div>\
+    </div>
     <div class="container" @click="Inputback">
       <form class="uploader">
         <div class="inputer">
@@ -37,6 +37,9 @@ export default {
       State: [],
       IsActive: true
     }
+  },
+  beforeMount: function () {
+    console.log(localStorage)
   },
   methods: {
     Login (event) {

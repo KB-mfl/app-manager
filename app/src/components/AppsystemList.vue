@@ -8,6 +8,9 @@
             <th v-for="col in Columns">
               {{col}}
             </th>
+            <th v-for="col in Imageurl">
+              {{col}}
+            </th>
             <th v-if="IsShowDele">Delete</th>
             <th v-if="IsShowDeletedSystem">Revive</th>
             <th>Details</th>
@@ -15,8 +18,11 @@
         </thead>
         <tbody>
           <tr v-for="row in AppSystem">
-            <td class="animation" v-for="col in Columns">
+            <td v-for="col in Columns">
               {{row[col]}}
+            </td>
+            <td v-for="col in Imageurl">
+              <img :src="row.logo_url">
             </td>
             <td v-if="IsShowDele">
               <button @click="DeleteSystem(row)">Delete</button>
@@ -28,7 +34,7 @@
               <div class="dropdown">
                 <button class="showdropdownlist">Details</button>
                 <div class="dropdownlist">
-                    <button @click="ShowVersionList(row.id)"><span>Versionlist</span></button>
+                    <button @click="ShowVersionList(row)"><span>Versionlist</span></button>
                     <button @click="AddLogo(row)"><span>Add</span></button>
                 </div>
               </div>
@@ -39,7 +45,7 @@
     </div>
     <p>
       <button class="btn-create" @click="CreateNewSystem">Create</button>
-      <button class="btn-revive" @click="ShowDeletedSystem">Revive</button>
+      <button class="btn-revive" @click="ShowDeletedSystem">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewSystem">
@@ -96,8 +102,8 @@ export default {
   data () {
     return {
       AppSystem: [],
-      Columns: ['id', 'app_id', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
-      Imageurl: ['logo_url'],
+      Columns: ['id', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      Imageurl: ['logo'],
       IsShowNewSystem: false,
       IsShowDeletedSystem: false,
       IsShowDele: true,
@@ -251,9 +257,10 @@ export default {
       })
       this.IsShowNewSystem = false
     },
-    ShowVersionList: function (id) {
-      console.log(id)
-      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + id + '/Versionlist'})
+    ShowVersionList: function (row) {
+      console.log(row)
+      localStorage.system = row.system
+      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + row.id + '/Versionlist'})
       this.$Loading.finish()
     },
     AddLogo: function (row) {
@@ -294,6 +301,7 @@ export default {
       this.IsShowNewLogo = false
     },
     Back: function () {
+      localStorage.appname = ''
       this.$router.push({path: '/Applist'})
       this.$Loading.finish()
     },
@@ -305,6 +313,24 @@ export default {
 </script>
 
 <style scoped>
+img{
+  width: 100px;
+  height: 100px;
+}
+
+img:hover{
+  position: relative;
+  z-index: 998;
+  box-shadow: 2px 2px 16px 0px #66ccff;
+  -webkit-animation: Logo 0.5s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes Logo{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  100% {-webkit-transform:scale(2);transform:scale(2);}
+}
+
 button{
   display: inline-block;
   border-radius: 4px;

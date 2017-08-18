@@ -1,0 +1,78 @@
+database: app-manager
+	table:
+		user:	用户表
+			id: unsigned increments
+			name: string
+			password: string
+			created_at: timestamp
+			updated_at: timestamp
+		
+		app:	APP表
+			id: unsigned increments
+			user_id: int
+			name: string
+			deleted_at: timestamp
+			created_at: timestamp
+			updated_at: timestamp
+			
+		system:	系统表
+			id: unsigned increments
+			app_id: int
+			logo_url: string
+			system: string
+			identification: string
+			deleted_at: timestamp
+			created_at: timestamp
+			updated_at: timestamp
+		
+		version:	版本表
+			id: unsigned increments
+			system_id: int
+			version: string
+			build: int
+			file_url: string
+			deleted_at: timestamp
+			created_at: timestamp
+			updated_at: timestamp
+			
+		data:	文本数据表
+			id: unsigned increments
+			app_id: int
+			key: string
+			value: string
+			created_at: timestamp
+			updated_at: timestamp
+	
+		feedback:	评论表
+			id: unsigned increments
+			user_id: int
+			app_id: int
+			feedback_id: int nullable
+			title: string
+			content: string	
+			created_at: timestamp
+			updated_at: timestamp
+			
+		first_screen:	推送表
+			id: unsigned increments
+			app_id: int
+			content: string
+			actived: bool
+			image: string nullable
+			created_at: timestamp
+			updated_at: timestamp
+			
+			
+	users->一对多
+			apps->一对多
+				version
+				data
+	
+	users->一对多
+		feedback
+		
+	apps->一对多
+		feedback
+		
+	feedback->一对多
+		feedback

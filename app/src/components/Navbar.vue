@@ -7,6 +7,12 @@
       <div class="applist">
         <button name="applist" @click="Applist"><span>我的应用</span></button>
       </div>
+      <div class="appname" v-if="this.appname !== ''">
+        <button name="appname" v-bind="appname"><span>{{appname}}</span></button>
+      </div>
+      <div class="system" v-if="this.system !== ''">
+        <button name="system" v-bind="system">{{system}}</button>
+      </div>
       <div v-if="this.state === 'true'" class="logout">
         <button name="logout" @click="Logout"><span>退出</span></button>
       </div>
@@ -19,10 +25,14 @@ export default {
   name: 'navbar',
   data () {
     return {
+      appname: this.appname,
+      system: this.system
     }
   },
   beforeMount: function () {
     this.state = localStorage.state
+    this.appname = localStorage.appname
+    this.system = localStorage.system
   },
   methods: {
     Home: function () {
@@ -33,6 +43,9 @@ export default {
     },
     Logout: function () {
       localStorage.state = ''
+      localStorage.username = ''
+      localStorage.apiToken = ''
+      localStorage.appname = ''
       console.log(localStorage)
       this.$router.push({path: '/Login'})
     }
@@ -71,6 +84,20 @@ export default {
   float: left;
 }
 
+.appname{
+  display: inline-block;
+  height: auto;
+  width: 9%;
+  float: left;
+}
+
+.system{
+  display: inline-block;
+  height: auto;
+  width: 6%;
+  float: left;
+}
+
 .logout{
   display: inline-block;
   height: auto;
@@ -98,6 +125,7 @@ button{
   cursor: pointer;
   margin: 5px;
   outline: none;
+  text-transform: Capitalize;
 }
 
 button span{
@@ -121,6 +149,15 @@ button:hover span{
 }
 
 button:hover span:after{
+  opacity: 1;
+  right: 0;
+}
+
+button:focus span{
+  padding-right: 25px;
+}
+
+button:focus span:after{
   opacity: 1;
   right: 0;
 }

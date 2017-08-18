@@ -36,7 +36,7 @@
     </div>
     <p>
       <button class="btn-create" @click="CreateNewVersion">Create</button>
-      <button class="btn-revive" @click="ShowDeletedVersion">Revive</button>
+      <button class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewVersion">
@@ -76,7 +76,7 @@ export default {
     return {
       Version: [],
       Columns: ['id', 'version', 'build', 'system_id', 'deleted_at', 'created_at'],
-      imageurl: ['file_url'],
+      Downloadurl: ['file_url'],
       version: '',
       new_app: '',
       IsShowNewVersion: false,
@@ -92,6 +92,7 @@ export default {
     this.state = localStorage.state
     this.apiToken = localStorage.apiToken
     this.username = localStorage.username
+    this.system = localStorage.system
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -213,6 +214,7 @@ export default {
       document.getElementById('download').submit()
     },
     Back: function () {
+      localStorage.system = ''
       this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist'})
       this.$Loading.finish()
     },

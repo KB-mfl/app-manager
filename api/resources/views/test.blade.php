@@ -146,6 +146,8 @@
         <h1>FirstScreen</h1>
         <form action="api/1/first_screen" enctype="multipart/form-data" method="post">
 
+            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             content:<input type="text" name="content">
             img:<input type="file" name="file" id="file">
             <input type="submit">

@@ -8,6 +8,8 @@ class Feedback extends Model
 {
     protected $table = 'feedback';
 
+    //protected $hidden = ['user'];
+
     /*
         一个feedback属于一个feedback，一个app，一个user
     */

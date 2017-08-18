@@ -20,20 +20,10 @@ class Check
      */
     public function handle($request, Closure $next)
     {
-        /*
-        if(Auth::attempt([
-            'name' => $request->name,
-            'password' => $request->password
-        ])) {
-            return $next($request);
-        }
-        return abort(401);
-        */
-        //return $next($request);
-        //
         $apiToken = ApiToken::where('token', '=', $request->apiToken)->first();
         $user = User::where('username', '=', $request->username)->first();
         if(!$user || !$apiToken) abort(401);
+        if($user->admin === 0) abort(403);
         if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now() && $apiToken->ip === $request->server('REMOTE_ADDR', null)) {
             $apiToken->expired_at = Carbon::now()->addMinutes(30);
             $apiToken->save();

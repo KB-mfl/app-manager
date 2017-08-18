@@ -28,12 +28,14 @@
         <h1>app</h1>
         <form action="/api/addapp" enctype="multipart/form-data" method="post">
             
+            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             name:<input type="text" name="name">
             <input type="submit">
         </form>
         <form action="/api/applist" method="get">
             <input type="hidden" name="username" value="qiankaihua">
-            <input type="hidden" name="apiToken" value="8679eeb3-33d2-48b2-9ae6-816b34287f6f">
+            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             has_deleted<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
@@ -171,6 +173,9 @@
         <h1>feedback</h1>
         <form action="api/1/feedback" method="post">
 
+            <input type="hidden" name="user_id" value="2">
+            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             title:<input type="text" name="title">
             content:<input type="text" name="content">
             feedback_id<input type="text" name="feedback_id">
@@ -178,10 +183,16 @@
         </form>
         <form action="api/1/feedback" method="get">
             
+            <input type="hidden" name="user_id" value="2">
+            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             list:<input type="submit">
         </form>
         <form action="api/1/feedback" method="post">
-        
+
+            <input type="hidden" name="user_id" value="2">
+            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             <input type="hidden" name="_method" value="DELETE" size="50" />
             delete<input type="text" name="feedback_id">
             <input type="submit">

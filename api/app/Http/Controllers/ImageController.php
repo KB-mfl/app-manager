@@ -18,22 +18,6 @@ class ImageController extends Controller {
         }
         $system->save();
         return $path;
-        /*
-
-        if($request->is_logo) {
-            $old_path = $app->logo_url;
-            $app->logo_url = $path;
-        }
-        else {
-            $old_path = $app->image_url;
-            $app->image_url = $path;
-        }
-        if($old_path != null) {
-            Storage::delete($old_path);
-        }
-        $app->save();
-        return $path;
-        */
     }
     public function show(Request $request, $system_id) {
         $system = System::find($system_id);

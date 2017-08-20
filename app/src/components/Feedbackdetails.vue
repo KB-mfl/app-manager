@@ -64,6 +64,7 @@ export default {
     this.state = sessionStorage.state
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
+    this.admin = sessionStorage.admin
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -114,7 +115,7 @@ export default {
 }
 
 .fdtitle{
-  margin: 0px 85% 0px auto;
+  margin: 0px 88% 0px auto;
   font-size: 20px;
 }
 

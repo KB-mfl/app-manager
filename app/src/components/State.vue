@@ -12,7 +12,8 @@ export default {
       username: '',
       state: '',
       appname: '',
-      system: ''
+      system: '',
+      admin: ''
     }
   }
 }

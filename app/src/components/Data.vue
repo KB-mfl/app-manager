@@ -30,8 +30,8 @@
         </table>
       </div>
       <p>
-        <button class="btn-create" @click="CreateNewData">Create</button>
-        <button class="btn-edit" @click="ShowEdit">Edit / Delete</button>
+        <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewData">Create</button>
+        <button v-if="this.admin === 'true'" class="btn-edit" @click="ShowEdit">Edit / Delete</button>
         <button class="btn-back" @click="Back">Back</button>
       </p>
     </div>
@@ -105,9 +105,13 @@ export default {
     this.state = sessionStorage.state
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
+    this.admin = sessionStorage.admin
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
+    }
+    if (this.admin === 'false') {
+      this.IsShowDel = false
     }
     this.GetData()
   },

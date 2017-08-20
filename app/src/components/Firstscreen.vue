@@ -33,8 +33,8 @@
       </table>
     </div>
     <p>
-      <button class="btn-create" @click="CreateNewFSPush">Create</button>
-      <button class="btn-active" @click="ShowActive">Active / Delete</button>
+      <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewFSPush">Create</button>
+      <button v-if="this.admin === 'true'" class="btn-active" @click="ShowActive">Active / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewFSPush">
@@ -88,9 +88,13 @@ export default {
     this.state = sessionStorage.state
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
+    this.admin = sessionStorage.admin
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
+    }
+    if (this.admin === 'false') {
+      this.IsShowDel = false
     }
     this.GetFirstscreen()
   },

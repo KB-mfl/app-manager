@@ -64,7 +64,9 @@ export default {
         this.apiToken = sessionStorage.apiToken
         sessionStorage.username = this.State.username
         this.username = sessionStorage.username
-        console.log(sessionStorage, this.state)
+        sessionStorage.admin = this.State.admin
+        this.admin = sessionStorage.admin
+        console.log(sessionStorage)
         if (this.state === 'false') {
           alert('密码与用户名不符，请重新输入')
           this.$Loading.error()

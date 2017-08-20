@@ -12,8 +12,8 @@ class FirstScreenController extends Controller
         $app = App::withTrashed()->find($app_id);
         $first_screens = $app->first_screen;
         foreach($first_screens as $fs) {
-            $fs->image_url = str_replace("public/", "", $fs->image_url);
-            $fs->image_url = asset('storage/'.$fs->image_url);
+            $fs->image_url = str_replace("public/imgs/", "", $fs->image_url);
+            $fs->image_url = str_replace(".", '_',$fs->image_url);
         }
         return $first_screens;
     }

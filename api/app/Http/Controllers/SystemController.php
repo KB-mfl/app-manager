@@ -17,9 +17,8 @@ class SystemController extends Controller
             $system = System::withTrashed()->where('app_id', '=', $app_id)->get();
         }
         foreach($system as $s) {
-            //return response()->file(realpath(base_path('storage/app')).'/'.$s->logo_url);
-            $s->logo_url = str_replace("public/", "", $s->logo_url);
-            $s->logo_url = asset('storage/'.$s->logo_url);
+            $s->logo_url = str_replace("public/imgs/", "", $s->logo_url);
+            $s->logo_url = str_replace(".", '_',$s->logo_url);
         }
         return $system;
     }

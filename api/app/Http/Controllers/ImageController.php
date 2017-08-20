@@ -19,9 +19,9 @@ class ImageController extends Controller {
         $system->save();
         return $path;
     }
-    public function show(Request $request, $system_id) {
-        $system = System::find($system_id);
-        $path = $system->logo_url;
-        return response()->file(base_path('storage/app/').$path);
+    public function show(Request $request, $img_name) {
+        $path = $img_name;
+        $path = str_replace("_", '.',$path);
+        return response()->file(base_path('storage/app/public/imgs/').$path);
     }
 }

@@ -31,13 +31,7 @@ class AddTime
                 $apiToken->save();
                 return $next($request);
             }
-            /*
-            return response([
-                '1' => $user->id === $apiToken->user_id,
-                '2' => $apiToken->expired_at >= Carbon::now(),
-                '3' => $apiToken->ip === $request->server('REMOTE_ADDR', null),
-            ]);
-            */
+            //return $next($request);
             else return abort(401);
         }
         return abort(401);

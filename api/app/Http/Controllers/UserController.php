@@ -41,10 +41,12 @@ class UserController extends Controller
             $apiToken->ip = $request->server('REMOTE_ADDR', null);
             $apiToken->expired_at = Carbon::now()->addMinutes(30);
             $user->apitokens()->save($apiToken);
+            $flag = $user->admin ? true : false;
             return response([
                 'status' => Auth::check(),
                 'apiToken' => $apiToken->token,
                 'username' => $user->username,
+                'admin' => $flag,
             ]);
         }
         return ['status' => Auth::check(),

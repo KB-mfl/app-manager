@@ -39,7 +39,7 @@ Route::put('{app_id}/readapp', 'AppController@read')->middleware('Check');
 
 //image
 
-Route::get('{system_id}/image', 'ImageController@show')->middleware('AddTime');
+Route::any('image/{img_name}', 'ImageController@show');//->middleware('AddTime');
 
 Route::post('{system_id}/image', 'ImageController@store')->middleware('Check');
 

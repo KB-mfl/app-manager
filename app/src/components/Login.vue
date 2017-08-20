@@ -43,6 +43,10 @@ export default {
   },
   beforeMount: function () {
     console.log(sessionStorage)
+    this.state = sessionStorage.state
+    if (this.state === 'true') {
+      this.$router.push({path: '/Applist'})
+    }
   },
   methods: {
     Login (event) {

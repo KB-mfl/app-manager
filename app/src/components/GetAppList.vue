@@ -41,7 +41,7 @@
           </tbody>
         </table>
       </div>
-      <p v-if="this.admin === 'true'">
+      <p v-if="admin === 'true'">
         <button class="btn-create" type="button" name="create" @click="CreateNewApp">Create</button>
         <button class="btn-revive" @click="ShowDeletedApp">Revive / Delete</button>
       </p>
@@ -116,6 +116,7 @@ export default {
     },
     Close: function () {
       this.IsShow = false
+      this.Name = ''
     },
     UploadForm (event) {
       event.preventDefault()
@@ -144,6 +145,7 @@ export default {
         console.log(error)
       })
       this.IsShow = false
+      this.Name = ''
     },
     DeleteApp: function (row) {
       console.log(row.id)

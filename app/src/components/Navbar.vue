@@ -36,9 +36,6 @@ export default {
   },
   methods: {
     Home: function () {
-      sessionStorage.apiToken = ''
-      sessionStorage.username = ''
-      sessionStorage.state = ''
       sessionStorage.appname = ''
       sessionStorage.system = ''
       this.$router.push({path: '/'})
@@ -79,7 +76,7 @@ export default {
 .home{
   display: inline-block;
   height: auto;
-  width: 6%;
+  width: auto;
   float: left;
   margin-left: 10%;
 }
@@ -87,28 +84,28 @@ export default {
 .applist{
   display: inline-block;
   height: auto;
-  width: 12%;
+  width: auto;
   float: left;
 }
 
 .appname{
   display: inline-block;
   height: auto;
-  width: 9%;
+  width: auto;
   float: left;
 }
 
 .system{
   display: inline-block;
   height: auto;
-  width: 6%;
+  width: auto;
   float: left;
 }
 
 .logout{
   display: inline-block;
   height: auto;
-  width: 9%;
+  width: auto;
   float: right;
   margin-right: 10%;
 }

@@ -26,11 +26,18 @@ class AddTime
             if(!$user || !$apiToken) {
                 return abort(401);
             }
-            else if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now() && $apiToken->ip === $request->server('REMOTE_ADDR', null)) {
+            else if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now()) {
                 $apiToken->expired_at = Carbon::now()->addMinutes(30);
                 $apiToken->save();
                 return $next($request);
             }
+            /*
+            return response([
+                '1' => $user->id === $apiToken->user_id,
+                '2' => $apiToken->expired_at >= Carbon::now(),
+                '3' => $apiToken->ip === $request->server('REMOTE_ADDR', null),
+            ]);
+            */
             else return abort(401);
         }
         return abort(401);

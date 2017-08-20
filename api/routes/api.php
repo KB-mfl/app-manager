@@ -59,7 +59,7 @@ Route::get('{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTi
 
 Route::post('{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
 
-Route::delete('{app_id}/feedback', 'FeedbackController@delete')->middleware('Check');
+Route::delete('{app_id}/feedback', 'FeedbackController@delete')->middleware('CheckFeedback');
 
 //first_screen
 

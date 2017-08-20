@@ -38,8 +38,8 @@
       </table>
     </div>
     <p>
-      <button class="btn-create" @click="CreateNewVersion">Create</button>
-      <button class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
+      <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewVersion">Create</button>
+      <button v-if="this.admin === 'true'" class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewVersion">
@@ -98,9 +98,13 @@ export default {
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
     this.system = sessionStorage.system
+    this.admin = sessionStorage.admin
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
+    }
+    if (this.admin === 'false') {
+      this.IsShowDele = false
     }
     this.GetVersionList()
   },

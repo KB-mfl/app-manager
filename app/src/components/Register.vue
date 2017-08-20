@@ -56,6 +56,7 @@ export default {
       .then((response) => {
         this.State = response.data
         console.log(this.State)
+        this.$router.push({path: '/Login'})
       })
       .catch(function (error) {
         console.log(error)

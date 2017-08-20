@@ -41,7 +41,7 @@
           </tbody>
         </table>
       </div>
-      <p>
+      <p v-if="this.admin === 'true'">
         <button class="btn-create" type="button" name="create" @click="CreateNewApp">Create</button>
         <button class="btn-revive" @click="ShowDeletedApp">Revive / Delete</button>
       </p>
@@ -90,9 +90,13 @@ export default {
     this.state = sessionStorage.state
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
+    this.admin = sessionStorage.admin
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
+    }
+    if (this.admin === 'false') {
+      this.IsShowDel = false
     }
     this.GetAppList()
   },

@@ -4,7 +4,7 @@
       <div class="home">
         <button name="home" @click="Home"><span>Home</span></button>
       </div>
-      <div class="applist">
+      <div class="applist" v-if="this.state ==='true'">
         <button name="applist" @click="Applist"><span>我的应用</span></button>
       </div>
       <div class="appname" v-if="this.appname !== ''">

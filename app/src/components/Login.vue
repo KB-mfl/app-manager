@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="title">
       <span>登陆</span>
@@ -24,10 +25,12 @@
 </template>
 
 <script>
+import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'login',
   components: {
+    iTitle,
     Navbar
   },
   data () {

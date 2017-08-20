@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="title">
       <span>注册</span>
@@ -24,11 +25,13 @@
 </template>
 
 <script>
+import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'register',
   components: {
-    Navbar
+    Navbar,
+    iTitle
   },
   data () {
     return {

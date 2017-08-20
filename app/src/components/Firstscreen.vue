@@ -1,5 +1,6 @@
 <template>
   <div class="firstscreen">
+    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list">
       <table>
@@ -60,10 +61,12 @@
 </template>
 
 <script>
+import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'firstscreen',
   components: {
+    iTitle,
     Navbar
   },
   data () {
@@ -563,7 +566,7 @@ input:-webkit-autofill{
 .list{
   width: 100%;
   margin-top:  20px;
-  margin-bottom: 200px;
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
 }

@@ -1,5 +1,6 @@
 <template>
   <div class="Feedback">
+    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list">
       <table>
@@ -81,11 +82,13 @@
 </template>
 
 <script>
+import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'Feedback',
   components: {
-    Navbar
+    Navbar,
+    iTitle
   },
   data () {
     return {
@@ -172,7 +175,7 @@ export default {
       this.IsShowReply = false
     },
     DeleteFeedback: function (row) {
-      this.$http.delete('/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.feedback_id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete('/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
@@ -493,7 +496,7 @@ input:-webkit-autofill{
 .list{
   width: 100%;
   margin-top:  20px;
-  margin-bottom: 200px;
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
 }

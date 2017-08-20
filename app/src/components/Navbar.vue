@@ -36,9 +36,16 @@ export default {
   },
   methods: {
     Home: function () {
+      sessionStorage.apiToken = ''
+      sessionStorage.username = ''
+      sessionStorage.state = ''
+      sessionStorage.appname = ''
+      sessionStorage.system = ''
       this.$router.push({path: '/'})
     },
     Applist: function () {
+      sessionStorage.appname = ''
+      sessionStorage.system = ''
       this.$router.push({path: '/Applist'})
     },
     Logout: function () {

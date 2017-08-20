@@ -30,8 +30,8 @@
         </table>
       </div>
       <p>
-        <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewData">Create</button>
-        <button v-if="this.admin === 'true'" class="btn-edit" @click="ShowEdit">Edit / Delete</button>
+        <button v-if="admin === 'true'" class="btn-create" @click="CreateNewData">Create</button>
+        <button v-if="admin === 'true'" class="btn-edit" @click="ShowEdit">Edit / Delete</button>
         <button class="btn-back" @click="Back">Back</button>
       </p>
     </div>
@@ -148,6 +148,8 @@ export default {
     Close: function () {
       this.IsShow = false
       this.IsShowEditor = false
+      this.Key = ''
+      this.Value = ''
     },
     UploadForm (event) {
       event.preventDefault()
@@ -176,6 +178,8 @@ export default {
         console.log(error)
       })
       this.IsShow = false
+      this.Key = ''
+      this.Value = ''
     },
     ShowEdit: function () {
       if (this.IsShowEdit === false) {

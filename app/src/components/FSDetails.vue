@@ -16,7 +16,7 @@
       <tbody>
         <tr class="info" v-for="row in Firstscreen" v-if="row.id == Fsid">
           <td v-for="col in Imageurl">
-            <img :src="row.image_url">
+            <img :src="'/api/image/' + row.image_url">
           </td>
           <td v-for="col in FirstscreenContent">
             <textarea class="input-default-fs" name="content" rows="16" cols="10" readonly="readonly">{{row[col]}}</textarea>

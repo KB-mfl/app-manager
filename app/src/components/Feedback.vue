@@ -9,17 +9,17 @@
             <th v-for="col in Columns">
               {{col}}
             </th>
-            <th v-if="this.admin === 'true'">Delete</th>
+            <th v-if="admin === 'true'">Delete</th>
             <th>Reply</th>
             <th>Check</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="row in Feedback" v-if="row.feedback_id === null">
-            <td v-for="col in Columns" @mouseenter="ShowContent(row.id)" @mouseleave="HideContent()">
+            <td v-for="col in Columns">
               {{row[col]}}
             </td>
-            <td v-if="this.admin === 'true'">
+            <td v-if="admin === 'true'">
               <button @click="DeleteFeedback(row)">Delete</button>
             </td>
             <td>
@@ -111,6 +111,7 @@ export default {
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
     this.admin = sessionStorage.admin
+    console.log(this.admin === 'false')
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()

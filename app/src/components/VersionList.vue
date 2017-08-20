@@ -26,7 +26,7 @@
               <button @click="ReviveVersion(row)">Revive</button>
             </td>
             <td>
-              <form id="download" action="http://192.168.1.160:8000/api/download" method="get">
+              <form id="download" action="/api/download" method="get">
                 <input type="hidden" name="version_id" v-model="version_id"></input>
                 <input type="hidden" name="apiToken" v-model="apiToken"></input>
                 <input type="hidden" name="username" v-model="username"></input>
@@ -38,8 +38,8 @@
       </table>
     </div>
     <p>
-      <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewVersion">Create</button>
-      <button v-if="this.admin === 'true'" class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
+      <button v-if="admin === 'true'" class="btn-create" @click="CreateNewVersion">Create</button>
+      <button v-if="admin === 'true'" class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewVersion">
@@ -124,6 +124,9 @@ export default {
     },
     Close: function () {
       this.IsShowNewVersion = false
+      this.percent = 0
+      this.new_app = ''
+      this.version = ''
     },
     GetNewFile (event) {
       this.new_app = event.target.files[0]
@@ -148,6 +151,7 @@ export default {
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
+          this.percent = 100
         })
         .catch(function (error) {
           console.log(error)
@@ -156,7 +160,6 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-      this.IsShowNewVersion = false
     },
     DeleteVersion: function (row) {
       this.$http.delete(this.$route.params.systemid + '/version', {params: {version_id: row.id, apiToken: this.apiToken, username: this.username}})

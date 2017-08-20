@@ -26,6 +26,9 @@ export default {
       this.$router.push({path: '/Login'})
     },
     Toregister: function () {
+      sessionStorage.username = ''
+      sessionStorage.state = ''
+      sessionStorage.apiToken = ''
       this.$router.push({path: '/Register'})
     }
   }

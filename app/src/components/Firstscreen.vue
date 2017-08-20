@@ -33,8 +33,8 @@
       </table>
     </div>
     <p>
-      <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewFSPush">Create</button>
-      <button v-if="this.admin === 'true'" class="btn-active" @click="ShowActive">Active / Delete</button>
+      <button v-if="admin === 'true'" class="btn-create" @click="CreateNewFSPush">Create</button>
+      <button v-if="admin === 'true'" class="btn-active" @click="ShowActive">Active / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewFSPush">

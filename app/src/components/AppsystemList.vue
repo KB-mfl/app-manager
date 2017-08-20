@@ -23,7 +23,7 @@
               {{row[col]}}
             </td>
             <td v-for="col in Imageurl">
-              <img :src="row.logo_url">
+              <img :src="'/api/image/' + row.logo_url">
             </td>
             <td v-if="IsShowDele">
               <button @click="DeleteSystem(row)">Delete</button>
@@ -36,7 +36,7 @@
                 <button class="showdropdownlist">Details</button>
                 <div class="dropdownlist">
                     <button @click="ShowVersionList(row)"><span>Versionlist</span></button>
-                    <button @click="AddLogo(row)"><span>Add</span></button>
+                    <button @click="AddLogo(row)"><span>+Logo</span></button>
                 </div>
               </div>
             </td>
@@ -45,8 +45,8 @@
       </table>
     </div>
     <p>
-      <button v-if="this.admin === 'true'" class="btn-create" @click="CreateNewSystem">Create</button>
-      <button v-if="this.admin === 'true'" class="btn-revive" @click="ShowDeletedSystem">Revive / Delete</button>
+      <button v-if="admin === 'true'" class="btn-create" @click="CreateNewSystem">Create</button>
+      <button v-if="admin === 'true'" class="btn-revive" @click="ShowDeletedSystem">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewSystem">
@@ -228,6 +228,8 @@ export default {
     Close: function () {
       this.IsShowNewSystem = false
       this.IsShowNewLogo = false
+      this.identification = ''
+      this.new_file = ''
     },
     GetNewFile (event) {
       this.new_file = event.target.files[0]
@@ -263,6 +265,8 @@ export default {
         console.log(error)
       })
       this.IsShowNewSystem = false
+      this.identification = ''
+      this.new_file = ''
     },
     ShowVersionList: function (row) {
       console.log(row)

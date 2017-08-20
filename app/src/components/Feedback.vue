@@ -103,10 +103,10 @@ export default {
     }
   },
   beforeMount: function () {
-    console.log(localStorage)
-    this.state = localStorage.state
-    this.apiToken = localStorage.apiToken
-    this.username = localStorage.username
+    console.log(sessionStorage)
+    this.state = sessionStorage.state
+    this.apiToken = sessionStorage.apiToken
+    this.username = sessionStorage.username
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -123,6 +123,9 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    },
+    Check: function (row) {
+      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Feedback/' + row.id + '/Feedbackdetails'})
     },
     Reply: function (row) {
       this.IsShowReply = true
@@ -185,7 +188,7 @@ export default {
       })
     },
     Back: function () {
-      localStorage.appname = ''
+      sessionStorage.appname = ''
       this.$router.push({path: '/Applist'})
     },
     Inputback: function () {

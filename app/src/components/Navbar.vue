@@ -8,10 +8,10 @@
         <button name="applist" @click="Applist"><span>我的应用</span></button>
       </div>
       <div class="appname" v-if="this.appname !== ''">
-        <button name="appname" v-bind="appname"><span>{{appname}}</span></button>
+        <button name="appname" v-bind:appname="appname"><span>{{appname}}</span></button>
       </div>
       <div class="system" v-if="this.system !== ''">
-        <button name="system" v-bind="system">{{system}}</button>
+        <button name="system" v-bind:system="system">{{system}}</button>
       </div>
       <div v-if="this.state === 'true'" class="logout">
         <button name="logout" @click="Logout"><span>退出</span></button>
@@ -30,9 +30,9 @@ export default {
     }
   },
   beforeMount: function () {
-    this.state = localStorage.state
-    this.appname = localStorage.appname
-    this.system = localStorage.system
+    this.state = sessionStorage.state
+    this.appname = sessionStorage.appname
+    this.system = sessionStorage.system
   },
   methods: {
     Home: function () {
@@ -42,11 +42,11 @@ export default {
       this.$router.push({path: '/Applist'})
     },
     Logout: function () {
-      localStorage.state = ''
-      localStorage.username = ''
-      localStorage.apiToken = ''
-      localStorage.appname = ''
-      console.log(localStorage)
+      sessionStorage.state = ''
+      sessionStorage.username = ''
+      sessionStorage.apiToken = ''
+      sessionStorage.appname = ''
+      console.log(sessionStorage)
       this.$router.push({path: '/Login'})
     }
   }

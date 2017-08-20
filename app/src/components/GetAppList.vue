@@ -83,10 +83,10 @@ export default {
     }
   },
   beforeMount: function () {
-    console.log(localStorage)
-    this.state = localStorage.state
-    this.apiToken = localStorage.apiToken
-    this.username = localStorage.username
+    console.log(sessionStorage)
+    this.state = sessionStorage.state
+    this.apiToken = sessionStorage.apiToken
+    this.username = sessionStorage.username
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -200,24 +200,24 @@ export default {
     },
     ShowSystemList: function (row) {
       console.log(row.id)
-      localStorage.appname = row.name
+      sessionStorage.appname = row.name
       this.$router.push({path: '/Applist/' + row.id + '/Systemlist'})
       this.$Loading.finish()
     },
     Firstscreen: function (row) {
       console.log(row.id)
-      localStorage.appname = row.name
+      sessionStorage.appname = row.name
       this.$router.push({path: '/Applist/' + row.id + '/Firstscreen'})
       this.$Loading.finish()
     },
     Data: function (row) {
-      localStorage.appname = row.name
+      sessionStorage.appname = row.name
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Data'})
       this.$Loading.finish()
     },
     Feedback: function (row) {
-      localStorage.appname = row.name
+      sessionStorage.appname = row.name
       console.log(row.id)
       this.$router.push({path: '/Applist/' + row.id + '/Feedback'})
       this.$Loading.finish()

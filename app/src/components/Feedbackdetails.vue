@@ -1,87 +1,63 @@
 <template>
-  <div class="firstscreen">
+  <div class="feedbackdetails">
     <Navbar></Navbar>
-    <div class="list">
+    <div class="list-1">
       <table>
         <thead>
-          <tr>
-            <th v-for="col in Columns">
-              {{col}}
-            </th>
-            <th v-if="IsShowDel">Delete</th>
-            <th v-if="IsShowActive">Active</th>
-            <th>Details</th>
+          <tr v-for="row in Feedback" v-if="row.id == feedbackid">
+            <th>{{row.title}}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in Firstscreen">
-            <td v-for="col in Columns">
-              {{row[col]}}
-            </td>
-            <td v-if="IsShowDel">
-              <button @click="DeleteFSPush(row)">Delete</button>
-            </td>
-            <td v-if="IsShowActive">
-              <button @click="ActiveFSPush(row)">Active</button>
-            </td>
+          <tr v-for="row in Feedback" v-if="row.id == feedbackid">
             <td>
-              <button @click="ShowDetails(row)">Details</button>
+              <textarea class="input-default-feedback" name="content" rows="4" cols="50" readonly="readonly">{{row.content}}</textarea>
+              <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="list-2">
+      <table>
+        <tbody>
+          <tr v-for="row in Feedback" v-if="row.feedback_id == feedbackid">
+            <td>
+              <div class="title">
+                <p class="fdtitle">{{row.title}}</p>
+              </div>
+              <textarea class="input-default-reply" name="content" rows="3" cols="60" readonly="readonly">{{row.content}}</textarea>
+              <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
+              <button @click="DeleteFeedback(row)">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      <button class="btn-create" @click="CreateNewFSPush">Create</button>
-      <button class="btn-active" @click="ShowActive">Active / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
-    <div class="back_ground" v-show="IsShowNewFSPush">
-    </div>
-    <div class="container" v-show="IsShowNewFSPush">
-      <div class="create">
-        <p class="close-p"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
-        <div class="upload">
-          <form class="uploader">
-            <div class="inputer">
-              <p><input v-model="Appid" type="hidden" name="app_id"></p>
-              <p class="input-p">Content</p>
-              <p><textarea maxlength="150" v-model="Content" class="input-default-fs" name="content" placeholder="~限150字~"></textarea></p>
-              <p><input id="uploadnewfile" type="file" name="uploadnewapp" @change="GetNewLogo($event)"></p>
-              <p>{{this.new_logo.name}}</p>
-            </div>
-            <br>
-            <button class="btn-save" type="submit" @click="UploadNewLogo($event)">Save</button>
-         </form>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import Navbar from './Navbar'
 export default {
-  name: 'firstscreen',
+  name: 'feedbackdetails',
   components: {
     Navbar
   },
   data () {
     return {
-      Firstscreen: [],
-      Columns: ['id', 'created_at', 'updated_at', 'actived'],
-      FirstscreenContent: ['content'],
-      Imageurl: ['image_url'],
-      Appid: '',
-      Content: '',
-      new_logo: '',
-      IsShowDel: true,
-      IsShowActive: false,
-      IsShowNewFSPush: false
+      Feedback: [],
+      Columns: ['id', 'username'],
+      Time: ['created_at', 'updated_at'],
+      Feedbackcontent: ['id', 'title', 'content'],
+      feedbackid: ''
     }
   },
   beforeMount: function () {
-    console.log(sessionStorage)
+    this.feedbackid = this.$route.params.feedbackid
     this.state = sessionStorage.state
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
@@ -89,129 +65,54 @@ export default {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
     }
-    this.GetFirstscreen()
+    this.GetFeedbackList()
   },
   methods: {
-    GetFirstscreen: function () {
-      this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+    GetFeedbackList: function () {
+      this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.Firstscreen = response.data
-        console.log(this.Firstscreen)
+        this.Feedback = response.data
       })
       .catch(function (error) {
         console.log(error)
       })
     },
-    ShowActive: function () {
-      if (this.IsShowActive === true) {
-        this.IsShowActive = false
-        this.IsShowDel = true
-      } else {
-        this.IsShowActive = true
-        this.IsShowDel = false
-      }
-    },
-    DeleteFSPush: function (row) {
-      this.$http.delete('/' + this.$route.params.id + '/first_screen', {params: {first_screen_id: row.id, apiToken: this.apiToken, username: this.username}})
+    DeleteFeedback: function (row) {
+      this.$http.delete('/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
-          this.Firstscreen = response.data
-          console.log(this.Firstscreen)
+          this.Feedback = response.data
         })
         .catch(function (error) {
           console.log(error)
         })
-        console.log('success')
       })
       .catch(function (error) {
         console.log(error)
       })
-    },
-    ActiveFSPush: function (row) {
-      this.$http.put('/' + this.$route.params.id + '/first_screen', {first_screen_id: row.id, apiToken: this.apiToken, username: this.username})
-      .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
-        .then((response) => {
-          this.Firstscreen = response.data
-          console.log(this.Firstscreen)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        console.log('success')
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-    },
-    CreateNewFSPush: function () {
-      this.IsShowNewFSPush = true
-    },
-    Close: function () {
-      this.IsShowNewFSPush = false
-    },
-    GetNewLogo: function () {
-      this.new_logo = event.target.files[0]
-      console.log(this.new_logo)
-    },
-    UploadNewLogo (event) {
-      event.preventDefault()
-      let formData = new FormData()
-      formData.append('file', this.new_logo)
-      formData.append('app_id', this.Appid)
-      formData.append('content', this.Content)
-      formData.append('username', this.username)
-      formData.append('apiToken', this.apiToken)
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      this.$http.post('/' + this.$route.params.id + '/first_screen', formData, config)
-      .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
-        .then((response) => {
-          this.Firstscreen = response.data
-          console.log(this.Firstscreen)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        console.log('success')
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-      this.IsShowNewFSPush = false
     },
     Back: function () {
-      this.$router.push({path: '/Applist'})
-    },
-    ShowDetails: function (row) {
-      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Firstscreen/' + row.id})
+      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Feedback'})
     }
   }
 }
 </script>
 
 <style scoped>
-img{
-  width: 100px;
-  height: 100px;
+.time{
+  margin-left: 50%;
+  font-size: 5px;
 }
 
-img:hover{
-  position: relative;
-  z-index: 998;
-  box-shadow: 2px 2px 16px 0px #66ccff;
-  -webkit-animation: Logo 0.5s;
-  -webkit-animation-fill-mode: forwards;
+.title{
+  height: auto;
+  width: 100%;
 }
 
-@-webkit-keyframes Logo{
-  0% {-webkit-transform:scale(1);transform:scale(1);}
-  100% {-webkit-transform:scale(2);transform:scale(2);}
+.fdtitle{
+  margin: 0px 85% 0px auto;
+  font-size: 20px;
 }
 
 button{
@@ -246,41 +147,24 @@ button{
   border-color: #2257c9;
 }
 
-.btn-active{
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #2257c9;
-  border: none;
-  color: #FFF;
-  text-align: center;
-  font-size: 15px;
-  padding: 10px;
-  width: auto;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  border: 1px solid;
-  border-color: #2257c9;
-}
-
-.btn-save{
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #2257c9;
-  border: none;
-  color: #FFF;
-  text-align: center;
-  font-size: 15px;
-  padding: 10px;
-  width: auto;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  border: 1px solid;
-  border-color: #2257c9;
-}
-
 .btn-back{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2257c9;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-submit{
   display: inline-block;
   border-radius: 4px;
   background-color: #2257c9;
@@ -315,41 +199,24 @@ button{
 }
 
 
-.btn-active:hover{
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #FFF;
-  border: none;
-  color: #2257c9;
-  text-align: center;
-  font-size: 15px;
-  padding: 10px;
-  width: auto;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  border: 1px solid;
-  border-color: #2257c9;
-}
-
-.btn-save:hover{
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #FFF;
-  border: none;
-  color: #2257c9;
-  text-align: center;
-  font-size: 15px;
-  padding: 10px;
-  width: auto;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  border: 1px solid;
-  border-color: #2257c9;
-}
-
 .btn-back:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #2257c9;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid;
+  border-color: #2257c9;
+}
+
+.btn-submit:hover{
   display: inline-block;
   border-radius: 4px;
   background-color: #FFF;
@@ -388,8 +255,8 @@ button{
   position: fixed;
   height: auto;
   width: 30%;
-  left: 35%;
-  top: 25%;
+  left:35%;
+  top:25%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }
@@ -444,27 +311,6 @@ button{
   margin: 0px auto;
 }
 
-#uploadnewfile{
-  font-size: 0px;
-  margin: 20px auto 0px auto;
-}
-
-#uploadnewfile::-webkit-file-upload-button{
-  background: #66ccff;
-  color: #FFF;
-  border: 1px solid #66ccff;
-  padding: 10px 50px;
-  border-radius: 5px;
-  font-size: 15px;
-  cursor: pointer;
-  outline: none;
-}
-
-#uploadnewfile::-webkit-file-upload-button:hover{
-  background-color: #FFF;
-  color: #66ccff;
-  outline: none;
-}
 /*-----输入框-----*/
 .inputer{
   height: auto;
@@ -498,7 +344,7 @@ input:-webkit-autofill{
   vertical-align: middle;
 }
 
-.input-default-fs{
+.input-default-feedback{
   width: 80%;
   height: 170px;
   font-size: 15px;
@@ -509,6 +355,30 @@ input:-webkit-autofill{
   border-color: #66ccff;
   caret-color: #66ccff;
   color: #A2A3A2;
+  vertical-align: middle;
+  outline: none;
+  resize: none;
+}
+
+table tr:nth-child(odd) .input-default-reply{
+  width: 80%;
+  height: 170px;
+  font-size: 15px;
+  border: 0px;
+  color: #73C5FF;
+  background-color: #FFF;
+  vertical-align: middle;
+  outline: none;
+  resize: none;
+}
+
+table tr:nth-child(even) .input-default-reply{
+  width: 80%;
+  height: 170px;
+  font-size: 15px;
+  border: 0px;
+  color: #FFF;
+  background-color: #73C5FF;
   vertical-align: middle;
   outline: none;
   resize: none;
@@ -560,9 +430,15 @@ input:-webkit-autofill{
   100% {-webkit-transform:scale(1);transform:scale(1);}
 }
 /*-----表格-----*/
-.list{
+.list-1{
   width: 100%;
   margin-top:  20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.list-2{
+  width: 100%;
   margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
@@ -610,7 +486,7 @@ table tr:nth-child(even) button{
   border: none;
   color: #73C5FF;
   text-align: center;
-  font-size: 15px;
+  font-size: 5px;
   padding: 10px;
   width: auto;
   transition: all 0.5s;
@@ -655,7 +531,7 @@ table tr:nth-child(odd) button{
   border: none;
   color: #FFF;
   text-align: center;
-  font-size: 15px;
+  font-size: 5px;
   padding: 10px;
   width: auto;
   transition: all 0.5s;

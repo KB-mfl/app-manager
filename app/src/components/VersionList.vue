@@ -27,6 +27,8 @@
             <td>
               <form id="download" action="http://192.168.1.160:8000/api/download" method="get">
                 <input type="hidden" name="version_id" v-model="version_id"></input>
+                <input type="hidden" name="apiToken" v-model="apiToken"></input>
+                <input type="hidden" name="username" v-model="username"></input>
                 <button @click="Download(row)"><span>Download</span></button>
               </form>
             </td>
@@ -88,11 +90,11 @@ export default {
     }
   },
   beforeMount: function () {
-    console.log(localStorage)
-    this.state = localStorage.state
-    this.apiToken = localStorage.apiToken
-    this.username = localStorage.username
-    this.system = localStorage.system
+    console.log(sessionStorage)
+    this.state = sessionStorage.state
+    this.apiToken = sessionStorage.apiToken
+    this.username = sessionStorage.username
+    this.system = sessionStorage.system
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -214,7 +216,7 @@ export default {
       document.getElementById('download').submit()
     },
     Back: function () {
-      localStorage.system = ''
+      sessionStorage.system = ''
       this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist'})
       this.$Loading.finish()
     },
@@ -612,6 +614,7 @@ table tr:nth-child(even) button{
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+  outline: none;
 }
 
 table tr:nth-child(even) button span{
@@ -657,6 +660,7 @@ table tr:nth-child(odd) button{
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+  outline: none;
 }
 
 table tr:nth-child(odd) button span{

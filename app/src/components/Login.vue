@@ -39,7 +39,7 @@ export default {
     }
   },
   beforeMount: function () {
-    console.log(localStorage)
+    console.log(sessionStorage)
   },
   methods: {
     Login (event) {
@@ -55,13 +55,13 @@ export default {
       this.$http.post('/login', formData, config)
       .then((response) => {
         this.State = response.data
-        localStorage.state = this.State.status
-        this.state = localStorage.state
-        localStorage.apiToken = this.State.apiToken
-        this.apiToken = localStorage.apiToken
-        localStorage.username = this.State.username
-        this.username = localStorage.username
-        console.log(localStorage, this.state)
+        sessionStorage.state = this.State.status
+        this.state = sessionStorage.state
+        sessionStorage.apiToken = this.State.apiToken
+        this.apiToken = sessionStorage.apiToken
+        sessionStorage.username = this.State.username
+        this.username = sessionStorage.username
+        console.log(sessionStorage, this.state)
         if (this.state === 'false') {
           alert('密码与用户名不符，请重新输入')
           this.$Loading.error()

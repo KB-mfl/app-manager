@@ -13,7 +13,7 @@ export default {
   name: 'title',
   data () {
     return {
-      system: '后台管理系统',
+      system: 'App Manager',
       version: 'v1.0.1'
     }
   }

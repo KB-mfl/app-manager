@@ -56,7 +56,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error)
-        alert('用户名已被注册,请跟换用户名后重试')
+        alert('用户名已被注册,请更换用户名后重试')
       })
     },
     Inputback: function () {

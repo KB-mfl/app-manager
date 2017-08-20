@@ -21,6 +21,7 @@ export default {
   width: 100%;
   height: 100px;
   background-color: #2257c9;
+  margin-top: 167px;
 }
 
 .words{

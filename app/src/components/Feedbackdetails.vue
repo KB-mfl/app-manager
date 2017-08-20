@@ -1,5 +1,6 @@
 <template>
   <div class="feedbackdetails">
+    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list-1">
       <table>
@@ -11,7 +12,7 @@
         <tbody>
           <tr v-for="row in Feedback" v-if="row.id == feedbackid">
             <td>
-              <textarea class="input-default-feedback" name="content" rows="4" cols="50" readonly="readonly">{{row.content}}</textarea>
+              <textarea class="input-default-feedback" name="content" readonly="readonly">{{row.content}}</textarea>
               <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
             </td>
           </tr>
@@ -41,11 +42,13 @@
 </template>
 
 <script>
+import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'feedbackdetails',
   components: {
-    Navbar
+    Navbar,
+    iTitle
   },
   data () {
     return {
@@ -354,7 +357,7 @@ input:-webkit-autofill{
   border-bottom: 1px solid;
   border-color: #66ccff;
   caret-color: #66ccff;
-  color: #A2A3A2;
+  color: #2A8FBD;
   vertical-align: middle;
   outline: none;
   resize: none;
@@ -439,7 +442,7 @@ table tr:nth-child(even) .input-default-reply{
 
 .list-2{
   width: 100%;
-  margin-bottom: 200px;
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -486,7 +489,7 @@ table tr:nth-child(even) button{
   border: none;
   color: #73C5FF;
   text-align: center;
-  font-size: 5px;
+  font-size: 15px;
   padding: 10px;
   width: auto;
   transition: all 0.5s;
@@ -531,7 +534,7 @@ table tr:nth-child(odd) button{
   border: none;
   color: #FFF;
   text-align: center;
-  font-size: 5px;
+  font-size: 15px;
   padding: 10px;
   width: auto;
   transition: all 0.5s;

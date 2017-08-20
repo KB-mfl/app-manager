@@ -1,5 +1,6 @@
 <template>
   <div class="fsdetails">
+    <iTitle></iTitle>
     <Navbar></Navbar>
     <table>
       <thead>
@@ -30,10 +31,12 @@
 </template>
 
 <script>
+import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'fsdetails',
   components: {
+    iTitle,
     Navbar
   },
   data () {
@@ -46,11 +49,19 @@ export default {
     }
   },
   beforeMount: function () {
+    console.log(sessionStorage)
+    this.state = sessionStorage.state
+    this.apiToken = sessionStorage.apiToken
+    this.username = sessionStorage.username
+    if (this.state !== 'true') {
+      this.$router.push({path: '/Login'})
+      this.$Loading.error()
+    }
     this.GetFirstscreen()
   },
   methods: {
     GetFirstscreen: function () {
-      this.$http.get('/' + this.$route.params.id + '/first_screen')
+      this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Firstscreen = response.data
       })
@@ -223,7 +234,7 @@ input:-webkit-autofill{
 .list{
   width: 100%;
   margin-top:  20px;
-  margin-bottom: 200px;
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
 }

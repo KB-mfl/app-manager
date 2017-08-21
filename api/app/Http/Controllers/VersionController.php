@@ -18,9 +18,6 @@ class VersionController extends Controller
         return $versions;
     }
     public function store(Request $request, $system_id) {
-        /*
-            表单验证
-        */
         $system = System::withTrashed()->find($system_id);
         $now = 0;
         foreach($system->version()->get() as $ver) {

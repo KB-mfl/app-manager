@@ -18,9 +18,6 @@ class FirstScreenController extends Controller
         return $first_screens;
     }
     public function store(Request $request, $app_id) {
-        /*
-            表单验证
-        */
         $app = App::withTrashed()->find($app_id);
         foreach($app->first_screen as $fs) {
             $fs->actived = false;

@@ -14,19 +14,6 @@ class DataController extends Controller {
         return $datas;
     }
     public function store(Request $request, $app_id) {
-        //验证信息
-      /*
-        要在app_id相同的情形下才判key不重
-        $message = [
-            'key.required' => 'key不能为空!',
-            'value.required' => 'value不能为空!',
-            'key.unique' => 'key不能重复!'
-        ];
-        Validator::make($request->all(),[
-            'key' => 'required'|unique:data,key,
-            'value' => 'required',
-        ], $message)->validate();
-    */
         $data = new Data;
         $data->app_id = $app_id;
         $data->key = $request->key;

@@ -23,9 +23,6 @@ class SystemController extends Controller
         return $system;
     }
     public function store(Request $request, $app_id) {
-        /*
-            表单验证
-        */
         $system = new System;
         $system->app_id = $app_id;
         $system->system = $request->system;

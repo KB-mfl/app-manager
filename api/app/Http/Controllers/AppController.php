@@ -18,15 +18,6 @@ class AppController extends Controller {
         return $apps;
     }
     public function create(Request $request) {
-      //验证信息
-      /*
-        $message = [
-            'name.required' => '名字不能为空!',
-        ];
-        Validator::make($request->all(),[
-            'name' => 'required',
-        ], $message)->validate();
-    */
         $app = new App;
         $app->user_id = 1;
         $app->name = $request->name;

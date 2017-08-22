@@ -1,6 +1,5 @@
 <template>
   <div class="feedbackdetails">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list-1">
       <table>
@@ -42,13 +41,11 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'feedbackdetails',
   components: {
-    Navbar,
-    iTitle
+    Navbar
   },
   data () {
     return {

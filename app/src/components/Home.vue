@@ -1,16 +1,16 @@
 <template>
-  <div id="home">
-    <div class="container" id="container">
-      <div class="content">
-          <p class="p1">管理，</p>
-          <p class="p2">就是那么简单</p>
-      </div>
-      <div class="btns">
-        <button id="btn" @click="Tologin">进入管理界面</button>
-        <button id="btn2" @click="Tologin">登陆</button>
-        <button id="btn3" @click="Toregister">注册</button>
-      </div>
+  <div class="home" @click="Inputback">
+    <div class="welcome">
+      <p class="p1">Find your</p>
+      <p class="p2">favourite <span>App</span> here</p>
     </div>
+    <div class="title">
+      <span>Appname</span>
+    </div>
+    <form class="search">
+      <input type="text" v-model="appname" class="input-default" v-bind:class="{inputback: IsActive }">
+      <p><button name="search" @click="Searchapp">Search</button></p>
+    </form>
   </div>
 </template>
 
@@ -19,110 +19,167 @@ export default {
   name: 'home',
   data () {
     return {
+      appname: '',
+      IsActive: true
     }
   },
   methods: {
-    Tologin: function () {
-      this.$router.push({path: '/Login'})
+    Inputback: function () {
+      this.IsActive = true
     },
-    Toregister: function () {
-      sessionStorage.username = ''
-      sessionStorage.state = ''
-      sessionStorage.apiToken = ''
-      this.$router.push({path: '/Register'})
+    Searchapp: function () {
+      this.$router.push({path: '/' + this.appname})
     }
   }
 }
 </script>
 
 <style scoped>
-.container{
-    width: 100%;
-    height: 100%;
-    background: url("../assets/home.jpg") fixed center no-repeat;
-    background-size: cover;
-    position: absolute;
-    top: 0px;
-    z-index: 999;
-}
-.content{
-    color: #ffffff;
-    font-size: 100px;
-    margin-top: 10%;
-    margin-left: auto;
-    margin-right: auto;
+.welcome{
+  margin: 5% auto;
+  height: auto;
+  width: 100%;
+  font-family: Consolas;
+  font-size: 100px;
 }
 
 .p1{
-  margin-right: 64%;
+  color: #7B55D4;
+  width: auto;
+  height: auto;
+  margin: 0px 50% 0px auto;
 }
 
 .p2{
-  margin-right: 30%;
+  color: #7B55D4;
+  width: auto;
+  height: auto;
+  margin: 0px auto 0px 10%;
 }
 
-.btns{
-  width: 100%;
-  height:auto;
-  margin-top: 2%;
+.p2 span{
+  color: #1E90FF;
+  font-size: 150px;
 }
 
-#btn{
-    width: auto;
-    height: auto;
-    padding: 5px 10px;
-    border-radius: 25px;
-    margin-top: 2%;
-    display: inline-block;
-    color: #FFF;
-    background-color: transparent;
-    border: 0px;
-    font-size: 30px;
-    cursor: pointer;
+.title{
+  width: 90%;
+  height: 0px;
+  margin: 10% auto;
+  border: 1px solid #66ccff;
+  background-color: #66ccff;
 }
 
-#btn:hover{
-    background-color: darkgrey;
+.title span{
+  font-size: 50px;
+  color: #2257c9;
+  display: block;
+  width: 30%;
+  height: auto;
+  margin: 0px auto;
+  position:relative;
+  top: -40px;
+  text-align: center;
+  background: #FFF;
 }
 
-#btn2{
-    width: auto;
-    height: auto;
-    padding: 5px 10px;
-    border-radius: 25px;
-    border: 0 0 2 0px solid #;
-    margin-top: 2%;
-    display: inline-block;
-    color: #FFF;
-    background-color: transparent;
-    border: 0px;
-    font-size: 30px;
-    margin-left: 10%;
-    cursor: pointer;
+input:-webkit-autofill{
+-webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+-webkit-text-fill-color: #000000;
 }
 
-#btn2:hover{
-    background-color: darkgrey;
+.input-default{
+  width: 30%;
+  height: 50px;
+  font-size: 40px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
 }
 
-#btn3{
-    width: auto;
-    height: auto;
-    padding: 5px 10px;
-    border-radius: 25px;
-    border: 0 0 2 0px solid #;
-    margin-top: 2%;
-    display: inline-block;
-    color: #FFF;
-    background-color: transparent;
-    border: 0px;
-    font-size: 30px;
-    margin-right: 30%;
-    margin-left: 5%;
-    cursor: pointer;
+.input-default:focus{
+  width: 30%;
+  height: 50px;
+  font-size: 40px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
+  outline: none;
+  -webkit-animation: actived 0.5s;
+  -webkit-animation-fill-mode: forwards;
 }
 
-#btn3:hover{
-    background-color: darkgrey;
+@-webkit-keyframes actived{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  100% {-webkit-transform:scale(1.5);transform:scale(1.5);}
+}
+
+.inputback{
+  width: 30%;
+  height: 50px;
+  font-size: 40px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #66ccff;
+  caret-color: #66ccff;
+  color: #A2A3A2;
+  text-align: center;
+  vertical-align: middle;
+  outline: none;
+  -webkit-animation: back 1s;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-delay: -0.5s;
+}
+
+@-webkit-keyframes back{
+  0% {-webkit-transform:scale(1);transform:scale(1);}
+  50% {-webkit-transform:scale(1.5);transform:scale(1.5);}
+  100% {-webkit-transform:scale(1);transform:scale(1);}
+}
+
+button{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #73C5FF;
+  border: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5%;
+  border: 1px solid #73C5FF;
+}
+
+button:hover{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #FFF;
+  border: none;
+  color: #73C5FF;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  width: auto;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5%;
+  border: 1px solid #73C5FF;
 }
 </style>

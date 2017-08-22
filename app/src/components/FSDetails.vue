@@ -1,6 +1,5 @@
 <template>
   <div class="fsdetails">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <table>
       <thead>
@@ -31,12 +30,10 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'fsdetails',
   components: {
-    iTitle,
     Navbar
   },
   data () {

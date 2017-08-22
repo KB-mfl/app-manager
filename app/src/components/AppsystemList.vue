@@ -1,6 +1,5 @@
 <template>
   <div class="appsystemlist">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list">
       <table>
@@ -51,7 +50,7 @@
     </p>
     <div class="back_ground" v-show="IsShowNewSystem">
     </div>
-    <div class="container" v-show="IsShowNewSystem"  @click="Inputback">
+    <div class="container" v-show="IsShowNewSystem" @click="Inputback">
       <div class="create">
         <p class="close-p"><button class="close" type="button" name="colse" @click="Close"><Icon type="close-round" size="12"></Icon></button></p>
         <div class="upload">
@@ -65,6 +64,8 @@
               <p><input v-model="identification" class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="identification"></p>
               <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
               <p>{{this.new_file.name}}</p>
+              <p v-if="system === 'IOS'" class="input-p">Download Url</p>
+              <p v-if="system === 'IOS'"><input v-model="download_url" type="text" name="download_url" class="input-default" v-bind:class="{inputback: IsActive }"></p>
             </div>
             <br>
             <button class="btn-save" type="submit" @click="UploadForm($event)">Save</button>
@@ -94,13 +95,11 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'appsystemlist',
   components: {
-    Navbar,
-    iTitle
+    Navbar
   },
   data () {
     return {
@@ -118,16 +117,8 @@ export default {
       identification: '',
       new_file: '',
       new_logo: '',
+      download_url: '',
       SystemList: [
-        {
-          value: 'Windows'
-        },
-        {
-          value: 'Mac'
-        },
-        {
-          value: 'Linux'
-        },
         {
           value: 'IOS'
         },
@@ -244,6 +235,7 @@ export default {
       formData.append('system', this.system)
       formData.append('username', this.username)
       formData.append('apiToken', this.apiToken)
+      formData.append('download_url', this.download_url)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'

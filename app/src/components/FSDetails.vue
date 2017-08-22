@@ -41,7 +41,7 @@ export default {
       Firstscreen: [],
       Columns: ['id', 'app_id', 'created_at', 'updated_at', 'actived'],
       FirstscreenContent: ['content'],
-      Imageurl: ['image_url'],
+      Imageurl: ['image'],
       Fsid: this.$route.params.firstscreenid
     }
   },

@@ -38,7 +38,7 @@ export default {
     Home: function () {
       sessionStorage.appname = ''
       sessionStorage.system = ''
-      this.$router.push({path: '/Admin'})
+      this.$router.push({path: '/'})
     },
     Applist: function () {
       sessionStorage.appname = ''

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Applist from '../components/GetAppList'
-import Home from '../components/Home'
+import Admin from '../components/Admin'
 import Systemlist from '../components/AppsystemList'
 import Feedback from '../components/Feedback'
 import Versionlist from '../components/VersionList'
@@ -11,6 +11,9 @@ import FSDetails from '../components/FSDetails'
 import Register from '../components/Register'
 import Login from '../components/Login'
 import Feedbackdetails from '../components/Feedbackdetails'
+import User from '../components/User'
+import Platform from '../components/Getplatform'
+import Home from '../components/Home'
 
 Vue.use(Router)
 
@@ -33,9 +36,9 @@ export default new Router({
       component: Versionlist
     },
     {
-      path: '/',
-      name: 'Home',
-      component: Home
+      path: '/Admin',
+      name: 'Admin',
+      component: Admin
     },
     {
       path: '/Applist/:id/Feedback',
@@ -71,6 +74,21 @@ export default new Router({
       path: '/Applist/:id/Feedback/:feedbackid/Feedbackdetails',
       name: 'Feedbackdetails',
       component: Feedbackdetails
+    },
+    {
+      path: '/:appname',
+      name: 'Getplatform',
+      component: Platform
+    },
+    {
+      path: '/:appname/:system',
+      name: 'User',
+      component: User
+    },
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
     }
   ]
 })

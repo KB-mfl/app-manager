@@ -1,6 +1,5 @@
 <template>
   <div class="firstscreen">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list">
       <table>
@@ -61,12 +60,10 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'firstscreen',
   components: {
-    iTitle,
     Navbar
   },
   data () {

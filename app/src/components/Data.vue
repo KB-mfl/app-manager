@@ -1,6 +1,5 @@
 <template>
   <div class="data">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <div>
       <div class="list">
@@ -76,13 +75,11 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'data',
   components: {
-    Navbar,
-    iTitle
+    Navbar
   },
   data () {
     return {

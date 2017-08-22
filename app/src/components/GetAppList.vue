@@ -1,6 +1,5 @@
 <template>
   <div class="AppList">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <div>
       <div class="list">
@@ -66,12 +65,10 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'AppList',
   components: {
-    iTitle,
     Navbar
   },
   data () {

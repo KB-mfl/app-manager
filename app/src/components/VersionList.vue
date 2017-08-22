@@ -1,6 +1,5 @@
 <template>
   <div class="versionlist">
-    <iTitle></iTitle>
     <Navbar></Navbar>
     <div class="list">
       <table>
@@ -25,13 +24,16 @@
             <td v-if="IsShowDeletedVersion">
               <button @click="ReviveVersion(row)">Revive</button>
             </td>
-            <td>
+            <td v-if="system !== 'IOS'">
               <form id="download" action="/api/download" method="get">
                 <input type="hidden" name="version_id" v-model="version_id"></input>
                 <input type="hidden" name="apiToken" v-model="apiToken"></input>
                 <input type="hidden" name="username" v-model="username"></input>
                 <button @click="Download(row)"><span>Download</span></button>
               </form>
+            </td>
+            <td v-if="system === 'IOS'">
+              <a :href="row.file_url"><button><span>Download</span></button></a>
             </td>
           </tr>
         </tbody>
@@ -69,13 +71,11 @@
 </template>
 
 <script>
-import iTitle from './Title'
 import Navbar from './Navbar'
 export default {
   name: 'versionlist',
   components: {
-    Navbar,
-    iTitle
+    Navbar
   },
   data () {
     return {

@@ -38,7 +38,7 @@ export default {
     Home: function () {
       sessionStorage.appname = ''
       sessionStorage.system = ''
-      this.$router.push({path: '/'})
+      this.$router.push({path: '/Admin'})
     },
     Applist: function () {
       sessionStorage.appname = ''
@@ -50,6 +50,7 @@ export default {
       sessionStorage.username = ''
       sessionStorage.apiToken = ''
       sessionStorage.appname = ''
+      sessionStorage.system = ''
       console.log(sessionStorage)
       this.$router.push({path: '/Login'})
     }

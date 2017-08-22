@@ -25,8 +25,6 @@ Route::post('register', 'UserController@register');
 
 Route::post('login', 'UserController@login');
 
-//Route::post('logout', 'UserController@logout');
-
 //app
 
 Route::get('applist', 'AppController@show')->middleware('AddTime');
@@ -56,6 +54,8 @@ Route::delete('{app_id}/data', 'DataController@delete')->middleware('Check');
 //feedback
 
 Route::get('{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTime');
+
+Route::get('{user_id}/feedback', 'FeedbackController@showUser')->middleware('AddTime');
 
 Route::post('{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
 
@@ -94,3 +94,5 @@ Route::post('{system_id}/version', 'VersionController@store')->middleware('Check
 Route::delete('{system_id}/version', 'VersionController@delete')->middleware('Check');
 
 Route::put('{system_id}/version', 'VersionController@restore')->middleware('Check');
+
+Route::get('version', 'VersionController@seleteByName')->middleware('AddTime');

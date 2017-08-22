@@ -78,6 +78,11 @@
             <input type="submit">
         </form>
         <h1>version</h1>
+        <form action="/api/version" method="get">
+            app_name:<input type="text" name="app_name">
+            system:<input type="text" name="system_name">
+            <input type="submit" value="get_list">
+        </form>
         <form action="/api/1/version" enctype="multipart/form-data" method="post">
             
             <input type="hidden" name="username" value="admin">

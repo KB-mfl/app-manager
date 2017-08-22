@@ -24,18 +24,18 @@ class AddTime
             $apiToken = ApiToken::where('token', '=', $request->apiToken)->first();
             $user = User::where('username', '=', $request->username)->first();
             if(!$user || !$apiToken) {
-               //return $next($request);
-                return abort(401);
+               return $next($request);
+                //return abort(401);
             }
             else if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now()) {
                 $apiToken->expired_at = Carbon::now()->addMinutes(30);
                 $apiToken->save();
                 return $next($request);
             }
-            //return $next($request);
-            else return abort(401);
+            return $next($request);
+            //else return abort(401);
         }
-        //return $next($request);
-        return abort(401);
+        return $next($request);
+        //return abort(401);
     }
 }

@@ -29,6 +29,6 @@ class Check
             $apiToken->save();
             return $next($request);
         }
-        else abort(401);
+        //else abort(401);
     }
 }

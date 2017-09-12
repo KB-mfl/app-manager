@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Version;
+use App\System;
+use App\App;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,6 +26,11 @@ class DownloadController extends Controller {
     */
     public function show(Request $request) {
         $version = Version::find($request->version_id);
-        return response()->download(realpath(base_path('storage/app')).'/'.$version->file_url);
+        $system = System::find($version->system_id);
+        $app = App::find($system->app_id);
+        $header = [
+            'Content-Type' => 'application/vnd.android.package-archive',
+        ];
+        return response()->download(realpath(base_path('storage/app')).'/'.$version->file_url, $app->name.'.apk', $header);
     }
 }

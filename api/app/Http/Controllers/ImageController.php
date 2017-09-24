@@ -26,6 +26,10 @@ class ImageController extends Controller {
     *       }
     */
     public function store(Request $request, $system_id) {
+        $this->validate($request, [
+            'system_id' => 'required|integer|min:1',
+            'file' => 'required|image',
+        ]);
         $system = System::find($system_id);
         $path = $request->file('file')->store('public/imgs');
         $old_path = $system->logo_url;
@@ -54,6 +58,9 @@ class ImageController extends Controller {
     *       }
     */
     public function show(Request $request, $img_name) {
+        // $this->validate($request, [
+        //     
+        // ]);
         $path = $img_name;
         $path = str_replace("_", '.',$path);
         return response()->file(base_path('storage/app/public/imgs/').$path);

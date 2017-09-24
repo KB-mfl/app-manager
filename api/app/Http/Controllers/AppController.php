@@ -39,6 +39,9 @@ class AppController extends Controller {
     *       }]
     */
     public function show(Request $request) {
+        $this->validate($request, [
+            'want_deleted' => 'nullable|string|in:true,false',
+        ]);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $apps = App::all();
         }
@@ -70,6 +73,9 @@ class AppController extends Controller {
     *       }
     */
     public function create(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
         $app = new App;
         $app->user_id = 1;
         $app->name = $request->name;
@@ -92,6 +98,9 @@ class AppController extends Controller {
     *       []
     */
     public function delete(Request $request, $app_id) {
+        $this->validate($request, [
+            'app_id' => 'required|integer|min:1',
+        ]);
         $app = App::find($request->app_id);
         $app->delete();
         return [];
@@ -119,6 +128,9 @@ class AppController extends Controller {
     *       }
     */
     public function read(Request $request, $app_id) {
+        $this->validate($request, [
+            'app_id' => 'required|integer|min:1',
+        ]);
         $app = App::onlyTrashed()->find($request->app_id);
         $app->restore();
         return $app;

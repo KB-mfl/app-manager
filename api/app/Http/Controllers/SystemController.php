@@ -42,6 +42,9 @@ class SystemController extends Controller
     *       }]
     */
     public function show(Request $request, $app_id) {
+        $this->validate($request, [
+            'want_deleted' => 'nullable|string|in:true,false',
+        ]);
         $app = App::withTrashed()->find($app_id);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $system = $app->system()->get();
@@ -81,6 +84,12 @@ class SystemController extends Controller
     *       }
     */
     public function store(Request $request, $app_id) {
+        $this->validate($request, [
+            'file' => 'required|image',
+            'system' => 'required|string|in:IOS,Android',
+            'identification' => 'required|string',
+            'download_url' => 'required_if:system,IOS|string|regex:/^https?:\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/',
+        ]);
         $system = new System;
         $system->app_id = $app_id;
         $system->system = $request->system;
@@ -113,6 +122,9 @@ class SystemController extends Controller
     *       []
     */
     public function delete(Request $request, $app_id) {
+        $this->validate($request, [
+            'system_id' => 'required|integer|min:1',
+        ]);
         $system = System::find($request->system_id);
         $system->delete();
         return [];
@@ -141,6 +153,9 @@ class SystemController extends Controller
     *       }
     */
     public function restore(Request $request, $app_id) {
+        $this->validate($request, [
+            'system_id' => 'required|integer|min:1',
+        ]);
         $system = System::onlyTrashed()->find($request->system_id);
         $system->restore();
         return $system;

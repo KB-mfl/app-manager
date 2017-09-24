@@ -42,6 +42,11 @@ class UserController extends Controller
     *       }
     */
     public function register(Request $request) {
+        $this->validate($request, [
+            'username' => 'required|string|regex:/^[A-Za-z][A-Za-z0-9_]{5,19}$/',
+            'password' => 'required|string|regex:/^[A-Za-z].{5,25}$/',
+            'admin' => 'nullable|string|in:true,false',
+        ]);
         $user = new User;
         $user->username = $request->username;
         $user->password = bcrypt($request->password);
@@ -74,6 +79,10 @@ class UserController extends Controller
     *       }
     */
     public function login(Request $request) {
+        $this->validate($request, [
+            'username' => 'required|string|regex:/^[A-Za-z][A-Za-z0-9_]{4,19}$/',
+            'password' => 'required|string|regex:/^[A-Za-z].{4,25}$/',
+        ]);
         if(Auth::attempt([
             'username' => $request->username,
             'password' => $request->password,

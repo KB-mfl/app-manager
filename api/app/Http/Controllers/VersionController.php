@@ -46,6 +46,9 @@ class VersionController extends Controller
     *       }]
     */
     public function show(Request $request, $system_id) {
+        $this->validate($request, [
+            'want_deleted' => 'nullable|string|in:true,false',
+        ]);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $versions = Version::where('system_id', '=', $system_id)->take($request->limit)->get();
         }
@@ -83,6 +86,10 @@ class VersionController extends Controller
     *       }
     */
     public function store(Request $request, $system_id) {
+        $this->validate($request, [
+            'file' => 'required|file',//|mimes:apk',//|mimetypes:application/vnd.android.package-archive',
+            'version' => 'required|string',
+        ]);
         $system = System::withTrashed()->find($system_id);
         $now = 0;
         foreach($system->version()->get() as $ver) {
@@ -117,6 +124,9 @@ class VersionController extends Controller
     *      []
     */
     public function delete(Request $request, $system_id) {
+        $this->validate($request, [
+            'version_id' => 'required|integer|min:1',
+        ]);
         $version = Version::find($request->version_id);
         $version->delete();
         return [];
@@ -147,6 +157,9 @@ class VersionController extends Controller
     *       }
     */
     public function restore(Request $request, $system_id) {
+        $this->validate($request, [
+            'version_id' => 'required|integer|min:1',
+        ]);
         $version = Version::onlyTrashed()->find($request->version_id);
         $version->restore();
         return $version;
@@ -182,6 +195,10 @@ class VersionController extends Controller
     *      }
     */
     public function seleteByName(Request $request) {
+        $this->validate($request, [
+            'app_name' => 'required|string',
+            'system_name' => 'required|string|in:IOS,Android',
+        ]);
         $app = App::where('name', '=', $request->app_name)->first();
         if(! $app) abort(404);
         $system = System::where('app_id', '=', $app->id)->where('system', '=', $request->system_name)->first();

@@ -39,6 +39,9 @@ class FirstScreenController extends Controller
     *       }]
     */
     public function show(Request $request, $app_id) {
+        // $this->validate($request, [
+        //     'app_id' => 'required|integer|min:1',
+        // ]);
         $app = App::withTrashed()->find($app_id);
         $first_screens = $app->first_screen;
         foreach($first_screens as $fs) {
@@ -73,6 +76,11 @@ class FirstScreenController extends Controller
     *       }
     */
     public function store(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'file' => 'nullable|image',
+            'content' => 'required|string',
+        ]);
         $app = App::withTrashed()->find($app_id);
         foreach($app->first_screen as $fs) {
             $fs->actived = false;
@@ -116,6 +124,10 @@ class FirstScreenController extends Controller
     *       }
     */
     public function active(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'first_screen_id' => 'required|integer|min:1',
+        ]);
         $app = App::withTrashed()->find($app_id);
         foreach($app->first_screen as $fs) {
             $fs->actived = false;
@@ -142,6 +154,10 @@ class FirstScreenController extends Controller
     *       []
     */
     public function delete(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'first_screen_id' => 'required|integer|min:1',
+        ]);
         $first_screen = FirstScreen::find($request->first_screen_id);
         $first_screen->delete();
         return [];

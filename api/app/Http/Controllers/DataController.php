@@ -37,6 +37,9 @@ class DataController extends Controller {
     *       }]
     */
     public function show(Request $request, $app_id) {
+        // $this->validate($request, [
+        //     'app_id' => 'required|integer|min:1',
+        // ]);
         $app = App::withTrashed()->where('id', '=', $app_id)->first();
         $datas = $app->data()->get();
         return $datas;
@@ -66,6 +69,11 @@ class DataController extends Controller {
     *       }
     */
     public function store(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'key' => 'required|string',
+            'value' => 'required|string',
+        ]);
         $data = new Data;
         $data->app_id = $app_id;
         $data->key = $request->key;
@@ -98,6 +106,12 @@ class DataController extends Controller {
     *       }
     */
     public function change(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'data_id' => 'required|integer|min:1',
+            'key' => 'required|string',
+            'value' => 'required|string',
+        ]);
         $data = Data::find($request['data_id']);
         $data->key = $request->key;
         $data->value = $request->value;
@@ -120,6 +134,10 @@ class DataController extends Controller {
     *       []
     */
     public function delete(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'data_id' => 'required|integer|min:1',
+        ]);
         $data = Data::find($request->data_id);
         $data->delete();
         return [];

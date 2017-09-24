@@ -44,6 +44,9 @@ class FeedbackController extends Controller
     *       }]
     */
     public function showApp(Request $request, $app_id) {
+        // $this->validate($request, [
+        //     'app_id' => 'required|integer|min:1',
+        // ]);
         $app = App::withTrashed()->find($app_id);
         $feedbacks = $app->feedback;
         foreach($feedbacks as $fb) {
@@ -87,7 +90,10 @@ class FeedbackController extends Controller
     *       }]
     */
     public function showUser(Request $request, $user_id) {
-        $user = User::withTrashed()->find($user_id);
+        // $this->validate($request, [
+        //     'user_id' => 'required|integer|min:1',
+        // ]);
+        $user = User::find($user_id);
         $feedbacks = $user->feedback;
         foreach($feedbacks as $fb) {
             $fb['username'] = $user->username;
@@ -121,6 +127,13 @@ class FeedbackController extends Controller
     *       }
     */
     public function store(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'username' => 'required|string',
+            'feedback_id' => 'nullable|integer|min:1',
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
         $feedback = new Feedback;
         $feedback->app_id = $app_id;
         $user_id = User::where('username', '=', $request->username)->first()->id;
@@ -157,6 +170,10 @@ class FeedbackController extends Controller
     *       []
     */
     public function delete(Request $request, $app_id) {
+        $this->validate($request, [
+            // 'app_id' => 'required|integer|min:1',
+            'feedback_id' => 'required|integer|min:1',
+        ]);
         $feedback = Feedback::findOrFail($request->feedback_id);
         $this->clear($feedback);
         return [];

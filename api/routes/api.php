@@ -55,7 +55,7 @@ Route::delete('{app_id}/data', 'DataController@delete')->middleware('Check');
 
 Route::get('{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTime');
 
-Route::get('{user_id}/feedback', 'FeedbackController@showUser')->middleware('AddTime');
+Route::get('user/{user_id}/feedback', 'FeedbackController@showUser')->middleware('AddTime');
 
 Route::post('{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
 

@@ -25,6 +25,11 @@ class DownloadController extends Controller {
     *        the file you want
     */
     public function show(Request $request) {
+        // dd($request);
+        $this->validate($request, [
+            'version_id' => 'required|integer|min:1',
+        ]);
+        // dd($request);
         $version = Version::find($request->version_id);
         $system = System::find($version->system_id);
         $app = App::find($system->app_id);

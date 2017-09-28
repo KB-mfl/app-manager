@@ -37,9 +37,9 @@ export default {
 }
 
 #img{
-  margin-top: 20px;
-  width: 200px;
-  height: 200px;
+  margin-top: 2%;
+  width: 13%;
+  height: 13%;
   display: inline-block;
   -webkit-animation: logo 3s;
 }
@@ -51,14 +51,14 @@ export default {
 
 .content{
   position: absolute;
-  top: 10px;
+  top: 3%;
   width: 100%;
   height: auto;
   color: #2257c9;
 }
 
 .content h1{
-  font-size: 90px;
+  font-size: 600%;
   margin-left: 3%;
   display: inline-block;
   -webkit-animation: words 3s;
@@ -71,7 +71,7 @@ export default {
 
 .content p{
   margin-top: 5%;
-  margin-bottom: 20px;
-  font-size: 30px;
+  margin-bottom: 5%;
+  font-size: 40%;
 }
 </style>

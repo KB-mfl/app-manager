@@ -190,6 +190,7 @@ export default {
       this.IsShowNewFSPush = false
     },
     Back: function () {
+      sessionStorage.appname = ''
       this.$router.push({path: '/Applist'})
     },
     ShowDetails: function (row) {

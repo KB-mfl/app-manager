@@ -40,7 +40,7 @@ export default {
   height: auto;
   width: 100%;
   font-family: Consolas;
-  font-size: 100px;
+  font-size: 800%;
 }
 
 .p1{
@@ -59,7 +59,7 @@ export default {
 
 .p2 span{
   color: #1E90FF;
-  font-size: 150px;
+  font-size: 150%;
 }
 
 .title{
@@ -71,7 +71,7 @@ export default {
 }
 
 .title span{
-  font-size: 50px;
+  font-size: 425%;
   color: #2257c9;
   display: block;
   width: 30%;

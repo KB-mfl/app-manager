@@ -18,6 +18,7 @@ class CreateDataTable extends Migration
             $table->integer('app_id');
             $table->string('key');
             $table->string('value');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

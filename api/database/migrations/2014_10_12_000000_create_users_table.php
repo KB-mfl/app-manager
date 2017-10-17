@@ -21,11 +21,10 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
         DB::table('user')->insert([
-            'username' => 'admin',
+            'username' => 'administrator',
             'password' => bcrypt('admin'),
             'admin' => true,
         ]);
-
     }
 
     /**

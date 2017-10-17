@@ -15,10 +15,14 @@ class CreateVersionTable extends Migration
     {
         Schema::create('version', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('system_id');
+            $table->integer('app_id');
             $table->string('version');
             $table->integer('build');
-            $table->string('file_url');
+            $table->string('apk');
+            $table->string('log')->nullable();
+            $table->string('description');
+            $table->integer('size');
+            $table->string('from')->comment('from which version')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -11,6 +11,9 @@
 |
 */
 
+Route::any('/', function() {
+    return view('welcome');
+});
 Route::any('/test', function() {
     return view('test');
 })->name('mytest');

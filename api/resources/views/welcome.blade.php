@@ -1,95 +1,45 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+<?php
+$url = 'https://itunes.apple.com/lookup?id=1147018708';
+// 1217575505
+// 1147018708
+// 1171676409
+$content = file_get_contents($url);
+$json = json_decode($content);
+$app = $json->results[0];
+// dd($app);
+// $pattern = '/id=[0-9]*/';
+// $pattern2 = '/[0-9]*/';
+// $request = explode('?', substr($url, 0))[1];
+// preg_match_all($pattern, $request, $arr);
+// preg_match_all($pattern2, $arr[0][0], $arr2);
+// $itunes_id = $arr2[0][3];
+$itunes_id = $app->trackId;
+$logo = $app->artworkUrl512;
+$description = $app->description;
+$itunes_url = $app->trackViewUrl;
+$identification = $app->bundleId;
+$version = $app->version;
+$size = $app->fileSizeBytes / 1024 / 1024;
+$size = floor($size * 100) / 100;
+$price = $app->price;
+$coin = $app->currency;
+$author = $app->artistName;
+$releaseDate = $app->releaseDate;
+$currentVersionReleaseDate = $app->currentVersionReleaseDate;
+$log = $app->releaseNotes;
+$data = [
+    'itunes_id' => $itunes_id,
+    'logo' => $logo,
+    'description' => $description,
+    'itunes_url' => $itunes_url,
+    'identification' => $identification,
+    'version' => $version,
+    'updateLog' => $log,
+    'size' => $size,
+    'price' => $price,
+    'coin' => $coin,
+    'author' => $author,
+    'releaseDate' => $releaseDate,
+    'currentVersionReleaseDate' => $currentVersionReleaseDate,
+];
+echo json_encode($data);

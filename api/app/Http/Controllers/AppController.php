@@ -135,4 +135,9 @@ class AppController extends Controller {
         $app->restore();
         return $app;
     }
+
+    public function showadmin(Request $request, $user_id) {
+        dd($request);
+
+    }
 }

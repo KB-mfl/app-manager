@@ -21,7 +21,9 @@ Route::post('login', 'UserController@login');
 
 //app
 
-Route::get('applist', 'AppController@show')->middleware('AddTime');
+Route::get('app', 'AppController@show')->middleware('AddTime');
+
+Route::get('app/{user_id}', 'AppController@showadmin')->middleware('Check');
 
 Route::post('addapp', 'AppController@create')->middleware('Check');
 

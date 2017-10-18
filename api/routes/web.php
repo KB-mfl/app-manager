@@ -11,8 +11,8 @@
 |
 */
 
-Route::any('/', function() {
-    return view('welcome');
+Route::any('/apple', function() {
+    return view('apple');
 });
 Route::any('/test', function() {
     return view('test');

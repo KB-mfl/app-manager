@@ -90,7 +90,7 @@ class UserController extends Controller
             $user = Auth::user();
             $apiToken = new ApiToken();
             $apiToken->token = Uuid::uuid4()->toString();
-            $apiToken->ip = $request->server('REMOTE_ADDR', null);
+            $apiToken->ip = $request->server('HTTP_X_FORWARDED_FOR', $request->server('REMOTE_ADDR', null));
             $apiToken->expired_at = Carbon::now()->addMinutes(30);
             $user->apitokens()->save($apiToken);
             $flag = $user->admin ? true : false;

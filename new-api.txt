@@ -1,68 +1,359 @@
 返回的全为 json 数组
-请求参数前带×表示可以没有
-返回参数前带×表示可能没有
+请求参数前带*表示可以没有
+返回参数前带*表示可能没有
+前带#的表示必须登录之后才能操作
 
-获取用户的 APP 列表
+获取 APP 列表(不包括被软删除的app，给用户看的）
 	Type: GET
-	URL: /api/applist
+	URL: /api/app
 	Request:
-		*want_deleted: bool 是否需要被软删除的app,默认为 false
+		[]
 	return:
 		id: int 唯一自增id
 		name: string APP全称
+		alias: string 短链接
 		deleted_at:	timestamp	不为 null 表示该 APP 被删除
 		created_at: timestamp 表示 APP 首次上传的时间
 		updated_at: timestamp 表示 App 最后一次修改的时间
 
-创建新的 APP (创建成功后需添加新版本)
-	Type: POST
-	URL: /api/addapp
+#获取用户的 APP 列表（给管理这看的，只能看到自己管理的app）
+	Type: GET
+	URL: /api/app/{user_id}
 	Request:
-		name: string APP全称
+		*want_deleted: bool 是否需要被软删除的app，默认为 false
 	return:
 		id: int 唯一自增id
 		name: string APP全称
+		alias: string 短链接
 		deleted_at:	timestamp	不为 null 表示该 APP 被删除
 		created_at: timestamp 表示 APP 首次上传的时间
+		updated_at: timestamp 表示 App 最后一次修改的时间
 
-删除 APP
-	Type: DELETE
-	URL: /api/{app_id}/deleteapp
+获取指定的 APP 信息
+	Type: GET
+	URL: /api/app/{app_id}
 	Request:
-		app_id: unsigned App 的 id
+		[]
+	return:
+		android:	数组或空
+				id: int 唯一自增id
+				app_id: App的id
+				logo: string logo的URL
+				identification: string 辨识号
+				created_at: timestamp 表示首次上传的时间
+				updated_at: timestamp 表示最后一次修改的时间
+				deleted_at: timestamp 不为 null 表示被删除
+		ios:		数组或空
+				id: int 唯一自增id
+				app_id: App的id
+				logo: string logo的URL
+				identification: string 辨识号
+				created_at: timestamp 表示首次上传的时间
+				updated_at: timestamp 表示最后一次修改的时间
+				deleted_at: timestamp 不为 null 表示被删除
+
+#创建新的 APP (创建成功后需添加新版本)
+	Type: POST
+	URL: /api/app/add
+	Request:
+		name: string APP全称
+		alias: string App短链接
+	return:
+		id: int 唯一自增id
+		name: string APP全称
+		alias: string App短链接
+		deleted_at:	timestamp	不为 null 表示该 APP 被删除
+		created_at: timestamp 表示 APP 首次上传的时间
+		updated_at: timestamp 表示 APP 更新的时间
+
+#删除 APP
+	Type: DELETE
+	URL: /api/app/{app_id}/delete
+	Request:
+		app_id: unique App 的 id
 	return:
 		[]
 
-恢复 APP
+#恢复 APP
 	Type: PUT
-	URL: /api/{app_id}/readdapp
+	URL: /api/app/{app_id}/restore
 	Request:
-		app_id: unsigned App 的 id
+		app_id: unique App 的 id
 	return:
 		id: int 唯一自增id
 		name: string APP全称
 		deleted_at:	timestamp	不为 null 表示该 APP 被删除
 		created_at: timestamp 表示 APP 首次上传的时间
 
-上传logo(相当于覆盖)
-	Type: POST
-	URL: /api/{system_id}/image
+APP下载:
+	Type: GET
+	URL: /download
 	Request:
-		system_id: int 对应系统的id
+		version_id: unique 要下载的版本 id
+	return:
+		file: 下载的文件
+
+#上传logo(相当于覆盖)
+	Type: POST
+	URL: /api/image
+	Request:
+		android_id: int 对应安卓系统的id
 		file: img 图片文件
 	return:
 		img_url: string 图片路径
 
 获取logo
 	Type: GET
-	URL: /api/{system_id}/image
+	URL: /api/image
 	Request:
 		img_url: string 图片路径
 	return:
 		file: 图片文件
 
+#安卓:
+	URL: app/{app_id}/android
+	新建:
+		Type: POST
+		Request:
+			file: img logo图片
+			identification: string 唯一标识码
+		return:
+			id: int 唯一自增id
+			app_id: int 对应的 app
+			logo_url: string  logo路径
+			identification: string 唯一标识码
+			created_at: timestamp 表示首次上传的时间
+			updated_at: timestamp 表示最后一次修改的时间
+			deleted_at: timestamp 不为 null 表示被删除
 
-/api/{app_id}
+	删除:
+		Type: DELETE
+		Request:
+			[]
+		return:
+			[]
+
+	恢复:
+		Type: PUT
+		Request:
+			[]
+		return:
+			id: int 唯一自增id
+			app_id: int 对应的 app
+			logo_url: string  logo路径
+			identification: string 唯一标识码
+			created_at: timestamp 表示首次上传的时间
+			updated_at: timestamp 表示最后一次修改的时间
+			deleted_at: timestamp 不为 null 表示被删除
+
+#iOS:
+	URL: app/{app_id}/ios
+
+	新建:
+		Type: POST
+		Request:
+			itunes: string iTunes连接
+		return:
+			id: int 唯一自增id
+			app_id: int 对应的 app
+			logo_url: string  logo路径
+			identification: string 唯一标识码
+			deleted_at: timestamp 不为 null 表示被删除
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+
+	删除:
+		Type: DELETE
+		Request:
+			[]
+		return:
+			[]
+
+	恢复:
+		Type: PUT
+		Request:
+			[]
+		return:
+			id: int 唯一自增id
+			app_id: int 对应的 app
+			logo_url: string  logo路径
+			identification: string 唯一标识码
+			deleted_at: timestamp 不为 null 表示被删除
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+
+
+
+
+
+
+/api/app/{app_id}
+用户反馈:
+	URL: /feedback
+	获取:
+		Type: GET
+		Request:
+			[]
+		return:
+			id: int 唯一自增id
+			user_id: int 对应的用户id
+			app_id: int 对应的app id
+			email: string 邮箱
+			name: string 名字
+			phone: string 电话
+			feedback_id: int nullable 回复的回复id
+			title: string 回复的标题
+			content: string	回复的内容
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+
+	添加:
+		Type: POST
+		Request:
+			name: string 用户的名字
+			phone: string 用户的电话
+			email: string 用户的邮件
+			app_id: int 对应的app id
+			*feedback_id: int nullable 回复的回复id
+			title: string 回复的标题
+			content: string	回复的内容
+		return:
+			id: int 唯一自增id
+			user_id: int 对应的用户id
+			app_id: int 对应的app id
+			email: string 邮箱
+			name: string 名字
+			phone: string 电话
+			feedback_id: int nullable 回复的回复id
+			title: string 回复的标题
+			content: string	回复的内容
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+
+	删除:
+		Type: DELETE
+		Request:
+			feedback_id: int 要删除的评论id
+		return:
+			[]
+
+数据：
+	URL: /data
+	获取：
+		Type: GET
+		Request:
+			[]
+		return:
+			key: string 数据的键名(不能重复）
+			value: string 数据的内容
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+
+	添加:
+		Type: POST
+		Request:
+			key: string 数据的键名
+			value: string 数据的内容
+		return:
+			key: string 数据的键名
+			value: string 数据的内容
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+
+	修改:
+		Type: PUT
+		Request:
+			key: string 数据的键名
+			value: string 数据的新内容
+		return:
+			key: string 数据的键名
+			value: string 数据的内容
+			created_at: timestamp 表示该数据首次上传的时间
+			updated_at: timestamp 表示该数据最后一次修改的时间
+	URL: /data/delete
+	删除:
+		Type: DELETE
+		Request:
+			key: string 想删除的数据的键名
+		return:
+			[]
+
+版本管理：
+	URL: /version
+	获取：
+		Type: GET
+		Request:
+			*want_deleted: bool 是否需要被软删除的版本号，默认为 false
+			*limit: integer 返回最新的几次版本号，默认全返回
+		return:
+			id: int 唯一自增id
+			file_url: string 下载的路径
+			version: string 对外版本号
+			build:  版本的id
+			app_id: string 关联的系统号
+			log: string 更新日志
+			description: string 版本描述
+			size: integer 文件大小
+			from: string 前一个版本号
+			deleted_at:	timestamp	不为 null 表示该版本被删除
+			created_at: timestamp 表示该版本首次上传的时间
+
+	删除：
+		Type: DELETE
+		Request:
+			version_id: unique 要删除的版本 id
+		return:
+			[]
+
+	恢复：
+		Type: PUT
+		Request:
+			version_id: unique 要删除的版本 id
+		return:
+			id: int 唯一自增id
+			file_url: string 下载的路径
+			version: string 对外版本号
+			build:  版本的id
+			app_id: string 关联的系统号
+			log: string 更新日志
+			description: string 版本描述
+			size: integer 文件大小
+			from: string 前一个版本号
+			deleted_at:	timestamp	不为 null 表示该版本被删除
+			created_at: timestamp 表示该版本首次上传的时间
+
+	上传新版本:
+		Type: POST
+		Request:
+			version: string 指定的对外版本号
+			file: file 新版本对应的 App
+			log: string 更新日志
+			description: string 描述
+		return:
+			id: int 唯一自增id
+			file_url: string 下载的路径
+			version: string 对外版本号
+			build:  版本的id
+			app_id: string 关联的系统号
+			log: string 更新日志
+			description: string 版本描述
+			size: integer 文件大小
+			from: string 前一个版本号
+			deleted_at:	timestamp	不为 null 表示该版本被删除
+			created_at: timestamp 表示该版本首次上传的时间
+
+
+/**
+*
+*
+*	下面的暂时不改，不更新
+*
+**/
+
+
+
+
+
 系统:
 	URL: /system
 	获取:
@@ -117,47 +408,6 @@
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-用户反馈:
-	URL: /feedback
-	获取:
-		Type: GET
-		Request:
-			[]
-		return:
-			id: int 唯一自增id
-			user_id: int 对应的用户id
-			app_id: int 对应的app id
-			feedback_id: int nullable 回复的回复id
-			title: string 回复的标题
-			content: string	回复的内容
-			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
-
-	添加:
-		Type: POST
-		Request:
-			user_id: int 对应的用户id
-			app_id: int 对应的app id
-			feedback_id: int nullable 回复的回复id
-			title: string 回复的标题
-			content: string	回复的内容
-		return:
-			id: int 唯一自增id
-			user_id: int 对应的用户id
-			app_id: int 对应的app id
-			feedback_id: int nullable 回复的回复id
-			title: string 回复的标题
-			content: string	回复的内容
-			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
-
-	删除:
-		Type: DELETE
-		Request:
-			feedback_id: int 要删除的评论id
-		return:
-			[]
-
 首屏推送:
 	URL: /first_screen
 	获取:
@@ -207,108 +457,3 @@
 			first_screen_id: 要激活的推送的id
 		return:
 			[]
-
-数据：
-	URL: /data
-	获取：
-		Type: GET
-		Request:
-			[]
-		return:
-			key: string 数据的键名
-			value: string 数据的内容
-			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
-
-	添加:
-		Type: POST
-		Request:
-			key: string 数据的键名
-			value: string 数据的内容
-		return:
-			key: string 数据的键名
-			value: string 数据的内容
-			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
-
-	修改:
-		Type: PUT
-		Request:
-			key: string 数据的键名
-			value: string 数据的新内容
-		return:
-			key: string 数据的键名
-			value: string 数据的内容
-			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
-
-	删除:
-		Type: DELETE
-		Request:
-			key: string 想删除的数据的键名
-		return:
-			[]
-
-
-
-
-/api/{system_id}
-
-版本管理：
-	URL: /version
-	获取：
-		Type: GET
-		Request:
-			*want_deleted: bool 是否需要被软删除的版本号，默认为 false
-			*limit: integer 返回最新的几次版本号，默认全返回
-		return:
-			id: int 唯一自增id
-			file_url: string 下载的路径
-			varsion: string 对外版本号
-			build:  版本的id
-			system_id: string 关联的系统号
-			deleted_at:	timestamp	不为 null 表示该版本被删除
-			created_at: timestamp 表示该版本首次上传的时间
-
-	删除：
-		Type: DELETE
-		Request:
-			version_id: unsigned 要删除的版本 id
-		return:
-			[]
-
-	恢复：
-		Type: PUT
-		Request:
-			version_id: unsigned 要删除的版本 id
-		return:.
-			id: int 唯一自增id
-			file_url: string 下载的路径
-			varsion: string 对外版本号
-			build:  版本的id
-			system_id: string 关联的系统号
-			deleted_at:	timestamp	不为 null 表示该版本被删除
-			created_at: timestamp 表示该版本首次上传的u时间
-
-	上传新版本:
-		Type: POST
-		Request:
-			system_id: int 关联的系统号
-			version: string 指定的对外版本号
-			new_app: file 新版本对应的 App
-		return:
-			id: int 唯一自增id
-			file_url: string 下载的路径
-			varsion: string 对外版本号
-			build:  版本的id
-			system_id: string 关联的系统号
-			deleted_at:	timestamp	不为 null 表示该版本被删除
-			created_at: timestamp 表示该版本首次上传的时间
-
-APP下载:
-	Type: GET
-	URL: /download
-	Request:
-		version_id: unsigned 要下载的版本 id
-	return:
-		file: 下载的文件

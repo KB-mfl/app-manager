@@ -37,21 +37,8 @@ export default {
   height: auto;
 }
 
-.ilink{
-  color: #2c3e50;
-  width: 64%;
-  font-size: 40px;
-  display: inline-block;
-}
-
-.ilink:hover{
-  color: #ffffff;
-  background-color: #5e79e6;
-  box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
-}
-
 .main{
   width: 100%;
-  height: 960px;
+  height: auto;
 }
 </style>

@@ -77,7 +77,7 @@ class AndroidController extends Controller
      */
     public function restore(Request $request, $app_id) {
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
-        $android->restore();
+        if($android->deleted_at !== null) $android->restore();
         $response = [
             'id' => $android->id,
             'app_id' => $app_id,
@@ -108,7 +108,7 @@ class AndroidController extends Controller
      */
     public function delete(Request $request, $app_id) {
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
-        $android->delete();
+        if($android->deleted_at === null) $android->delete();
         return [];
     }
 }

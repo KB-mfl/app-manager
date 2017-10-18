@@ -23,6 +23,7 @@
 		*want_deleted: bool 是否需要被软删除的app，默认为 false
 	return:
 		id: int 唯一自增id
+		user_id: int 代表用户的id
 		name: string APP全称
 		alias: string 短链接
 		deleted_at:	timestamp	不为 null 表示该 APP 被删除

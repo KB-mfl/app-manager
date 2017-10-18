@@ -4,51 +4,53 @@ namespace App\Http\Controllers;
 
 use App\App;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Validator;
 
 class AppController extends Controller {
     /**
-    *  @api {get} /api/applist 获取app列表
+    *  @api {get} /api/app 获取所有app列表(不包括被删除)
     *  @apiName show_app
     *  @apiGroup App
     *  @apiVersion v1.0.0
-    *  @apiParam (nullable) {string="false", "true"} want_deleted 是否获取被软删除的app
+    *  @apiParam (nullable) {null} null 无参数
     *  @apiParamExample {json} [example]
     *  {
-    *    "want_deleted" = "false",
+    *
     *  }
     *  @apiSuccess {json} App 返回所有的app信息
     *  @apiSuccessExample Success-Response:
     *    HTTP/1.1 200 OK
     *       [{
     *        "id": "1",
-    *        "user_id": "1",
     *        "name": "name1",
+    *        "alias": "short-name1",
     *        "deleted_at": null,
     *        "updated_at": "2017-08-21 16:00",
     *        "created_at": "2017-08-21 16:00",
     *       }，
     *       {
     *        "id": "2",
-    *        "user_id": "1",
     *        "name": "name2",
+    *        "alias": "short-name2",
     *        "deleted_at": null,
     *        "updated_at": "2017-08-21 16:00",
     *        "created_at": "2017-08-21 16:00",
     *       }]
     */
     public function show(Request $request) {
-        $this->validate($request, [
-            'want_deleted' => 'nullable|string|in:true,false',
-        ]);
-        if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
-            $apps = App::all();
+        $apps = App::all();
+//        dd($apps);
+        foreach($apps as $key => $app) {
+            $response[$key] = [
+                'id' => $app->id,
+                'name' => $app->name,
+                'alias' => $app->alias,
+                'deteled_at' => null,
+                'updated_at' => $app->updated_at->timestamp,
+                'created_at' => $app->created_at->timestamp,
+            ];
         }
-        else {
-            $apps = App::withTrashed()->get();
-        }
-        return $apps;
+        return $response;
     }
     /**
     *  @api {post} /api/addapp 添加新的app
@@ -99,7 +101,7 @@ class AppController extends Controller {
     *    HTTP/1.1 200 OK
     *       []
     */
-    public function delete(Request $request, $app_id) {
+    public function delete(Request $request) {
         $this->validate($request, [
             'app_id' => 'required|integer|min:1',
         ]);
@@ -137,10 +139,43 @@ class AppController extends Controller {
         $app->restore();
         return $app;
     }
-
+    /**
+     *  @api {get} /api/user/{user_id}/app 获取自己发布的app列表
+     *  @apiName show user's app
+     *  @apiGroup App
+     *  @apiVersion v1.0.0
+     *  @apiParam (Nullable) {boolean=true, false} want_deleted 是否查看被删除的App
+     *  @apiParamExample {json} [example]
+     *  {
+     *      want_deleted: true,
+     *  }
+     *  @apiSuccess {json} App 返回所有的app信息
+     *  @apiSuccessExample Success-Response:
+     *    HTTP/1.1 200 OK
+     *       [{
+     *        "id": "1",
+     *        "name": "name1",
+     *        "alias": "short-name1",
+     *        "deleted_at": "2017-08-21 16:00",
+     *        "updated_at": "2017-08-21 16:00",
+     *        "created_at": "2017-08-21 16:00",
+     *       }，
+     *       {
+     *        "id": "2",
+     *        "name": "name2",
+     *        "alias": "short-name2",
+     *        "deleted_at": null,
+     *        "updated_at": "2017-08-21 16:00",
+     *        "created_at": "2017-08-21 16:00",
+     *       }]
+     */
     public function showadmin(Request $request, $user_id) {
-        dd($request);
-
+        if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
+            $apps = App::where('user_id', '=', $user_id)->get();
+        } else {
+            $apps = App::withTrashed()->where('user_id', '=', $user_id)->get();
+        }
+        return $apps;
     }
     public function showdetail(Request $request, $app_id) {
         dd($request);

@@ -29,35 +29,51 @@ Route::get('app/{app_id}', 'AppController@showdetail')->middleware('AddTime');
 
 Route::post('app/add', 'AppController@store')->middleware('Check');
 
-Route::delete('app/{app_id}/delete', 'AppController@delete')->middleware('Check');
+Route::delete('app/delete', 'AppController@delete')->middleware('Check');
 
-Route::put('{app_id}/readapp', 'AppController@read')->middleware('Check');
+Route::put('app/restore', 'AppController@restore')->middleware('Check');
 
 //image
 
-Route::any('image/{img_name}', 'ImageController@show');//->middleware('AddTime');
+Route::get('image', 'ImageController@show');//->middleware('AddTime');
 
-Route::post('{system_id}/image', 'ImageController@store')->middleware('Check');
+Route::post('image', 'ImageController@store')->middleware('Check');
+
+//android
+
+Route::post('app/{app_id}/android', 'AndroidController@store')->middleware('Check');
+
+Route::delete('app/{app_id}/android', 'AndroidController@delete')->middleware('Check');
+
+Route::put('app/{app_id}/android', 'AndroidController@restore')->middleware('Check');
+
+//ios
+
+Route::post('app/{app_id}/ios', 'IosController@stroe')->middleware('Check');
+
+Route::delete('app/{app_id}/ios', 'IosController@delete')->middleware('Check');
+
+Route::put('app/{app_id}/ios', 'IosController@restore')->middleware('Check');
 
 //data
 
-Route::get('{app_id}/data', 'DataController@show')->middleware('AddTime');
+Route::get('app/{app_id}/data', 'DataController@show')->middleware('AddTime');
 
-Route::post('{app_id}/data', 'DataController@store')->middleware('Check');
+Route::post('app/{app_id}/data', 'DataController@store')->middleware('Check');
 
-Route::put('{app_id}/data', 'DataController@change')->middleware('Check');
+Route::put('app/{app_id}/data', 'DataController@change')->middleware('Check');
 
-Route::delete('{app_id}/data', 'DataController@delete')->middleware('Check');
+Route::delete('app/{app_id}/data', 'DataController@delete')->middleware('Check');
 
 //feedback
 
-Route::get('{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTime');
+Route::get('app/{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTime');
 
 Route::get('user/{user_id}/feedback', 'FeedbackController@showUser')->middleware('AddTime');
 
-Route::post('{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
+Route::post('app/{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
 
-Route::delete('{app_id}/feedback', 'FeedbackController@delete')->middleware('CheckFeedback');
+Route::delete('app/{app_id}/feedback', 'FeedbackController@delete')->middleware('CheckFeedback');
 
 //first_screen
 
@@ -85,12 +101,12 @@ Route::get('download', 'DownloadController@show')->middleware('AddTime');
 
 //version
 
-Route::get('{system_id}/version', 'VersionController@show')->middleware('AddTime');
+Route::get('app/{app_id}/version', 'VersionController@show')->middleware('AddTime');
 
-Route::post('{system_id}/version', 'VersionController@store')->middleware('Check');
+Route::post('app/{app_id}/version', 'VersionController@store')->middleware('Check');
 
-Route::delete('{system_id}/version', 'VersionController@delete')->middleware('Check');
+Route::delete('app/{app_id}/version', 'VersionController@delete')->middleware('Check');
 
-Route::put('{system_id}/version', 'VersionController@restore')->middleware('Check');
+Route::put('app/{app_id}/version', 'VersionController@restore')->middleware('Check');
 
 Route::get('version', 'VersionController@seleteByName')->middleware('AddTime');

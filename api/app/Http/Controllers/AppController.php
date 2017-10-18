@@ -75,10 +75,12 @@ class AppController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required|string',
+            'alias' => 'required|string',
         ]);
         $app = new App;
-        $app->user_id = 1;
+        $app->user_id = $request->now_user->id;
         $app->name = $request->name;
+        $app->alias = $request->alias;
         $app->save();
         return $app;
     }
@@ -127,7 +129,7 @@ class AppController extends Controller {
     *        "created_at": "2017-08-21 16:00",
     *       }
     */
-    public function read(Request $request, $app_id) {
+    public function restore(Request $request, $app_id) {
         $this->validate($request, [
             'app_id' => 'required|integer|min:1',
         ]);

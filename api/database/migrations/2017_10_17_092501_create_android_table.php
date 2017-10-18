@@ -18,6 +18,7 @@ class CreateAndroidTable extends Migration
             $table->integer('app_id');
             $table->string('logo')->nullable();
             $table->string('identification');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

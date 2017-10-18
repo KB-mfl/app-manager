@@ -28,14 +28,14 @@
         <h1>app</h1>
         <form action="/api/addapp" enctype="multipart/form-data" method="post">
             
-            <input type="hidden" name="username" value="qiankaihua">
-            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
+            <input type="hidden" name="username" value="administrator">
+            <input type="hidden" name="apiToken" value="e3d45037-743a-415a-9aeb-361ebad99d20">
             name:<input type="text" name="name">
             <input type="submit">
         </form>
         <form action="/api/applist" method="get">
-            <input type="hidden" name="username" value="qiankaihua">
-            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
+            <input type="hidden" name="username" value="administrator">
+            <input type="hidden" name="apiToken" value="e3d45037-743a-415a-9aeb-361ebad99d20">
             has_deleted<input type="checkbox" name="want_deleted" value="true">
             list<input type="submit">
         </form>
@@ -153,8 +153,8 @@
         <h1>FirstScreen</h1>
         <form action="api/1/first_screen" enctype="multipart/form-data" method="post">
 
-            <input type="hidden" name="username" value="qiankaihua">
-            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
+            <input type="hidden" name="username" value="administrator">
+            <input type="hidden" name="apiToken" value="e3d45037-743a-415a-9aeb-361ebad99d20">
             content:<input type="text" name="content">
             img:<input type="file" name="file" id="file">
             <input type="submit">
@@ -179,8 +179,8 @@
         <form action="api/1/feedback" method="post">
 
             <input type="hidden" name="user_id" value="2">
-            <input type="hidden" name="username" value="qiankaihua">
-            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
+            <input type="hidden" name="username" value="administrator">
+            <input type="hidden" name="apiToken" value="e3d45037-743a-415a-9aeb-361ebad99d20">
             title:<input type="text" name="title">
             content:<input type="text" name="content">
             feedback_id<input type="text" name="feedback_id">
@@ -189,19 +189,18 @@
         <form action="api/1/feedback" method="get">
             
             <input type="hidden" name="user_id" value="2">
-            <input type="hidden" name="username" value="qiankaihua">
-            <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
+            <input type="hidden" name="username" value="administrator">
+            <input type="hidden" name="apiToken" value="e3d45037-743a-415a-9aeb-361ebad99d20">
             list:<input type="submit">
         </form>
         <form action="api/1/feedback" method="post">
 
             <input type="hidden" name="user_id" value="2">
-            <input type="hidden" name="username" value="qiankaihua">
+            <input type="hidden" name="username" value="administrator">
             <input type="hidden" name="apiToken" value="a5860f3d-36b9-48b7-a2dd-48f07accda8a">
             <input type="hidden" name="_method" value="DELETE" size="50" />
             delete<input type="text" name="feedback_id">
             <input type="submit">
         </form>
-        <!--a href='192.168.1.101:8000/app/apps' download='robots.txt' target='_blank'>xiazai</a-->
     </body>
 </html>

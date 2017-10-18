@@ -1,5 +1,5 @@
 <?php
-$url = 'https://itunes.apple.com/lookup?id=1147018708';
+$url = 'https://itunes.apple.com/lookup?id=1217575505';
 // 1217575505
 // 1147018708
 // 1171676409
@@ -16,6 +16,7 @@ $app = $json->results[0];
 $itunes_id = $app->trackId;
 $logo = $app->artworkUrl512;
 $description = $app->description;
+$alias = $app->trackCensoredName;
 $itunes_url = $app->trackViewUrl;
 $identification = $app->bundleId;
 $version = $app->version;
@@ -30,6 +31,7 @@ $log = $app->releaseNotes;
 $data = [
     'itunes_id' => $itunes_id,
     'logo' => $logo,
+    'alias' => $alias,
     'description' => $description,
     'itunes_url' => $itunes_url,
     'identification' => $identification,

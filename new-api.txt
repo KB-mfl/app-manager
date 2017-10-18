@@ -16,9 +16,9 @@
 		created_at: timestamp 表示 APP 首次上传的时间
 		updated_at: timestamp 表示 App 最后一次修改的时间
 
-#获取用户的 APP 列表（给管理这看的，只能看到自己管理的app）
+#获取用户的 APP 列表（给管理者看的，只能看到自己管理的app）
 	Type: GET
-	URL: /api/app/{user_id}
+	URL: /api/user/{user_id}/app
 	Request:
 		*want_deleted: bool 是否需要被软删除的app，默认为 false
 	return:

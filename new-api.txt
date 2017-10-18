@@ -68,7 +68,7 @@
 
 #删除 APP
 	Type: DELETE
-	URL: /api/app/{app_id}/delete
+	URL: /api/app/delete
 	Request:
 		app_id: unique App 的 id
 	return:
@@ -76,7 +76,7 @@
 
 #恢复 APP
 	Type: PUT
-	URL: /api/app/{app_id}/restore
+	URL: /api/app/restore
 	Request:
 		app_id: unique App 的 id
 	return:

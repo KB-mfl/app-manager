@@ -33,7 +33,7 @@
 	Type: GET
 	URL: /api/app/{app_id}
 	Request:
-		[]
+		*want_deleted: bool 是否需要被软删除的系统版本，默认为 false
 	return:
 		android:	数组或空
 				id: int 唯一自增id

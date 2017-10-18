@@ -29,6 +29,6 @@ class CreateIosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExist('ios');
+        Schema::dropIfExists('ios');
     }
 }

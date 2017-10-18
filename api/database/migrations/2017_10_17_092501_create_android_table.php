@@ -16,7 +16,7 @@ class CreateAndroidTable extends Migration
         Schema::create('android', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('app_id');
-            $table->string('logo')->nullable();
+            $table->string('logo_url')->nullable();
             $table->string('identification');
             $table->softDeletes();
             $table->timestamps();
@@ -30,6 +30,6 @@ class CreateAndroidTable extends Migration
      */
     public function down()
     {
-        Schema::dorpIfExists('android');
+        Schema::dropIfExists('android');
     }
 }

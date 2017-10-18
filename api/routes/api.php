@@ -23,11 +23,13 @@ Route::post('login', 'UserController@login');
 
 Route::get('app', 'AppController@show')->middleware('AddTime');
 
-Route::get('app/{user_id}', 'AppController@showadmin')->middleware('Check');
+Route::get('user/{user_id}/app', 'AppController@showadmin')->middleware('Check');
 
-Route::post('addapp', 'AppController@create')->middleware('Check');
+Route::get('app/{app_id}', 'AppController@showdetail')->middleware('AddTime');
 
-Route::delete('{app_id}/deleteapp', 'AppController@delete')->middleware('Check');
+Route::post('app/add', 'AppController@store')->middleware('Check');
+
+Route::delete('app/{app_id}/delete', 'AppController@delete')->middleware('Check');
 
 Route::put('{app_id}/readapp', 'AppController@read')->middleware('Check');
 

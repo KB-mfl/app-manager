@@ -72,7 +72,7 @@ class AppController extends Controller {
     *        "created_at": "2017-08-21 16:00",
     *       }
     */
-    public function create(Request $request) {
+    public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required|string',
         ]);
@@ -139,5 +139,8 @@ class AppController extends Controller {
     public function showadmin(Request $request, $user_id) {
         dd($request);
 
+    }
+    public function showdetail(Request $request, $app_id) {
+        dd($request);
     }
 }

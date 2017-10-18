@@ -230,7 +230,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	删除:
+	#删除:
 		Type: DELETE
 		Request:
 			feedback_id: int 要删除的评论id
@@ -249,7 +249,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	添加:
+	#添加:
 		Type: POST
 		Request:
 			key: string 数据的键名
@@ -260,7 +260,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	修改:
+	#修改:
 		Type: PUT
 		Request:
 			key: string 数据的键名
@@ -271,7 +271,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 	URL: /data/delete
-	删除:
+	#删除:
 		Type: DELETE
 		Request:
 			key: string 想删除的数据的键名
@@ -298,14 +298,14 @@ APP下载:
 			deleted_at:	timestamp	不为 null 表示该版本被删除
 			created_at: timestamp 表示该版本首次上传的时间
 
-	删除：
+	#删除：
 		Type: DELETE
 		Request:
 			version_id: unique 要删除的版本 id
 		return:
 			[]
 
-	恢复：
+	#恢复：
 		Type: PUT
 		Request:
 			version_id: unique 要删除的版本 id
@@ -322,7 +322,7 @@ APP下载:
 			deleted_at:	timestamp	不为 null 表示该版本被删除
 			created_at: timestamp 表示该版本首次上传的时间
 
-	上传新版本:
+	#上传新版本:
 		Type: POST
 		Request:
 			version: string 指定的对外版本号
@@ -370,7 +370,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	新建:
+	#新建:
 		Type: POST
 		Request:
 			app_id: int 对应的 app
@@ -387,14 +387,14 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	删除:
+	#删除:
 		Type: DELETE
 		Request:
 			system_id: 要删除的系统id
 		return:
 			[]
 
-	恢复:
+	#恢复:
 		Type: PUT
 		Request:
 			system_id: 要恢复的系统id
@@ -423,7 +423,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	上传(默认会激活最新上传的推送):
+	#上传(默认会激活最新上传的推送):
 		Type: POST
 		Request:
 			app_id: int 对应的app id
@@ -438,7 +438,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	激活:
+	#激活:
 		Type: PUT
 		Request:
 			first_screen_id: 要激活的推送的id
@@ -451,7 +451,7 @@ APP下载:
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
 
-	删除:
+	#删除:
 		Type: DELETE
 		Request:
 			first_screen_id: 要激活的推送的id

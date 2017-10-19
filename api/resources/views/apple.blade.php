@@ -1,5 +1,5 @@
 <?php
-$url = 'https://itunes.apple.com/lookup?id=1217575505';
+$url = 'https://itunes.apple.com/lookup?id=1171676409';
 // 1217575505
 // 1147018708
 // 1171676409
@@ -13,21 +13,20 @@ $app = $json->results[0];
 // preg_match_all($pattern, $request, $arr);
 // preg_match_all($pattern2, $arr[0][0], $arr2);
 // $itunes_id = $arr2[0][3];
-$itunes_id = $app->trackId;
-$logo = $app->artworkUrl512;
-$description = $app->description;
-$alias = $app->trackCensoredName;
-$itunes_url = $app->trackViewUrl;
-$identification = $app->bundleId;
-$version = $app->version;
-$size = $app->fileSizeBytes / 1024 / 1024;
-$size = floor($size * 100) / 100;
-$price = $app->price;
-$coin = $app->currency;
-$author = $app->artistName;
-$releaseDate = $app->releaseDate;
-$currentVersionReleaseDate = $app->currentVersionReleaseDate;
-$log = $app->releaseNotes;
+$itunes_id = isset($app->trackId) ? $app->trackId : null;
+$logo = isset($app->artworkUrl512) ? $app->artworkUrl512 : null;
+$description = isset($app->description) ? $app->description : null;
+$alias = isset($app->trackCensoredName) ? $app->trackCensoredName : null;
+$itunes_url = isset($app->trackViewUrl) ? $app->trackViewUrl : null;
+$identification = isset($app->bundleId) ? $app->bundleId : null;
+$version = isset($app->version) ? $app->version : null;
+$size = isset($app->fileSizeBytes) ? $app->fileSizeBytes : null;
+$price = isset($app->price) ? $app->price : null;
+$coin = isset($app->currency) ? $app->currency : null;
+$author = isset($app->artistName) ? $app->artistName : null;
+$releaseDate = isset($app->releaseDate) ? $app->releaseDate : null;
+$currentVersionReleaseDate = isset($app->currentVersionReleaseDate) ? $app->currentVersionReleaseDate : null;
+$log = isset($app->releaseNotes) ? $app->releaseNotes : null;
 $data = [
     'itunes_id' => $itunes_id,
     'logo' => $logo,

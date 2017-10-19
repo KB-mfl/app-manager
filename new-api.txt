@@ -36,17 +36,31 @@
 	Request:
 		*want_deleted: bool 是否需要被软删除的系统版本，默认为 false
 	return:
-		android:	数组或空
+		id: int APP的id
+		name: string App的全称
+		alias: string App的简写
+		deleted_at:	timestamp	不为 null 表示该 APP 被删除
+		created_at: timestamp 表示 APP 首次上传的时间
+		updated_at: timestamp 表示 App 最后一次修改的时间
+		ios:		数组或null
 				id: int 唯一自增id
-				app_id: App的id
+				itunes_url: string 详细信息的网页，下载页面
+				itunes_id: int iTunes官网编号
+				alias: string 名称缩写
+				description: string App描述
+				version: string 版本号
+				log: string 更新日志
+				size: int 文件大小
+				price: float 价格
+				coin: string 货币单位
+				author: string 作者
 				logo: string logo的URL
 				identification: string 辨识号
 				created_at: timestamp 表示首次上传的时间
 				updated_at: timestamp 表示最后一次修改的时间
 				deleted_at: timestamp 不为 null 表示被删除
-		ios:		数组或空
+		android:	数组或null
 				id: int 唯一自增id
-				app_id: App的id
 				logo: string logo的URL
 				identification: string 辨识号
 				created_at: timestamp 表示首次上传的时间

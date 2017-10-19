@@ -12,8 +12,8 @@ class AndroidController extends Controller
      *  @apiName new android
      *  @apiGroup Android
      *  @apiVersion v1.0.0
-     *  @apiParam (Must) {string} identification 唯一标识码
-     *  @apiParam (Must) {image} file logo图片
+     *  @apiParam (MUST) {string} identification 唯一标识码
+     *  @apiParam (MUST) {image} file logo图片
      *  @apiParamExample {json} [example]
      *  {
      *      "file": "xxx.jpg",

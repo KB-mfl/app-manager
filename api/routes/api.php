@@ -49,7 +49,7 @@ Route::put('app/{app_id}/android', 'AndroidController@restore')->middleware('Che
 
 //ios
 
-Route::post('app/{app_id}/ios', 'IosController@stroe')->middleware('Check');
+Route::post('app/{app_id}/ios', 'IosController@store')->middleware('Check');
 
 Route::delete('app/{app_id}/ios', 'IosController@delete')->middleware('Check');
 

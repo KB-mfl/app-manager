@@ -14,11 +14,10 @@ class FeedbackController extends Controller
     *  @apiName view_feedback
     *  @apiGroup Feedback
     *  @apiVersion v2.0.0
-    *  @apiParam (MUST) {integer} app_id 要查看反馈的app的id
-    *  @apiParam (MUST) {string} name 用户的名字
+    *  @apiParam (null) {null} null 无参数
     *  @apiParamExample {json} [example]
     *  {
-    *    "app_id": "1",
+    *
     *  }
     *  @apiSuccess {json} Feedback 返回指定app的所有反馈信息
     *  @apiSuccessExample Success-Response:
@@ -47,12 +46,9 @@ class FeedbackController extends Controller
     *       }]
     */
     public function showApp(Request $request, $app_id) {
-        $this->validate($request, [
-            'app_id' => 'integer|min:1'
-        ]);
         $app = App::withTrashed()->find($app_id);
         if(! $app) abort(404);
-        $response = null;
+        $response = [];
         $feedbacks = $app->feedback;
         foreach($feedbacks as $key => $fb) {
             $response[$key] = [
@@ -151,7 +147,8 @@ class FeedbackController extends Controller
         ];
         return $response;
     }
-    private function clear(Feedback $feedback) {
+    private function clear(Feedback $feedback = null) {
+        if($feedback === null) return;
         foreach($feedback->replyFrom as $fb) {
             $this->clear($fb);
         }
@@ -159,11 +156,11 @@ class FeedbackController extends Controller
         return;
     }
     /**
-    *  @api {delete} /api/{app_id}/feedback 删除反馈以及回复该反馈的反馈
+    *  @api {delete} /api/app/{app_id}/feedback 删除反馈以及回复该反馈的反馈
     *  @apiName delete_feedback
     *  @apiGroup Feedback
-    *  @apiVersion v1.0.0
-    *  @apiParam (must) {integer} feedback_id 要删除的反馈id
+    *  @apiVersion v2.0.0
+    *  @apiParam (MUST) {integer} feedback_id 要删除的反馈id
     *  @apiParamExample {json} [example]
     *  {
     *    "feedback_id": "1",
@@ -175,10 +172,9 @@ class FeedbackController extends Controller
     */
     public function delete(Request $request, $app_id) {
         $this->validate($request, [
-            // 'app_id' => 'required|integer|min:1',
             'feedback_id' => 'required|integer|min:1',
         ]);
-        $feedback = Feedback::findOrFail($request->feedback_id);
+        $feedback = Feedback::find($request->feedback_id);
         $this->clear($feedback);
         return [];
     }

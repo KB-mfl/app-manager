@@ -72,7 +72,7 @@
 	URL: /api/app/add
 	Request:
 		name: string APP全称
-		alias: string App短链接
+		alias: string App短链接 unique
 	return:
 		id: int 唯一自增id
 		name: string APP全称
@@ -97,6 +97,7 @@
 	return:
 		id: int 唯一自增id
 		name: string APP全称
+		alias: string APP简称
 		deleted_at:	timestamp	不为 null 表示该 APP 被删除
 		created_at: timestamp 表示 APP 首次上传的时间
 
@@ -119,9 +120,9 @@ APP下载:
 
 获取logo
 	Type: GET
-	URL: /api/image
+	URL: /api/image/img_name
 	Request:
-		img_url: string 图片路径
+		[]
 	return:
 		file: 图片文件
 
@@ -211,39 +212,35 @@ APP下载:
 			[]
 		return:
 			id: int 唯一自增id
-			user_id: int 对应的用户id
 			app_id: int 对应的app id
 			email: string 邮箱
 			name: string 名字
 			phone: string 电话
 			feedback_id: int nullable 回复的回复id
 			title: string 回复的标题
-			content: string	回复的内容
+			contents: string 回复的内容
 			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
 
 	添加:
 		Type: POST
 		Request:
 			name: string 用户的名字
-			phone: string 用户的电话
+			phone: string 用户的电话(限定手机)
 			email: string 用户的邮件
 			app_id: int 对应的app id
 			*feedback_id: int nullable 回复的回复id
 			title: string 回复的标题
-			content: string	回复的内容
+			contents: string 回复的内容
 		return:
 			id: int 唯一自增id
-			user_id: int 对应的用户id
 			app_id: int 对应的app id
 			email: string 邮箱
 			name: string 名字
 			phone: string 电话
 			feedback_id: int nullable 回复的回复id
 			title: string 回复的标题
-			content: string	回复的内容
+			contents: string 回复的内容
 			created_at: timestamp 表示该数据首次上传的时间
-			updated_at: timestamp 表示该数据最后一次修改的时间
 
 	#删除:
 		Type: DELETE

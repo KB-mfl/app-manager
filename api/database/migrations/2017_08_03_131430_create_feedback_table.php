@@ -21,7 +21,7 @@ class CreateFeedbackTable extends Migration
             $table->string('phone');
             $table->integer('feedback_id')->nullable();
             $table->string('title');
-            $table->string('content');
+            $table->string('contents');
             $table->timestamps();
         });
     }

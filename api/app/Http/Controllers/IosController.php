@@ -11,7 +11,7 @@ class IosController extends Controller
      *  @api {post} /api/app/{app_id}/ios 上传iOS版本资料
      *  @apiName new iOS
      *  @apiGroup Ios
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (MUST) {string} itunes iTunes连接URL
      *  @apiParamExample {json} [example]
      *  {
@@ -32,7 +32,10 @@ class IosController extends Controller
      */
     public function store(Request $request, $app_id) {
         $this->validate($request, [
-            'itunes' => 'required|string',
+            'itunes' => [
+                'required',
+                'string',
+            ],
         ]);
         $ios = new Ios;
         $pattern = '/id[0-9]*/';
@@ -66,7 +69,7 @@ class IosController extends Controller
      *  @api {delete} /api/app/{app_id}/ios 删除iOS版本
      *  @apiName delete iOS
      *  @apiGroup Ios
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (null) {null} null 无参数
      *  @apiParamExample {json} [example]
      *  {
@@ -75,9 +78,7 @@ class IosController extends Controller
      *  @apiSuccess {json} iOS 返回添加的iOS信息
      *  @apiSuccessExample Success-Response:
      *    HTTP/1.1 200 OK
-     *       {
-     *
-     *       }
+     *       []
      */
     public function delete(Request $request, $app_id) {
         $ios = Ios::withTrashed()->where('app_id', '=', $app_id)->first();
@@ -88,7 +89,7 @@ class IosController extends Controller
      *  @api {put} /api/app/{app_id}/ios 恢复iOS版本
      *  @apiName restore iOS
      *  @apiGroup Ios
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (null) {null} null 无参数
      *  @apiParamExample {json} [example]
      *  {

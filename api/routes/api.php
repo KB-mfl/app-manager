@@ -71,7 +71,7 @@ Route::get('app/{app_id}/feedback', 'FeedbackController@showApp')->middleware('A
 
 Route::post('app/{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
 
-Route::delete('app/{app_id}/feedback', 'FeedbackController@delete')->middleware('CheckFeedback');
+Route::delete('app/{app_id}/feedback', 'FeedbackController@delete')->middleware('Check');
 
 //first_screen
 

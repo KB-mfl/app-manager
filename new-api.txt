@@ -256,6 +256,8 @@ APP下载:
 		Request:
 			[]
 		return:
+			id: integer data的id
+			app_id: integer 数据属于的app的id
 			key: string 数据的键名(不能重复）
 			value: string 数据的内容
 			created_at: timestamp 表示该数据首次上传的时间
@@ -264,9 +266,10 @@ APP下载:
 	#添加:
 		Type: POST
 		Request:
-			key: string 数据的键名
+			key: string 数据的键名 unique
 			value: string 数据的内容
 		return:
+			id: integer data的id
 			key: string 数据的键名
 			value: string 数据的内容
 			created_at: timestamp 表示该数据首次上传的时间
@@ -275,18 +278,20 @@ APP下载:
 	#修改:
 		Type: PUT
 		Request:
-			key: string 数据的键名
+			data_id: integer 要改变的data的id
+			key: string 数据的键名 unique
 			value: string 数据的新内容
 		return:
+			id: integer data的id
 			key: string 数据的键名
 			value: string 数据的内容
 			created_at: timestamp 表示该数据首次上传的时间
 			updated_at: timestamp 表示该数据最后一次修改的时间
-	URL: /data/delete
+
 	#删除:
 		Type: DELETE
 		Request:
-			key: string 想删除的数据的键名
+			data_id: integer 想删除的数据的id
 		return:
 			[]
 

@@ -6,14 +6,13 @@ use App\Android;
 use App\App;
 use App\Ios;
 use Illuminate\Http\Request;
-use Validator;
 
 class AppController extends Controller {
     /**
     *  @api {get} /api/app 获取所有app列表(不包括被删除)
     *  @apiName show_app
     *  @apiGroup App
-    *  @apiVersion v1.0.0
+    *  @apiVersion v2.0.0
     *  @apiParam (null) {null} null 无参数
     *  @apiParamExample {json} [example]
     *  {
@@ -41,6 +40,7 @@ class AppController extends Controller {
     */
     public function show(Request $request) {
         $apps = App::all();
+        $response = [];
         foreach($apps as $key => $app) {
             $response[$key] = [
                 'id' => $app->id,
@@ -57,18 +57,20 @@ class AppController extends Controller {
     *  @api {post} /api/addapp 添加新的app
     *  @apiName add_app
     *  @apiGroup App
-    *  @apiVersion v1.0.0
+    *  @apiVersion v2.0.0
     *  @apiParam (MUST) {string} name App的名字
+    *  @apiParam (MUST) {string} alias App的短链接
     *  @apiParamExample {json} [example]
     *  {
     *    "name": "name3",
+    *    "alias": "short-name3"
     *  }
     *  @apiSuccess {json} App 返回新增app信息
     *  @apiSuccessExample Success-Response:
     *    HTTP/1.1 200 OK
     *       {
     *        "id": "3",
-    *        "user_id": "1",
+    *        "alias": "short-name3",
     *        "name": "name3",
     *        "deleted_at": null,
     *        "updated_at": "2017-08-21 16:00",
@@ -78,20 +80,28 @@ class AppController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required|string',
-            'alias' => 'required|string',
+            'alias' => 'required|string|unique:app,alias',
         ]);
         $app = new App;
         $app->user_id = $request->now_user->id;
         $app->name = $request->name;
         $app->alias = $request->alias;
         $app->save();
-        return $app;
+        $response = [
+            'id' => $app->id,
+            'name' => $app->name,
+            'alias' => $app->alias,
+            'deleted_at' => null,
+            'updated_at' => $app->updated_at->timestamp,
+            'created_at' => $app->created_at->timestamp,
+        ];
+        return $response;
     }
     /**
-    *  @api {delete} /api/{app_id}/deleteapp 软删除指定app
+    *  @api {delete} /api/app/delete 软删除指定app
     *  @apiName delete_app
     *  @apiGroup App
-    *  @apiVersion v1.0.0
+    *  @apiVersion v2.0.0
     *  @apiParam (MUST) {integer} app_id App的id
     *  @apiParamExample {json} [example]
     *  {
@@ -106,15 +116,15 @@ class AppController extends Controller {
         $this->validate($request, [
             'app_id' => 'required|integer|min:1',
         ]);
-        $app = App::find($request->app_id);
-        $app->delete();
+        $app = App::withTrashed()->find($request->app_id);
+        if($app->deleted_at === null) $app->delete();
         return [];
     }
     /**
-    *  @api {put} /api/{app_id}/readapp 恢复指定的app
-    *  @apiName readd_app
+    *  @api {put} /api/app/restore 恢复指定的app
+    *  @apiName restore_app
     *  @apiGroup App
-    *  @apiVersion v1.0.0
+    *  @apiVersion v2.0.0
     *  @apiParam (MUST) {integer} app_id App的id
     *  @apiParamExample {json} [example]
     *  {
@@ -125,26 +135,26 @@ class AppController extends Controller {
     *    HTTP/1.1 200 OK
     *       {
     *        "id": "3",
-    *        "user_id": "1",
     *        "name": "name3",
+    *        "alias": "short-name3",
     *        "deleted_at": null,
     *        "updated_at": "2017-08-21 16:00",
     *        "created_at": "2017-08-21 16:00",
     *       }
     */
-    public function restore(Request $request, $app_id) {
+    public function restore(Request $request) {
         $this->validate($request, [
             'app_id' => 'required|integer|min:1',
         ]);
-        $app = App::onlyTrashed()->find($request->app_id);
-        $app->restore();
+        $app = App::withTrashed()->find($request->app_id);
+        if($app->deleted_at !== null) $app->restore();
         return $app;
     }
     /**
      *  @api {get} /api/user/{user_id}/app 获取自己发布的app列表
      *  @apiName show user's app
      *  @apiGroup App
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (Nullable) {boolean=true, false} want_deleted 是否查看被删除的App
      *  @apiParamExample {json} [example]
      *  {
@@ -180,6 +190,7 @@ class AppController extends Controller {
             if($user_id === 1) $apps = App::withTranshed()->all();
             else $apps = App::withTrashed()->where('user_id', '=', $user_id)->get();
         }
+        $response = [];
         foreach($apps as $key => $app) {
             if($app->deleted_at === null) $deltime = null;
             else $deltime = strtotime($app->deleted_at);
@@ -199,7 +210,7 @@ class AppController extends Controller {
      *  @api {get} /api/app/{app_id} 获取指定app的详细信息
      *  @apiName show app's detail
      *  @apiGroup App
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (Nullable) {boolean=true, false} want_deleted 是否查看被删除的系统
      *  @apiParamExample {json} [example]
      *  {
@@ -209,7 +220,8 @@ class AppController extends Controller {
      *  @apiSuccessExample Success-Response:
      *    HTTP/1.1 200 OK
      *       {
-     *          "id": "1",
+     *          "id": 1,
+     *          "user_id": 1,
      *          "name": "xxxx",
      *          "alias": "xx",
      *          "deleted_at": "2017-08-21 16:00",
@@ -217,9 +229,8 @@ class AppController extends Controller {
      *          "created_at": "2017-08-21 16:00",
      *          "android":
      *          {
-     *              "id": "1",
-     *              "app_id": "1",
-     *              "logo": "public/imgs/xxxxxx.jpg",
+     *              "id": 1,
+     *              "logo": "xxxxxx_jpg",
      *              "identification": "com.xxx.xxxx.xx.cn",
      *              "deleted_at": "2017-08-21 16:00",
      *              "updated_at": "2017-08-21 16:00",
@@ -227,9 +238,18 @@ class AppController extends Controller {
      *          },
      *          "ios":
      *          {
-     *              "id": "1",
-     *              "app_id": "1",
-     *              "logo": "public/imgs/xxxxxx2.jpg",
+     *              "id": 1,
+     *              "itunes_url": "http://itunes.apple.com/xxx/idxxxx"
+     *              "alias": "short_name_ios",
+     *              "logo": "http://xxxxxx2.jpg",
+     *              "description": "app's description",
+     *              "identification": "com.xxx.xxxx.xx.cn",
+     *              "version": "v1.0.1",
+     *              "log": "update_log_info",
+     *              "size": 1235532,
+     *              "price": 0.00,
+     *              "coin": "USD",
+     *              "author": "xxx",
      *              "deleted_at": "2017-08-21 16:00",
      *              "updated_at": "2017-08-21 16:00",
      *              "created_at": "2017-08-21 16:00",
@@ -303,6 +323,8 @@ class AppController extends Controller {
             $response['ios'] = null;
         }
         if($android !== null) {
+            $android->logo_url = str_replace("public/imgs/", "", $android->logo_url);
+            $android->logo_url = str_replace(".", '_',$android->logo_url);
             $response['android'] = [
                 'id' => $android->id,
                 'identification' => $android->inentification,

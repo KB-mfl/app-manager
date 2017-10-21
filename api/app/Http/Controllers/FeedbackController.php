@@ -13,8 +13,9 @@ class FeedbackController extends Controller
     *  @api {get} /api/{app_id}/feedback 查看app反馈列表
     *  @apiName view_feedback
     *  @apiGroup Feedback
-    *  @apiVersion v1.0.0
-    *  @apiParam (must) {integer} app_id 要查看反馈的app的id
+    *  @apiVersion v2.0.0
+    *  @apiParam (MUST) {integer} app_id 要查看反馈的app的id
+    *  @apiParam (MUST) {string} name 用户的名字
     *  @apiParamExample {json} [example]
     *  {
     *    "app_id": "1",
@@ -25,127 +26,130 @@ class FeedbackController extends Controller
     *       [{
     *        "id": "1",
     *        "app_id": "1",
-    *        "user_id": "1",
+    *        "email": "example1@gmail.com",
+    *        "name": "example1",
+    *        "phone": "13700000000",
     *        "title": "title1",
-    *        "content": "this is content",
+    *        "contents": "this is content",
     *        "feedback_id": null,
-    *        "updated_at": "2017-08-21 16:00",
     *        "created_at": "2017-08-21 16:00",
     *       },
     *       {
     *        "id": "2",
     *        "app_id": "1",
-    *        "user_id": "1",
+    *        "email": "example2@gmail.com",
+    *        "name": "example2",
+    *        "phone": "13700000001",
     *        "title": "title2",
-    *        "content": "this is content",
+    *        "contents": "this is content2",
     *        "feedback_id": "1",
-    *        "updated_at": "2017-08-21 16:00",
     *        "created_at": "2017-08-21 16:00",
     *       }]
     */
     public function showApp(Request $request, $app_id) {
-        // $this->validate($request, [
-        //     'app_id' => 'required|integer|min:1',
-        // ]);
+        $this->validate($request, [
+            'app_id' => 'integer|min:1'
+        ]);
         $app = App::withTrashed()->find($app_id);
+        if(! $app) abort(404);
+        $response = null;
         $feedbacks = $app->feedback;
-        foreach($feedbacks as $fb) {
-            $name = $fb->user()->first()->username;
-            $fb['username'] = $name;
+        foreach($feedbacks as $key => $fb) {
+            $response[$key] = [
+                'id' => $fb->id,
+                'app_id' => $fb->app_id,
+                'email' => $fb->email,
+                'name' => $fb->name,
+                'phone' => $fb->phone,
+                'feedback_id' => $fb->feedback_id,
+                'title' => $fb->title,
+                'contents' => $fb->contents,
+                'created_at' => $fb->created_at->timestamp,
+            ];
         }
-        return $feedbacks;
+        return $response;
     }
     /**
-    *  @api {get} /api/{user_id}/feedback 查看用户反馈列表
-    *  @apiName user_feedback
+    *  @api {post} /api/app/{app_id}/feedback 添加反馈
+    *  @apiName add_feedback
     *  @apiGroup Feedback
-    *  @apiVersion v1.0.0
-    *  @apiParam (must) {integer} user_id 要查看反馈的用户的id
+    *  @apiVersion v2.0.0
+    *  @apiParam (MUST) {string} name 用户的名字
+    *  @apiParam (MUST) {string} phone 用户的手机号
+    *  @apiParam (MUST) {string} email 用户的邮箱
+    *  @apiParam (MUST) {string} title 评论的标题
+    *  @apiParam (MUST) {string} contents 评论的内容
+    *  @apiParam (Nullable) {integer} feedback_id 回复评论的id
     *  @apiParamExample {json} [example]
     *  {
-    *    "user_id": "1",
+    *    "name": "Zhangsan",
+    *    "phone": "13958000000",
+    *    "email": "zhangsan@app.com",
+    *    "title": "title1",
+    *    "contents": "this is content",
     *  }
-    *  @apiSuccess {json} Feedback 返回指定用户的所有反馈信息
+    *  @apiParamExample {json} [example2]
+    *  {
+    *    "name": "Zhaosi",
+    *    "phone": "13458000000",
+    *    "email": "zhaosi@app.com",
+    *    "title": "title2",
+    *    "contents": "this is content, too",
+    *    "feedback_id": 1,
+    *  }
+    *  @apiSuccess {json} Feedback 返回新增评论信息
     *  @apiSuccessExample Success-Response:
     *    HTTP/1.1 200 OK
-    *       [{
-    *        "id": "1",
-    *        "app_id": "1",
-    *        "user_id": "1",
-    *        "title": "title1",
-    *        "content": "this is content",
-    *        "feedback_id": null,
-    *        "updated_at": "2017-08-21 16:00",
-    *        "created_at": "2017-08-21 16:00",
-    *       },
     *       {
     *        "id": "2",
     *        "app_id": "1",
-    *        "user_id": "1",
-    *        "title": "title2",
-    *        "content": "this is content",
-    *        "feedback_id": "1",
-    *        "updated_at": "2017-08-21 16:00",
-    *        "created_at": "2017-08-21 16:00",
-    *       }]
-    */
-    public function showUser(Request $request, $user_id) {
-        // $this->validate($request, [
-        //     'user_id' => 'required|integer|min:1',
-        // ]);
-        $user = User::find($user_id);
-        $feedbacks = $user->feedback;
-        foreach($feedbacks as $fb) {
-            $fb['username'] = $user->username;
-        }
-        return $feedbacks;
-    }
-    /**
-    *  @api {post} /api/{app_id}/feedback 添加反馈
-    *  @apiName add_feedback
-    *  @apiGroup Feedback
-    *  @apiVersion v1.0.0
-    *  @apiParam (nullable) {file} file 首屏的图片
-    *  @apiParam (must) {string} content 首屏的文字内容
-    *  @apiParamExample {json} [example]
-    *  {
-    *    "content": "this is content",
-    *    "file": my_first_screen_image,
-    *  }
-    *  @apiSuccess {json} Feedback 返回新增首屏信息
-    *  @apiSuccessExample Success-Response:
-    *    HTTP/1.1 200 OK
-    *       {
-    *        "id": "3",
-    *        "app_id": "1",
-    *        "user_id": "1",
-    *        "title": "title3"
-    *        "content": "this is content",
-    *        "feedback_id": null,
-    *        "updated_at": "2017-08-21 16:00",
+    *        "name": "Zhaosi",
+    *        "phone": "13458000000",
+    *        "email": "zhaosi@app.com",
+    *        "title": "title2"
+    *        "contents": "this is content, too",
+    *        "feedback_id": 1,
     *        "created_at": "2017-08-21 16:00",
     *       }
     */
     public function store(Request $request, $app_id) {
         $this->validate($request, [
-            // 'app_id' => 'required|integer|min:1',
-            'username' => 'required|string',
+            'name' => 'required|string',
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^1(3|4|5|7|8)[0-9]{9}$/',
+            ],
+            'email' => 'required|email',
             'feedback_id' => 'nullable|integer|min:1',
             'title' => 'required|string',
-            'content' => 'required|string',
+            'contents' => 'required|string',
         ]);
         $feedback = new Feedback;
         $feedback->app_id = $app_id;
-        $user_id = User::where('username', '=', $request->username)->first()->id;
-        $feedback->user_id = $user_id;
+        $feedback->name = $request->name;
+        $feedback->email = $request->email;
+        $feedback->phone = $request->phone;
         $feedback->feedback_id = null;
         if(isset($request['feedback_id']) && $request->feedback_id !== null && $request->feedback_id !== '') {
-            $feedback->feedback_id = $request->feedback_id;
+            $temp_fb = Feedback::find($request->feedback_id);
+            if($temp_fb !== null) $feedback->feedback_id = $request->feedback_id;
         }
         $feedback->title = $request->title;
-        $feedback->content = $request->content;
+        $feedback->contents = $request->contents;
         $feedback->save();
-        return $feedback;
+        $response = [
+            'id' => $feedback->id,
+            'app_id' => $app_id,
+            'email' => $feedback->email,
+            'name' => $feedback->name,
+            'phone' => $feedback->phone,
+            'feedback_id' => $feedback->feedback_id,
+            'title' => $feedback->title,
+            'contents' => $feedback->contents,
+            'created_at' => $feedback->created_at->timestamp,
+        ];
+        return $response;
     }
     private function clear(Feedback $feedback) {
         foreach($feedback->replyFrom as $fb) {

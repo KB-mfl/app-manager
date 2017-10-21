@@ -35,7 +35,7 @@ Route::put('app/restore', 'AppController@restore')->middleware('Check');
 
 //image
 
-Route::get('image', 'ImageController@show');//->middleware('AddTime');
+Route::get('image/{image_name}', 'ImageController@show');//->middleware('AddTime');
 
 Route::post('image', 'ImageController@store')->middleware('Check');
 
@@ -68,8 +68,6 @@ Route::delete('app/{app_id}/data', 'DataController@delete')->middleware('Check')
 //feedback
 
 Route::get('app/{app_id}/feedback', 'FeedbackController@showApp')->middleware('AddTime');
-
-Route::get('user/{user_id}/feedback', 'FeedbackController@showUser')->middleware('AddTime');
 
 Route::post('app/{app_id}/feedback', 'FeedbackController@store')->middleware('AddTime');
 

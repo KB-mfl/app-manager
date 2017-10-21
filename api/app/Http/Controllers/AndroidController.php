@@ -11,7 +11,7 @@ class AndroidController extends Controller
      *  @api {post} /api/app/{app_id}/android 上传Android版本资料
      *  @apiName new android
      *  @apiGroup Android
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (MUST) {string} identification 唯一标识码
      *  @apiParam (MUST) {image} file logo图片
      *  @apiParamExample {json} [example]
@@ -42,6 +42,8 @@ class AndroidController extends Controller
         $android->identification = $request->identification;
         $android->logo_url = $path;
         $android->save();
+        $android->logo_url = str_replace("public/imgs/", "", $android->logo_url);
+        $android->logo_url = str_replace(".", '_',$android->logo_url);
         $response = [
             'id' => $android->id,
             'app_id' => $app_id,
@@ -57,7 +59,7 @@ class AndroidController extends Controller
      *  @api {put} /api/app/{app_id}/android 恢复Android版本
      *  @apiName restore android
      *  @apiGroup Android
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (null) {null} null 无参数
      *  @apiParamExample {json} [example]
      *  {
@@ -69,7 +71,7 @@ class AndroidController extends Controller
      *       {
      *        "id": "1",
      *        "app_id": "1",
-     *        "logo_url": "public/imgs/xxxxxx.jpg",
+     *        "logo_url": "xxxxxx_jpg",
      *        "deleted_at": null,
      *        "updated_at": "2017-08-21 16:00",
      *        "created_at": "2017-08-21 16:00",
@@ -78,6 +80,8 @@ class AndroidController extends Controller
     public function restore(Request $request, $app_id) {
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
         if($android->deleted_at !== null) $android->restore();
+        $android->logo_url = str_replace("public/imgs/", "", $android->logo_url);
+        $android->logo_url = str_replace(".", '_',$android->logo_url);
         $response = [
             'id' => $android->id,
             'app_id' => $app_id,
@@ -93,7 +97,7 @@ class AndroidController extends Controller
      *  @api {delete} /api/app/{app_id}/android 删除Android版本
      *  @apiName delete android
      *  @apiGroup Android
-     *  @apiVersion v1.0.0
+     *  @apiVersion v2.0.0
      *  @apiParam (null) {null} null 无参数
      *  @apiParamExample {json} [example]
      *  {
@@ -102,9 +106,7 @@ class AndroidController extends Controller
      *  @apiSuccess {json} Android 返回保存的Android信息
      *  @apiSuccessExample Success-Response:
      *    HTTP/1.1 200 OK
-     *       {
-     *
-     *       }
+     *       []
      */
     public function delete(Request $request, $app_id) {
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();

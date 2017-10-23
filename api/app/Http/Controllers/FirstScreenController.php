@@ -94,7 +94,7 @@ class FirstScreenController extends Controller
         }
         $first_screen = new FirstScreen;
         $first_screen->actived = true;
-        $first_screen->content = $request->content;
+        $first_screen->content = $request['content'];
         $first_screen->app_id = $app_id;
         $first_screen->image_url = $path;
         $first_screen->save();

@@ -22,9 +22,9 @@ class UserController extends Controller
     *  @api {post} /api/register 注册新用户
     *  @apiName add_new_user
     *  @apiGroup User
-    *  @apiVersion v1.0.0
-    *  @apiParam (must) {string} username 用户名
-    *  @apiParam (must) {string} password 密码
+    *  @apiVersion v2.0.0
+    *  @apiParam (MUST) {string} username 用户名
+    *  @apiParam (MUST) {string} password 密码
     *  @apiParamExample {json} [example]
     *  {
     *    "username" = "example",
@@ -44,7 +44,7 @@ class UserController extends Controller
     public function register(Request $request) {
         $this->validate($request, [
             'username' => 'required|string|regex:/^[A-Za-z][A-Za-z0-9_]{5,19}$/',
-            'password' => 'required|string|regex:/^[A-Za-z].{4,19}$/',
+            'password' => 'required|string',
             'admin' => 'nullable|string|in:true,false',
         ]);
         $user = new User;
@@ -61,9 +61,9 @@ class UserController extends Controller
     *  @api {post} /api/login 用户登录
     *  @apiName user_login
     *  @apiGroup User
-    *  @apiVersion v1.0.0
-    *  @apiParam (must) {string} username 用户名
-    *  @apiParam (must) {string} password 密码
+    *  @apiVersion v2.0.0
+    *  @apiParam (MUST) {string} username 用户名
+    *  @apiParam (MUST) {string} password 密码
     *  @apiParamExample {json} [example]
     *  {
     *    "username" = "example",
@@ -81,7 +81,7 @@ class UserController extends Controller
     public function login(Request $request) {
         $this->validate($request, [
             'username' => 'required|string|regex:/^[A-Za-z][A-Za-z0-9_]{4,19}$/',
-            'password' => 'required|string|regex:/^[A-Za-z].{4,19}$/',
+            'password' => 'required|string',
         ]);
         if(Auth::attempt([
             'username' => $request->username,
@@ -101,7 +101,8 @@ class UserController extends Controller
                 'admin' => $flag,
             ]);
         }
-        return ['status' => Auth::check(),
+        return [
+                'status' => Auth::check(),
                 'username' => $request->username,
                 'apiToken' => '',
                 ];

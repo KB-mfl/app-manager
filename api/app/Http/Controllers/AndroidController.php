@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Android;
+use App\App;
 use Illuminate\Http\Request;
 
 class AndroidController extends Controller
@@ -36,6 +37,9 @@ class AndroidController extends Controller
             'file' => 'required|file',
             'identification' => 'string|required|unique:android,identification',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $path = $request->file('file')->store('public/imgs');
         $android = new Android;
         $android->app_id = $app_id;
@@ -78,10 +82,12 @@ class AndroidController extends Controller
      *       }
      */
     public function restore(Request $request, $app_id) {
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
+        if($android === null) abort(404);
         if($android->deleted_at !== null) $android->restore();
-        $android->logo_url = str_replace("public/imgs/", "", $android->logo_url);
-        $android->logo_url = str_replace(".", '_',$android->logo_url);
         $response = [
             'id' => $android->id,
             'app_id' => $app_id,
@@ -109,7 +115,11 @@ class AndroidController extends Controller
      *       []
      */
     public function delete(Request $request, $app_id) {
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
+        if($android) abort(404);
         if($android->deleted_at === null) $android->delete();
         return [];
     }

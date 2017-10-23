@@ -83,6 +83,9 @@ class DataController extends Controller {
             'key' => 'required|string',
             'value' => 'required|string',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $data = new Data;
         $has = Data::where('app_id', '=', $app_id)->where('key', '=', $request->key)->first();
         if($has !== null) abort(555);
@@ -131,7 +134,11 @@ class DataController extends Controller {
             'key' => 'required|string',
             'value' => 'required|string',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $data = Data::find($request['data_id']);
+        if($data === null) abort(404);
         if(isset($request['key']) && $request['key'] !== null) {
             $has = Data::where('app_id', '=', $app_id)->where('key', '=', $request->key)->first();
             if($has !== null && $has->id != $request->data_id) abort(555);
@@ -168,8 +175,11 @@ class DataController extends Controller {
         $this->validate($request, [
             'data_id' => 'required|integer|min:1',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $data = Data::find($request->data_id);
-        if(! $data) abort(404);
+        if($data === null) abort(404);
         $data->delete();
         return [];
     }

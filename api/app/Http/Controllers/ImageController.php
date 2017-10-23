@@ -34,6 +34,7 @@ class ImageController extends Controller {
             'file' => 'required|image',
         ]);
         $android = Android::find($request->android_id);
+        if($android === null) abort(404);
         $path = $request->file('file')->store('public/imgs');
         $old_path = $android->logo_url;
         $android->logo_url = $path;

@@ -29,7 +29,9 @@ class DownloadController extends Controller {
             'version_id' => 'required|integer|min:1',
         ]);
         $version = Version::find($request->version_id);
+        if($version === null) abort(404);
         $app = App::find($version->app_id);
+        if($app === null) abort(404);
         $header = [
             'Content-Type' => 'application/vnd.android.package-archive',
         ];

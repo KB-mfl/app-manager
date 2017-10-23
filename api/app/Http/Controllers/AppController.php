@@ -117,6 +117,8 @@ class AppController extends Controller {
             'app_id' => 'required|integer|min:1',
         ]);
         $app = App::withTrashed()->find($request->app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         if($app->deleted_at === null) $app->delete();
         return [];
     }
@@ -147,8 +149,18 @@ class AppController extends Controller {
             'app_id' => 'required|integer|min:1',
         ]);
         $app = App::withTrashed()->find($request->app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         if($app->deleted_at !== null) $app->restore();
-        return $app;
+        $response = [
+            'id' => $app->id,
+            'name' => $app->name,
+            'alias' => $app->alias,
+            'deleted_at' => null,
+            'updated_at' => $app->updated_at->timestamp,
+            'created_at' => $app->created_at->timestamp,
+        ];
+        return $response;
     }
     /**
      *  @api {get} /api/user/{user_id}/app 获取自己发布的app列表
@@ -183,6 +195,9 @@ class AppController extends Controller {
      *       }]
      */
     public function showadmin(Request $request, $user_id) {
+        $this->validate($request, [
+            'want_deleted' => 'nullable',
+        ]);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             if($user_id === 1) $apps = App::all();
             else $apps = App::where('user_id', '=', $user_id)->get();
@@ -256,6 +271,9 @@ class AppController extends Controller {
      *          }
      */
     public function showdetail(Request $request, $app_id) {
+        $this->validate($request, [
+            'want_deleted' => 'nullable',
+        ]);
         $app = App::withTrashed()->find($app_id);
         if(! $app) abort(404);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
@@ -265,6 +283,17 @@ class AppController extends Controller {
             $ios = Ios::withTrashed()->where('app_id', '=', $app_id)->first();
             $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
         }
+        if($app->deleted_at === null) $deltime = null;
+        else $deltime = strtotime($app->deleted_at);
+        $response = [
+            'id' => $app->id,
+            'user_id' => $app->user_id,
+            'name' => $app->name,
+            'alias' => $app->alias,
+            'deleted_at' => $deltime,
+            'updated_at' => $app->updated_at->timestamp,
+            'created_at' => $app->created_at->timestamp,
+        ];
         if($ios !== null) {
             $pattern = '/id[0-9]*/';
             $pattern2 = '/[0-9]*/';
@@ -288,19 +317,7 @@ class AppController extends Controller {
             $releaseDate = isset($ios_info->releaseDate) ? strtotime($ios_info->releaseDate) : null;
             $currentVersionReleaseDate = isset($ios_info->currentVersionReleaseDate) ? strtotime($ios_info->currentVersionReleaseDate) : null;
             $log = isset($ios_info->releaseNotes) ? $ios_info->releaseNotes : null;
-        }
-        if($app->deleted_at === null) $deltime = null;
-        else $deltime = strtotime($app->deleted_at);
-        $response = [
-            'id' => $app->id,
-            'user_id' => $app->user_id,
-            'name' => $app->name,
-            'alias' => $app->alias,
-            'deleted_at' => $deltime,
-            'updated_at' => $app->updated_at->timestamp,
-            'created_at' => $app->created_at->timestamp,
-        ];
-        if($ios !== null) {
+            /**/
             $response['ios'] = [
                 'id' => $ios->id,
                 'itunes_url' => $ios->itunes,

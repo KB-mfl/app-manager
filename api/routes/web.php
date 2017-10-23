@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 Route::any('/apple', function() {
     return view('apple');
 });
@@ -21,13 +25,3 @@ Route::any('/test', function() {
 Route::any('/test2', function() {
     return view('test2');
 })->name('mytest2');
-
-
-
-Route::post('register', 'UserController@register');
-
-Route::post('login', 'UserController@login');
-
-Route::post('logout', 'UserController@logout');
-
-Route::get('check', 'UserController@check');

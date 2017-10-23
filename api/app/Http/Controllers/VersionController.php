@@ -62,6 +62,8 @@ class VersionController extends Controller
             'want_deleted' => 'nullable|string|in:true,false',
             'limit' => 'nullable|integer|min:1',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             $versions = Version::where('app_id', '=', $app_id)->take($request->limit)->get();
         }
@@ -70,9 +72,6 @@ class VersionController extends Controller
         }
         $response = [];
         foreach($versions as $key => $version) {
-            $from = null;
-            $last = Version::withTrashed()->where('app_id', '=', $app_id)->where('build', '=', $version->build - 1)->get();
-            if($last !== null) $from = $last->version;
             if($version->deleted_at === null) $deltime = null;
             else $deltime = strtotime($version->deleted_at);
             $response[$key] = [
@@ -133,8 +132,10 @@ class VersionController extends Controller
             'description' => 'required|string',
         ]);
         $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $now = 0;
-        foreach($app->version()->get() as $ver) {
+        foreach($app->version as $ver) {
             if($ver->build > $now) {
                 $now = $ver->build;
             }
@@ -189,7 +190,11 @@ class VersionController extends Controller
         $this->validate($request, [
             'version_id' => 'required|integer|min:1',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $version = Version::withTrashed()->find($request->version_id);
+        if($version === null) abort(404);
         if($version->deleted_at === null) $version->delete();
         return [];
     }
@@ -225,11 +230,12 @@ class VersionController extends Controller
         $this->validate($request, [
             'version_id' => 'required|integer|min:1',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $version = Version::withTrashed()->find($request->version_id);
+        if($version === null) abort(404);
         if($version->deleted_at !== null) $version->restore();
-        $from = null;
-        $last = Version::withTrashed()->where('app_id', '=', $app_id)->where('build', '=', $version->build - 1)->get();
-        if($last !== null) $from = $last->version;
         $response = [
             'id' => $version->id,
             'apk' => $version->apk,
@@ -239,7 +245,7 @@ class VersionController extends Controller
             'log' => $version->log,
             'description' => $version->description,
             'size' => $version->size,
-            'from' => $from,
+            'from' => $version->from,
             'created_at' => $version->created_at->timestamp,
             'deleted_at' => null,
         ];

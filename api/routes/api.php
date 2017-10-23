@@ -23,7 +23,7 @@ Route::post('login', 'UserController@login');
 
 Route::get('app', 'AppController@show')->middleware('AddTime');
 
-Route::get('user/{user_id}/app', 'AppController@showadmin')->middleware('Check');
+Route::get('user/{user_id}/app', 'AppController@showadmin')->middleware('AddTime');
 
 Route::get('app/{app_id}', 'AppController@showdetail')->middleware('AddTime');
 
@@ -35,7 +35,7 @@ Route::put('app/restore', 'AppController@restore')->middleware('Check');
 
 //image
 
-Route::get('image/{image_name}', 'ImageController@show');//->middleware('AddTime');
+Route::get('image/{image_name}', 'ImageController@show');
 
 Route::post('image', 'ImageController@store')->middleware('Check');
 

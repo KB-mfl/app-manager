@@ -47,7 +47,7 @@ class FeedbackController extends Controller
     */
     public function showApp(Request $request, $app_id) {
         $app = App::withTrashed()->find($app_id);
-        if(! $app) abort(404);
+        if($app === null) abort(404);
         $response = [];
         $feedbacks = $app->feedback;
         foreach($feedbacks as $key => $fb) {
@@ -121,6 +121,8 @@ class FeedbackController extends Controller
             'title' => 'required|string',
             'contents' => 'required|string',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
         $feedback = new Feedback;
         $feedback->app_id = $app_id;
         $feedback->name = $request->name;
@@ -174,6 +176,9 @@ class FeedbackController extends Controller
         $this->validate($request, [
             'feedback_id' => 'required|integer|min:1',
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $feedback = Feedback::find($request->feedback_id);
         $this->clear($feedback);
         return [];

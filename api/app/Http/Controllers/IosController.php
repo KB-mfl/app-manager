@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ios;
+use App\App;
 use Illuminate\Http\Request;
 
 class IosController extends Controller
@@ -37,6 +38,8 @@ class IosController extends Controller
                 'string',
             ],
         ]);
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
         $ios = new Ios;
         $pattern = '/id[0-9]*/';
         $pattern2 = '/[0-9]*/';
@@ -81,7 +84,11 @@ class IosController extends Controller
      *       []
      */
     public function delete(Request $request, $app_id) {
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $ios = Ios::withTrashed()->where('app_id', '=', $app_id)->first();
+        if($ios === null) abort(404);
         if($ios->deleted_at === null) $ios->delete();
         return [];
     }
@@ -109,7 +116,11 @@ class IosController extends Controller
      *       }
      */
     public function restore(Request $request, $app_id) {
+        $app = App::withTrashed()->find($app_id);
+        if($app === null) abort(404);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $ios = Ios::withTrashed()->where('app_id', '=', $app_id)->first();
+        if($ios === null) abort(404);
         if($ios->deleted_at !== null) $ios->restore();
         $pattern = '/id[0-9]*/';
         $pattern2 = '/[0-9]*/';

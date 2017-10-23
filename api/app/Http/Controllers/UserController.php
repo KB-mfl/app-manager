@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\ApiToken;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
@@ -80,7 +78,7 @@ class UserController extends Controller
     */
     public function login(Request $request) {
         $this->validate($request, [
-            'username' => 'required|string|regex:/^[A-Za-z][A-Za-z0-9_]{4,19}$/',
+            'username' => 'required|string|regex:/^[A-Za-z][A-Za-z0-9_]{5,19}$/',
             'password' => 'required|string',
         ]);
         if(Auth::attempt([

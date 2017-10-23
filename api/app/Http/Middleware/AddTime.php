@@ -6,7 +6,6 @@ use Closure;
 use App\User;
 use App\ApiToken;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AddTime
@@ -18,24 +17,20 @@ class AddTime
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if(isset($request->apiToken) && isset($request->username)) {
             $apiToken = ApiToken::where('token', '=', $request->apiToken)->first();
             $user = User::where('username', '=', $request->username)->first();
-            if(!$user || !$apiToken) {
-               return $next($request);
-                //return abort(401);
-            }
-            else if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now()) {
+            if($user === null || $apiToken === null) return $next($request);
+            if($user->id === $apiToken->user_id && $apiToken->expired_at >= Carbon::now()
+                && $apiToken->ip === $request->server('HTTP_X_FORWARDED_FOR', $request->server('REMOTE_ADDR', null))) {
                 $apiToken->expired_at = Carbon::now()->addMinutes(30);
                 $apiToken->save();
                 return $next($request);
             }
             return $next($request);
-            //else return abort(401);
         }
         return $next($request);
-        //return abort(401);
     }
 }

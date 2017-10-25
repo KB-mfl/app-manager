@@ -119,7 +119,7 @@ class AndroidController extends Controller
         if($app === null) abort(404);
         if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
-        if($android) abort(404);
+        if($android === null) abort(404);
         if($android->deleted_at === null) $android->delete();
         return [];
     }

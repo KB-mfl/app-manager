@@ -30,5 +30,6 @@ class Check
             $request->now_user = $user;
             return $next($request);
         }
+        abort(401);
     }
 }

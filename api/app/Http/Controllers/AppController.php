@@ -54,7 +54,7 @@ class AppController extends Controller {
         return $response;
     }
     /**
-    *  @api {post} /api/addapp 添加新的app
+    *  @api {post} /api/app/add 添加新的app
     *  @apiName add_app
     *  @apiGroup App
     *  @apiVersion v2.0.0
@@ -344,7 +344,7 @@ class AppController extends Controller {
             $android->logo_url = str_replace(".", '_',$android->logo_url);
             $response['android'] = [
                 'id' => $android->id,
-                'identification' => $android->inentification,
+                'identification' => $android->identification,
                 'logo' => $android->logo_url,
                 'created_at' => $android->created_at->timestamp,
                 'updated_at' => $android->updated_at->timestamp,

@@ -12,7 +12,7 @@
             admin<input type="checkbox" name="admin" value="true">
             <input type="submit" value="register">
         </form>
-        <form action="/login" method="post">
+        <form action="/api/login" method="post">
             name:<input type="text" name="username">
             password:<input type="password" placeholder="password" name="password">
             <input type="submit" value="login">
@@ -83,12 +83,14 @@
             system:<input type="text" name="system_name">
             <input type="submit" value="get_list">
         </form>
-        <form action="/api/1/version" enctype="multipart/form-data" method="post">
+        <form action="/api/app/1/version" enctype="multipart/form-data" method="post">
             
-            <input type="hidden" name="username" value="admin">
-            <input type="hidden" name="apitoken" value="f846b380-2fbc-442a-8c8b-071db1c1feee">
+            <input type="hidden" name="username" value="administrator">
+            <input type="hidden" name="apiToken" value="bec3cd6a-9009-4a76-9fe6-27f0c0eedf7d">
             version:<input type="text" name="version">
             file:<input id="file" type="file" name="file"/>
+            log:<input id="log" type="text" name="log">
+            description:<input type="text" name="description">
 　　         <input type="submit" value="upload" />
         </form>
         <form action="/api/1/version" method='get'>

@@ -35,6 +35,6 @@ class DownloadController extends Controller {
         $header = [
             'Content-Type' => 'application/vnd.android.package-archive',
         ];
-        return response()->download(realpath(base_path('storage/app')).'/'.$version->apk, $app->name.'.apk', $header);
+        return response()->download(realpath(base_path('storage/app')).'/'.$version->apk, $app->alias.'.apk', $header);
     }
 }

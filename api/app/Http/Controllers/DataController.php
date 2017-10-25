@@ -131,8 +131,8 @@ class DataController extends Controller {
     public function change(Request $request, $app_id) {
         $this->validate($request, [
             'data_id' => 'required|integer|min:1',
-            'key' => 'required|string',
-            'value' => 'required|string',
+            'key' => 'nullable|string',
+            'value' => 'required_without:key|string',
         ]);
         $app = App::withTrashed()->find($app_id);
         if($app === null) abort(404);
@@ -141,7 +141,7 @@ class DataController extends Controller {
         if($data === null) abort(404);
         if(isset($request['key']) && $request['key'] !== null) {
             $has = Data::where('app_id', '=', $app_id)->where('key', '=', $request->key)->first();
-            if($has !== null && $has->id != $request->data_id) abort(555);
+            if($has !== null && $has->id != $request->data_id) abort(444);
             $data->key = $request->key;
         }
         if(isset($request['value']) && $request['value'] !== null) $data->value = $request->value;

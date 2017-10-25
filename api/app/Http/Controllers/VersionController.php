@@ -141,7 +141,7 @@ class VersionController extends Controller
             }
         }
         $extension = $request->file('file')->getClientOriginalExtension();
-        $path = $request->file('file')->storeAs('public/apps', Uuid::uuid4()->toString(). '.'. $extension);
+        $path = $request->file('file')->storeAs('storage/app', Uuid::uuid4()->toString(). '.'. $extension);
         $version = new Version;
         $version->log = $request->log;
         $version->description = $request->description;
@@ -149,8 +149,8 @@ class VersionController extends Controller
         $version->build = $now + 1;
         $version->apk = $path;
         $version->version = $request->version;
-        $version->save();
         $version->size = filesize(realpath(base_path('storage/app')).'/'.$version->apk);
+        $version->save();
         $from = null;
         $last = Version::withTrashed()->where('app_id', '=', $app_id)->where('build', '=', $version->build - 1)->first();
         if($last !== null) $from = $last->version;

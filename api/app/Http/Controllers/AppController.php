@@ -194,10 +194,11 @@ class AppController extends Controller {
      *        "created_at": "2017-08-21 16:00",
      *       }]
      */
-    public function showadmin(Request $request, $user_id) {
+    public function showadmin(Request $request) {
         $this->validate($request, [
             'want_deleted' => 'nullable',
         ]);
+        $user_id = $request->now_user->id;
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
             if($user_id === 1) $apps = App::all();
             else $apps = App::where('user_id', '=', $user_id)->get();

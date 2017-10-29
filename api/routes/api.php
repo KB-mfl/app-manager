@@ -23,7 +23,7 @@ Route::post('login', 'UserController@login');
 
 Route::get('app', 'AppController@show')->middleware('AddTime');
 
-Route::get('user/{user_id}/app', 'AppController@showadmin')->middleware('AddTime');
+Route::get('user/app', 'AppController@showadmin')->middleware('Check');
 
 Route::get('app/{app_id}', 'AppController@showdetail')->middleware('AddTime');
 

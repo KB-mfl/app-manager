@@ -18,7 +18,7 @@
 
 #获取用户的 APP 列表（给管理者看的，只能看到自己管理的app）
 	Type: GET
-	URL: /api/user/{user_id}/app
+	URL: /api/user/app
 	Request:
 		*want_deleted: bool 是否需要被软删除的app，默认为 false
 	return:

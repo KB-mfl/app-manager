@@ -42,6 +42,10 @@ export default {
     Register (event) {
       event.preventDefault()
       let formData = new FormData()
+      var createHash = require('create-hash')
+      var hash = createHash('md5')
+      hash.update(this.Password)
+      this.Password = hash.digest('HEX')
       formData.append('username', this.Username)
       formData.append('password', this.Password)
       let config = {

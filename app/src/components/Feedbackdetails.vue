@@ -11,13 +11,14 @@
         <tbody>
           <tr v-for="row in Feedback" v-if="row.id == feedbackid">
             <td>
-              <textarea class="input-default-feedback" name="content" readonly="readonly">{{row.content}}</textarea>
+              <textarea class="input-default-feedback" name="contents" readonly="readonly">{{row.contents}}</textarea>
               <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <br>
     <div class="list-2">
       <table>
         <tbody>
@@ -26,7 +27,7 @@
               <div class="title">
                 <p class="fdtitle">{{row.title}}</p>
               </div>
-              <textarea class="input-default-reply" name="content" rows="3" cols="60" readonly="readonly">{{row.content}}</textarea>
+              <textarea class="input-default-reply" name="contents" rows="3" cols="60" readonly="readonly">{{row.contents}}</textarea>
               <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
               <button @click="DeleteFeedback(row)">Delete</button>
             </td>
@@ -52,7 +53,7 @@ export default {
       Feedback: [],
       Columns: ['id', 'username'],
       Time: ['created_at', 'updated_at'],
-      Feedbackcontent: ['id', 'title', 'content'],
+      Feedbackcontent: ['id', 'title', 'contents'],
       feedbackid: ''
     }
   },
@@ -70,7 +71,7 @@ export default {
   },
   methods: {
     GetFeedbackList: function () {
-      this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('app/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Feedback = response.data
       })
@@ -79,9 +80,9 @@ export default {
       })
     },
     DeleteFeedback: function (row) {
-      this.$http.delete('/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete('app/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Feedback = response.data
         })

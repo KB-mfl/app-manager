@@ -43,12 +43,17 @@
         <div class="upload">
           <form class="uploader">
             <div class="inputer">
-              <p><input v-model="Appid" type="hidden" name="app_id"></p>
               <p><input v-model="Feedbackid" type="hidden" name="feedback_id"></p>
+              <p class="input-p">Name</p>
+              <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Name" type="text" name="name"></p>
+              <p class="input-p">Phone</p>
+              <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Phone" type="text" name="phone"></p>
+              <p class="input-p">Email</p>
+              <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Email" type="text" name="email"></p>
               <p class="input-p">Title</p>
               <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Title" type="text" name="title"></p>
-              <p class="input-p">Content</p>
-              <p><textarea class="input-default-feedback" v-model="Content" name="content" maxlength="150" placeholder="~限150字~"></textarea></p>
+              <p class="input-p">Contents</p>
+              <p><textarea class="input-default-feedback" v-model="Contents" name="contents" maxlength="150" placeholder="~限150字~"></textarea></p>
             </div>
             <br>
             <button class="btn-submit" type="submit" @click="UploadForm($event)">Submit</button>
@@ -64,12 +69,17 @@
         <div class="upload">
           <form class="uploader">
             <div class="inputer">
-              <p><input v-model="Appid" type="hidden" name="app_id"></p>
               <p><input v-model="Feedbackid" type="hidden" name="feedback_id"></p>
+              <p class="input-p">Name</p>
+              <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Name" type="text" name="name"></p>
+              <p class="input-p">Phone</p>
+              <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Phone" type="text" name="phone"></p>
+              <p class="input-p">Email</p>
+              <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Email" type="text" name="email"></p>
               <p class="input-p">Title</p>
               <p><input class="input-default" v-bind:class="{inputback: IsActive }" v-model="Title" type="text" name="title"></p>
-              <p class="input-p">Content</p>
-              <p><textarea class="input-default-feedback" v-model="Content" name="content" maxlength="150" placeholder="~限150字~"></textarea></p>
+              <p class="input-p">Contents</p>
+              <p><textarea class="input-default-feedback" v-model="Contents" name="contents" maxlength="150" placeholder="~限150字~"></textarea></p>
             </div>
             <br>
             <button class="btn-submit" type="submit" @click="UploadForm($event)">Submit</button>
@@ -90,12 +100,12 @@ export default {
   data () {
     return {
       Feedback: [],
-      Columns: ['id', 'username', 'title', 'created_at', 'updated_at'],
-      Feedbackcontent: ['content'],
+      Columns: ['id', 'name', 'app_id', 'feedback_id', 'title', 'created_at', 'updated_at'],
+      Name: '',
+      Phone: '',
+      Email: '',
       Title: '',
-      Content: '',
-      Appid: '',
-      Id: '',
+      Contents: '',
       Feedbackid: '',
       IsShowNewFeedback: false,
       IsShowReply: false,
@@ -108,7 +118,6 @@ export default {
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
     this.admin = sessionStorage.admin
-    console.log(this.admin === 'false')
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -117,7 +126,7 @@ export default {
   },
   methods: {
     GetFeedbackList: function () {
-      this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('app/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Feedback = response.data
         console.log(this.Feedback)
@@ -145,10 +154,12 @@ export default {
     UploadForm (event) {
       event.preventDefault()
       let formData = new FormData()
+      formData.append('name', this.Name)
+      formData.append('phone', this.Phone)
+      formData.append('email', this.Email)
       formData.append('title', this.Title)
-      formData.append('app_id', this.Appid)
       formData.append('feedback_id', this.Feedbackid)
-      formData.append('content', this.Content)
+      formData.append('contents', this.Contents)
       formData.append('username', this.username)
       formData.append('apiToken', this.apiToken)
       let config = {
@@ -156,9 +167,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('/' + this.$route.params.id + '/feedback', formData, config)
+      this.$http.post('app/' + this.$route.params.id + '/feedback', formData, config)
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Feedback = response.data
           console.log(this.Feedback)
@@ -174,9 +185,9 @@ export default {
       this.IsShowReply = false
     },
     DeleteFeedback: function (row) {
-      this.$http.delete('/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete('app/' + this.$route.params.id + '/feedback', {params: {feedback_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/feedback', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Feedback = response.data
           console.log(this.Feedback)
@@ -342,7 +353,7 @@ button{
   height: auto;
   width: 30%;
   left:35%;
-  top:25%;
+  top:8%;
   box-shadow: 1px 1px 5px rgba(0,0,0,.1), 0 0 10px rgba(0,0,0,.12);
   background-color: #ffffff;
 }
@@ -517,7 +528,6 @@ table {
 }
 
 table td{
-  text-transform: Capitalize;
   padding: 5px 10px;
   font-size: 15px;
   font-family: Verdana;

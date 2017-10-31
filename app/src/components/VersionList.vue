@@ -40,8 +40,8 @@
       </table>
     </div>
     <p>
-      <button v-if="admin === 'true'" class="btn-create" @click="CreateNewVersion">Create</button>
-      <button v-if="admin === 'true'" class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
+      <button class="btn-create" @click="CreateNewVersion">Create</button>
+      <button class="btn-revive" @click="ShowDeletedVersion">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewVersion">
@@ -54,6 +54,10 @@
             <div class="inputer">
               <p class="input-p">Version</p>
               <p><input v-model="version" class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="version"></p>
+              <p class="input-p">Description</p>
+              <p><textarea class="input-default-feedback" v-model="description" name="description" maxlength="150" placeholder="~限150字~"></textarea></p>
+              <p class="input-p">Log</p>
+              <p><textarea class="input-default-feedback" v-model="log" name="log" maxlength="50" placeholder="~限50字~"></textarea></p>
               <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
               <p>{{this.new_app.name}}</p>
               <p>
@@ -80,7 +84,7 @@ export default {
   data () {
     return {
       Version: [],
-      Columns: ['id', 'version', 'build', 'system_id', 'deleted_at', 'created_at'],
+      Columns: ['id', 'version', 'build', 'deleted_at', 'created_at'],
       Downloadurl: ['file_url'],
       version: '',
       new_app: '',
@@ -89,6 +93,8 @@ export default {
       IsShowDele: true,
       IsActive: true,
       version_id: '',
+      log: '',
+      description: '',
       percent: 0
     }
   },
@@ -110,7 +116,7 @@ export default {
   },
   methods: {
     GetVersionList: function () {
-      this.$http.get(this.$route.params.systemid + '/version', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('app/' + this.$route.params.id + '/version', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Version = response.data
         console.log(this.Version)
@@ -135,9 +141,10 @@ export default {
     UploadForm (event) {
       event.preventDefault()
       let formData = new FormData()
-      formData.append('system_id', this.$route.params.systemid)
       formData.append('version', this.version)
       formData.append('file', this.new_app)
+      formData.append('description', this.description)
+      formData.append('log', this.log)
       formData.append('username', this.username)
       formData.append('apiToken', this.apiToken)
       let config = {
@@ -145,9 +152,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post(this.$route.params.systemid + '/version', formData, config)
+      this.$http.post('app/' + this.$route.params.id + '/version', formData, config)
       .then((response) => {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/version', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
@@ -162,9 +169,9 @@ export default {
       })
     },
     DeleteVersion: function (row) {
-      this.$http.delete(this.$route.params.systemid + '/version', {params: {version_id: row.id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete('app/' + this.$route.params.id + '/version', {params: {version_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/version', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
@@ -179,9 +186,9 @@ export default {
       })
     },
     ReviveVersion: function (row) {
-      this.$http.put(this.$route.params.systemid + '/version', {version_id: row.id, apiToken: this.apiToken, username: this.username})
+      this.$http.put('app/' + this.$route.params.id + '/version', {version_id: row.id, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/version', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Version)
@@ -197,7 +204,7 @@ export default {
     },
     ShowDeletedVersion: function () {
       if (this.IsShowDeletedVersion === true) {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/version', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Versionm)
@@ -208,7 +215,7 @@ export default {
         this.IsShowDeletedVersion = false
         this.IsShowDele = true
       } else {
-        this.$http.get(this.$route.params.systemid + '/version', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/version', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Version = response.data
           console.log(this.Versionm)

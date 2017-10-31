@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     GetData: function () {
-      this.$http.get('/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('app/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Data = response.data
         console.log(this.Data)
@@ -124,9 +124,9 @@ export default {
       })
     },
     DeleteData: function (row) {
-      this.$http.delete('/' + this.$route.params.id + '/data', {params: {data_id: row.id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete('app/' + this.$route.params.id + '/data', {params: {data_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Data = response.data
           console.log(this.Data)
@@ -160,9 +160,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('/' + this.$route.params.id + '/data', formData, config)
+      this.$http.post('app/' + this.$route.params.id + '/data', formData, config)
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Data = response.data
           console.log(this.Data)
@@ -195,9 +195,9 @@ export default {
     },
     Reset (event) {
       event.preventDefault()
-      this.$http.put('/' + this.$route.params.id + '/data', {'data_id': this.Id, 'key': this.Keys, 'value': this.Values, apiToken: this.apiToken, username: this.username})
+      this.$http.put('app/' + this.$route.params.id + '/data', {'data_id': this.Id, 'key': this.Keys, 'value': this.Values, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id + '/data', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Data = response.data
           console.log(this.Data)

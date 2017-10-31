@@ -1,11 +1,21 @@
 <template>
   <div class="appsystemlist">
     <Navbar></Navbar>
-    <div class="list">
+    <div class="switch">
+      <div class="systems">
+        <div class="android" v-bind:class="{androidactive: IsActiveAndroid }" @click="Switchsystem">
+          <p>Android</p>
+        </div>
+        <div class="ios" v-bind:class="{iosactive: IsActiveIos }" @click="Switchsystem">
+          <p>IOS</p>
+        </div>
+      </div>
+    </div>
+    <div class="list" v-if="systemname === 'Android'">
       <table>
         <thead>
           <tr>
-            <th v-for="col in Columns">
+            <th v-for="col in ColumnsAndroid">
               {{col}}
             </th>
             <th v-for="col in Imageurl">
@@ -13,29 +23,29 @@
             </th>
             <th v-if="IsShowDele">Delete</th>
             <th v-if="IsShowDeletedSystem">Revive</th>
-            <th>Details</th>
+            <th>More</th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="row in AppSystem">
-            <td v-for="col in Columns">
-              {{row[col]}}
+        <tbody v-if="Android != null">
+          <tr>
+            <td v-for="col in ColumnsAndroid">
+              {{Android[col]}}
             </td>
             <td v-for="col in Imageurl">
-              <img :src="'/api/image/' + row.logo_url">
+              <img :src="'/api/image/' + Android.logo">
             </td>
             <td v-if="IsShowDele">
-              <button @click="DeleteSystem(row)">Delete</button>
+              <button @click="DeleteSystemAndroid">Delete</button>
             </td>
             <td v-if="IsShowDeletedSystem">
-              <button @click="ReviveSystem(row)">Revive</button>
+              <button @click="ReviveSystemAndroid">Revive</button>
             </td>
             <td>
               <div class="dropdown">
-                <button class="showdropdownlist">Details</button>
+                <button class="showdropdownlist">More</button>
                 <div class="dropdownlist">
-                    <button @click="ShowVersionList(row)"><span>Versionlist</span></button>
-                    <button @click="AddLogo(row)"><span>+Logo</span></button>
+                    <button @click="ShowVersionList(Android)"><span>Versionlist</span></button>
+                    <button @click="AddLogo(Android)"><span>+Logo</span></button>
                 </div>
               </div>
             </td>
@@ -43,9 +53,75 @@
         </tbody>
       </table>
     </div>
+    <div class="list" v-if="systemname === 'IOS' && Ios != null">
+      <table>
+        <thead>
+          <tr>
+            <th v-for="col in ColumnsIOS">
+              {{col}}
+            </th>
+            <th v-for="col in Imageurl">
+              {{col}}
+            </th>
+            <th v-if="IsShowDele">Delete</th>
+            <th v-if="IsShowDeletedSystem">Revive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td v-for="col in ColumnsIOS">
+              {{Ios[col]}}
+            </td>
+            <td v-for="col in Imageurl">
+              <img :src="Ios.logo">
+            </td>
+            <td v-if="IsShowDele">
+              <button @click="DeleteSystemIOS">Delete</button>
+            </td>
+            <td v-if="IsShowDeletedSystem">
+              <button @click="ReviveSystemIOS">Revive</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th v-for="col in Description">
+              {{col}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td v-for="col in Description">
+              {{Ios[col]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th v-for="col in Log">
+              {{col}}
+            </th>
+          </tr>
+        </thead>
+        <tbody v-if="Ios.log != null">
+          <tr>
+            <td v-for="col in Log">
+              {{Ios[col]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      <button v-if="admin === 'true'" class="btn-create" @click="CreateNewSystem">Create</button>
-      <button v-if="admin === 'true'" class="btn-revive" @click="ShowDeletedSystem">Revive / Delete</button>
+      <button class="btn-create" @click="CreateNewSystem">Create</button>
+      <button class="btn-revive" @click="ShowDeletedSystem">Revive / Delete</button>
       <button class="btn-back" @click="Back">Back</button>
     </p>
     <div class="back_ground" v-show="IsShowNewSystem">
@@ -60,15 +136,17 @@
               <Select v-model="system" style="width:48%">
                   <Option v-for="item in SystemList" :value="item.value" :key="item.value"></Option>
               </Select>
-              <p class="input-p">Identification</p>
-              <p><input v-model="identification" class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="identification"></p>
-              <p><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
-              <p>{{this.new_file.name}}</p>
-              <p v-if="system === 'IOS'" class="input-p">Download Url</p>
-              <p v-if="system === 'IOS'"><input v-model="download_url" type="text" name="download_url" class="input-default" v-bind:class="{inputback: IsActive }"></p>
+              <p v-if="system === 'Android'" class="input-p">Identification</p>
+              <p v-if="system === 'Android'"><input v-model="identification" class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="identification"></p>
+              <p v-if="system === 'Android'"><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
+              <p>···请选择App Logo···</p>
+              <p v-if="system === 'Android'">{{this.new_file.name}}</p>
+              <p v-if="system === 'IOS'" class="input-p">iTunes Url</p>
+              <p v-if="system === 'IOS'"><input v-model="itunes_url" type="text" name="itunes_url" class="input-default" v-bind:class="{inputback: IsActive }"></p>
             </div>
             <br>
-            <button class="btn-save" type="submit" @click="UploadForm($event)">Save</button>
+            <button v-if="system === 'Android'" class="btn-save" type="submit" @click="UploadFormAndroid($event)">Save</button>
+            <button v-if="system === 'IOS'" type="submit" class="btn-save" @click="UploadFormIOS($event)">Save</button>
          </form>
         </div>
       </div>
@@ -81,7 +159,7 @@
         <div class="upload">
           <form class="uploader">
             <div class="inputer">
-              <p><input v-model="Systemid" type="hidden" name="system_id"></p>
+              <p><input v-model="AndroidId" type="hidden" name="android_id"></p>
               <p><input id="uploadnewfile" type="file" name="uploadnewapp" @change="GetNewLogo($event)"></p>
               <p>{{this.new_logo.name}}</p>
             </div>
@@ -104,26 +182,33 @@ export default {
   data () {
     return {
       AppSystem: [],
-      Columns: ['id', 'system', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      Android: [],
+      Ios: [],
+      ColumnsAndroid: ['android_id', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      ColumnsIOS: ['alias', 'version', 'identification', 'deleted_at', 'created_at', 'updated_at'],
+      Description: ['description'],
+      Log: ['log'],
       Imageurl: ['logo'],
       IsShowNewSystem: false,
       IsShowDeletedSystem: false,
       IsShowDele: true,
       IsShowNewLogo: false,
       IsActive: true,
-      Systemid: '',
-      system: '',
-      sys: '',
+      IsActiveAndroid: true,
+      IsActiveIos: false,
+      systemname: 'Android',
+      system: 'Android',
+      AndroidId: '',
       identification: '',
       new_file: '',
       new_logo: '',
-      download_url: '',
+      itunes_url: '',
       SystemList: [
         {
-          value: 'IOS'
+          value: 'Android'
         },
         {
-          value: 'Android'
+          value: 'IOS'
         }
       ]
     }
@@ -145,21 +230,44 @@ export default {
   },
   methods: {
     GetSystemList: function () {
-      this.$http.get(this.$route.params.id + '/system', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('app/' + this.$route.params.id, {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.AppSystem = response.data
-        console.log(this.AppSystem)
+        this.Android = this.AppSystem.android
+        this.Ios = this.AppSystem.ios
+        console.log(this.Android)
       })
       .catch(function (error) {
         console.log(error)
       })
     },
-    DeleteSystem: function (row) {
-      this.$http.delete(this.$route.params.id + '/system', {params: {system_id: row.id, apiToken: this.apiToken, username: this.username}})
+    DeleteSystemAndroid: function () {
+      this.$http.delete('app/' + this.$route.params.id + '/android', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get(this.$route.params.id + '/system', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id, {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
+          console.log(this.AppSystem)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    DeleteSystemIOS: function () {
+      this.$http.delete('app/' + this.$route.params.id + '/ios', {params: {apiToken: this.apiToken, username: this.username}})
+      .then((response) => {
+        this.$http.get('app/' + this.$route.params.id, {params: {apiToken: this.apiToken, username: this.username}})
+        .then((response) => {
+          this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
           console.log(this.AppSystem)
         })
         .catch(function (error) {
@@ -173,9 +281,11 @@ export default {
     },
     ShowDeletedSystem: function () {
       if (this.IsShowDeletedSystem === true) {
-        this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id, {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
           console.log(this.AppSystem)
         })
         .catch(function (error) {
@@ -184,9 +294,11 @@ export default {
         this.IsShowDeletedSystem = false
         this.IsShowDele = true
       } else {
-        this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id, {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
           console.log(this.AppSystem)
         })
         .catch(function (error) {
@@ -196,12 +308,33 @@ export default {
         this.IsShowDele = false
       }
     },
-    ReviveSystem: function (row) {
-      this.$http.put(this.$route.params.id + '/system', {system_id: row.id, apiToken: this.apiToken, username: this.username})
+    ReviveSystemAndroid: function () {
+      this.$http.put('app/' + this.$route.params.id + '/android', {apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get(this.$route.params.id + '/system', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id, {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
+          console.log(this.AppSystem)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    ReviveSystemIOS: function () {
+      this.$http.put('app/' + this.$route.params.id + '/ios', {apiToken: this.apiToken, username: this.username})
+      .then((response) => {
+        this.$http.get('app/' + this.$route.params.id, {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        .then((response) => {
+          this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
           console.log(this.AppSystem)
         })
         .catch(function (error) {
@@ -226,26 +359,25 @@ export default {
       this.new_file = event.target.files[0]
       console.log(this.new_file)
     },
-    UploadForm (event) {
+    UploadFormAndroid (event) {
       event.preventDefault()
       let formData = new FormData()
-      formData.append('app_id', this.$route.params.id)
       formData.append('file', this.new_file)
       formData.append('identification', this.identification)
-      formData.append('system', this.system)
       formData.append('username', this.username)
       formData.append('apiToken', this.apiToken)
-      formData.append('download_url', this.download_url)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post(this.$route.params.id + '/system', formData, config)
+      this.$http.post('app/' + this.$route.params.id + '/android', formData, config)
       .then((response) => {
-        this.$http.get(this.$route.params.id + '/system', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id, {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
           console.log(this.AppSystem)
         })
         .catch(function (error) {
@@ -260,15 +392,44 @@ export default {
       this.identification = ''
       this.new_file = ''
     },
-    ShowVersionList: function (row) {
-      console.log(row)
-      sessionStorage.system = row.system
-      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + row.id + '/Versionlist'})
+    UploadFormIOS (event) {
+      event.preventDefault()
+      let formData = new FormData()
+      formData.append('username', this.username)
+      formData.append('apiToken', this.apiToken)
+      formData.append('itunes', this.itunes_url)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      this.$http.post('app/' + this.$route.params.id + '/ios', formData, config)
+      .then((response) => {
+        this.$http.get('app/' + this.$route.params.id, {params: {apiToken: this.apiToken, username: this.username}})
+        .then((response) => {
+          this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
+          console.log(this.AppSystem)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+        console.log('success')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+      this.IsShowNewSystem = false
+      this.itunes_url = ''
+    },
+    ShowVersionList: function (Android) {
+      this.$router.push({path: '/Applist/' + this.$route.params.id + '/Systemlist/' + Android.id + '/Versionlist'})
       this.$Loading.finish()
     },
-    AddLogo: function (row) {
+    AddLogo: function (Android) {
       this.IsShowNewLogo = true
-      this.Systemid = row.id
+      this.AndroidId = Android.android_id
     },
     GetNewLogo: function () {
       this.new_logo = event.target.files[0]
@@ -278,7 +439,7 @@ export default {
       event.preventDefault()
       let formData = new FormData()
       formData.append('file', this.new_logo)
-      formData.append('system_id', this.Systemid)
+      formData.append('android_id', this.AndroidId)
       formData.append('username', this.username)
       formData.append('apiToken', this.apiToken)
       let config = {
@@ -286,11 +447,13 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post(this.Systemid + '/image', formData, config)
+      this.$http.post('image', formData, config)
       .then((response) => {
-        this.$http.get(this.$route.params.id + '/system', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('app/' + this.$route.params.id, {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppSystem = response.data
+          this.Android = this.AppSystem.android
+          this.Ios = this.AppSystem.ios
           console.log(this.AppSystem)
         })
         .catch(function (error) {
@@ -310,12 +473,74 @@ export default {
     },
     Inputback: function () {
       this.IsActive = true
+    },
+    Switchsystem: function () {
+      if (this.IsActiveAndroid === true) {
+        this.IsActiveAndroid = false
+        this.IsActiveIos = true
+        this.systemname = 'IOS'
+      } else {
+        this.IsActiveAndroid = true
+        this.IsActiveIos = false
+        this.systemname = 'Android'
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.switch{
+  width: 100%;
+  height: auto;
+  margin: 0px auto 20px auto;
+}
+
+.systems{
+  width: 80%;
+  height: auto;
+  display: inline-block;
+  margin: 0px auto;
+}
+
+.android{
+  width: 50%;
+  margin: 0px;
+  float: left;
+  font-size: 30px;
+  color: #2257c9;
+  cursor: pointer;
+}
+
+.androidactive{
+  width: 50%;
+  margin: 0px;
+  float: left;
+  font-size: 30px;
+  color: #2257c9;
+  border-bottom: 2px solid #66ccff;
+  cursor: pointer;
+}
+
+.ios{
+  width: 50%;
+  margin: 0px;
+  float: left;
+  font-size: 30px;
+  color: #2257c9;
+  cursor: pointer;
+}
+
+.iosactive{
+  width: 50%;
+  margin: 0px;
+  float: left;
+  font-size: 30px;
+  color: #2257c9;
+  border-bottom: 2px solid #66ccff;
+  cursor: pointer;
+}
+
 img{
   width: 100px;
   height: 100px;
@@ -689,7 +914,6 @@ table {
 }
 
 table td{
-  text-transform: Capitalize;
   padding: 5px 10px;
   font-size: 15px;
   font-family: Verdana;

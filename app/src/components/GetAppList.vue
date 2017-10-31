@@ -40,7 +40,7 @@
           </tbody>
         </table>
       </div>
-      <p v-if="admin === 'true'">
+      <p>
         <button class="btn-create" type="button" name="create" @click="CreateNewApp">Create</button>
         <button class="btn-revive" @click="ShowDeletedApp">Revive / Delete</button>
       </p>

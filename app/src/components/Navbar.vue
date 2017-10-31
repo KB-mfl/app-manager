@@ -8,7 +8,7 @@
         <button name="applist" @click="Applist"><span>我的应用</span></button>
       </div>
       <div class="appname" v-if="this.appname !== ''">
-        <button name="appname" v-bind:appname="appname"><span>{{appname}}</span></button>
+        <button name="appname" v-bind:appname="appname">{{appname}}</button>
       </div>
       <div class="system" v-if="this.system !== ''">
         <button name="system" v-bind:system="system">{{system}}</button>
@@ -119,7 +119,7 @@ export default {
 button{
   display: inline-block;
   border-radius: 4px;
-  background-color: #F4F4F4;
+  background-color: transparent;
   border: none;
   color: #2257c9;
   text-align: center;
@@ -130,7 +130,6 @@ button{
   cursor: pointer;
   margin: 5px;
   outline: none;
-  text-transform: Capitalize;
 }
 
 button span{

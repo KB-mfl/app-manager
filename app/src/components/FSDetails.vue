@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     GetFirstscreen: function () {
-      this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('app/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Firstscreen = response.data
       })

@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="firstscreen">
     <Navbar></Navbar>
     <div class="list">
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     GetFirstscreen: function () {
-      this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get(this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.Firstscreen = response.data
         console.log(this.Firstscreen)
@@ -116,9 +116,9 @@ export default {
       }
     },
     DeleteFSPush: function (row) {
-      this.$http.delete('/' + this.$route.params.id + '/first_screen', {params: {first_screen_id: row.id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete(this.$route.params.id + '/first_screen', {params: {first_screen_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get(this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Firstscreen = response.data
           console.log(this.Firstscreen)
@@ -133,9 +133,9 @@ export default {
       })
     },
     ActiveFSPush: function (row) {
-      this.$http.put('/' + this.$route.params.id + '/first_screen', {first_screen_id: row.id, apiToken: this.apiToken, username: this.username})
+      this.$http.put(this.$route.params.id + '/first_screen', {first_screen_id: row.id, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get(this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Firstscreen = response.data
           console.log(this.Firstscreen)
@@ -172,9 +172,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('/' + this.$route.params.id + '/first_screen', formData, config)
+      this.$http.post(this.$route.params.id + '/first_screen', formData, config)
       .then((response) => {
-        this.$http.get('/' + this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get(this.$route.params.id + '/first_screen', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.Firstscreen = response.data
           console.log(this.Firstscreen)

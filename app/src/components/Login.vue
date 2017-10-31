@@ -49,6 +49,10 @@ export default {
     Login (event) {
       event.preventDefault()
       let formData = new FormData()
+      var createHash = require('create-hash')
+      var hash = createHash('md5')
+      hash.update(this.Password)
+      this.Password = hash.digest('HEX')
       formData.append('username', this.Username)
       formData.append('password', this.Password)
       let config = {
@@ -67,7 +71,7 @@ export default {
         this.username = sessionStorage.username
         sessionStorage.admin = this.State.admin
         this.admin = sessionStorage.admin
-        console.log(sessionStorage)
+        console.log(response.data)
         if (this.state === 'false') {
           alert('密码与用户名不符，请重新输入')
           this.$Loading.error()

@@ -11,7 +11,7 @@
               </th>
               <th v-if="IsShowDel">Delete</th>
               <th v-if="IsShowDeleted">Revive</th>
-              <th>Details</th>
+              <th>More</th>
             </tr>
           </thead>
           <tbody>
@@ -27,11 +27,11 @@
               </td>
               <td>
                 <div class="dropdown">
-                  <button class="showdropdownlist">Details</button>
+                  <button class="showdropdownlist">More</button>
                   <div class="dropdownlist">
-                      <button @click="ShowSystemList(row)"><span>Systemlist</span></button>
+                      <button @click="ShowSystemList(row)"><span>Detail</span></button>
                       <button @click="Data(row)"><span>Data</span></button>
-                      <button @click="Firstscreen(row)"><span>Firstscreen</span></button>
+                      <!-- <button @click="Firstscreen(row)"><span>Firstscreen</span></button> -->
                       <button @click="Feedback(row)"><span>Feedback</span></button>
                   </div>
                 </div>
@@ -56,6 +56,10 @@
               <p class="input-p">Name</p>
               <input class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="app-name" v-model="Name"></input>
             </div>
+            <div class="inputer">
+              <p class="input-p">Alias</p>
+              <input class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="app-alias" v-model="Alias"></input>
+            </div>
             <button class="btn-save" type="submit" @click="UploadForm($event)">Save</button>
           </form>
         </div>
@@ -74,10 +78,11 @@ export default {
   data () {
     return {
       AppData: [],
-      Columns: ['id', 'name', 'created_at', 'deleted_at', 'updated_at'],
+      Columns: ['id', 'name', 'alias', 'created_at', 'deleted_at', 'updated_at'],
       IsShow: false,
       IsShowDeleted: false,
       Name: '',
+      Alias: '',
       IsShowDel: true,
       IsActive: true
     }
@@ -87,7 +92,7 @@ export default {
     this.state = sessionStorage.state
     this.apiToken = sessionStorage.apiToken
     this.username = sessionStorage.username
-    this.admin = sessionStorage.admin
+    this.admin = 'true'
     if (this.state !== 'true') {
       this.$router.push({path: '/Login'})
       this.$Loading.error()
@@ -99,7 +104,7 @@ export default {
   },
   methods: {
     GetAppList: function () {
-      this.$http.get('applist', {params: {apiToken: this.apiToken, username: this.username}})
+      this.$http.get('user/app', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.AppData = response.data
         console.log(response.data)
@@ -119,6 +124,7 @@ export default {
       event.preventDefault()
       let formData = new FormData()
       formData.append('name', this.Name)
+      formData.append('alias', this.Alias)
       formData.append('username', this.username)
       formData.append('apiToken', this.apiToken)
       let config = {
@@ -126,10 +132,10 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      this.$http.post('addapp', formData, config)
+      this.$http.post('app/add', formData, config)
       .then((response) => {
         console.log('success')
-        this.$http.get('applist', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('user/app', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -145,10 +151,9 @@ export default {
       this.Name = ''
     },
     DeleteApp: function (row) {
-      console.log(row.id)
-      this.$http.delete(row.id + '/deleteapp', {params: {app_id: row.id, apiToken: this.apiToken, username: this.username}})
+      this.$http.delete('app/delete', {params: {app_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('applist', {params: {apiToken: this.apiToken, username: this.username}})
+        this.$http.get('user/app', {params: {apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -163,9 +168,9 @@ export default {
       })
     },
     ReviveApp: function (row) {
-      this.$http.put(row.id + '/readapp', {app_id: row.id, apiToken: this.apiToken, username: this.username})
+      this.$http.put('app/restore', {app_id: row.id, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get('applist', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('user/app', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -181,7 +186,7 @@ export default {
     },
     ShowDeletedApp: function () {
       if (this.IsShowDeleted === true) {
-        this.$http.get('applist', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('user/app', {params: {want_deleted: false, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -192,7 +197,7 @@ export default {
         this.IsShowDeleted = false
         this.IsShowDel = true
       } else {
-        this.$http.get('applist', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
+        this.$http.get('user/app', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
         .then((response) => {
           this.AppData = response.data
           console.log(this.AppData)
@@ -535,7 +540,6 @@ table {
 }
 
 table td{
-  text-transform: Capitalize;
   padding: 5px 10px;
   font-size: 15px;
   font-family: Verdana;

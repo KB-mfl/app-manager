@@ -24,8 +24,8 @@
     <div class="switch">
       <button type="button" name="back" @click="Back">Back</button>
       <span>下载其他版本：</span>
-      <button v-if="platform !== 'IOS' && has_IOS === true" name="IOS" @click="Toios">IOS</button>
-      <button v-if="platform !== 'Android' && has_Android === true" name="Android" @click="Toandroid">Android</button>
+      <button v-if="platform !== 'IOS'" name="IOS" @click="Toios">IOS</button>
+      <button v-if="platform !== 'Android'" name="Android" @click="Toandroid">Android</button>
     </div>
   </div>
 </template>
@@ -40,8 +40,6 @@ export default {
       version_id: '',
       version: '',
       file_url: '',
-      has_Android: '',
-      has_IOS: '',
       appname: '',
       platform: this.$route.params.system
     }
@@ -51,15 +49,13 @@ export default {
   },
   methods: {
     Getlatestversion: function () {
-      this.$http.get('version', {params: {app_name: this.$route.params.appname, system_name: this.$route.params.system}})
+      this.$http.get('version', {params: {app_name: this.$route.params.appname}})
       .then((response) => {
         this.content = response.data
         this.logo_url = this.content.logo_url
         this.version = this.content.version.version
         this.file_url = this.content.version.file_url
         this.appname = this.content.app_name
-        this.has_IOS = this.content.has_IOS
-        this.has_Android = this.content.has_Android
         console.log(this.content)
       })
       .catch(function (error) {
@@ -71,43 +67,11 @@ export default {
       this.version_id = this.content.version.id
       document.getElementById('download').submit()
     },
-    Towindows: function () {
-      this.version = '无最新版本'
-      this.platform = 'Windows'
-      this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
-      this.$http.get('version', {params: {app_name: this.$route.params.appname, system_name: this.$route.params.system}})
-      .then((response) => {
-        this.content = response.data
-        this.logo_url = this.content.logo_url
-        this.version = this.content.version.version
-        console.log(this.content)
-      })
-      .catch(function (error) {
-        console.log(error)
-        alert('······该应用内容为空······')
-      })
-    },
-    Tomac: function () {
-      this.version = '无最新版本'
-      this.platform = 'Mac'
-      this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
-      this.$http.get('version', {params: {app_name: this.$route.params.appname, system_name: this.$route.params.system}})
-      .then((response) => {
-        this.content = response.data
-        this.logo_url = this.content.logo_url
-        this.version = this.content.version.version
-        console.log(this.content)
-      })
-      .catch(function (error) {
-        console.log(error)
-        alert('······该应用内容为空······')
-      })
-    },
     Toios: function () {
       this.version = '无最新版本'
       this.platform = 'IOS'
       this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
-      this.$http.get('version', {params: {app_name: this.$route.params.appname, system_name: this.$route.params.system}})
+      this.$http.get('version', {params: {app_name: this.$route.params.appname}})
       .then((response) => {
         this.content = response.data
         this.logo_url = this.content.logo_url
@@ -123,7 +87,7 @@ export default {
       this.version = '无最新版本'
       this.platform = 'Android'
       this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
-      this.$http.get('version', {params: {app_name: this.$route.params.appname, system_name: this.$route.params.system}})
+      this.$http.get('version', {params: {app_name: this.$route.params.appname}})
       .then((response) => {
         this.content = response.data
         this.logo_url = this.content.logo_url

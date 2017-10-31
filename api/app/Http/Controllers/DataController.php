@@ -88,7 +88,7 @@ class DataController extends Controller {
         if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $data = new Data;
         $has = Data::where('app_id', '=', $app_id)->where('key', '=', $request->key)->first();
-        if($has !== null) abort(555);
+        if($has !== null) abort(444);
         $data->app_id = $app_id;
         $data->key = $request->key;
         $data->value = $request->value;

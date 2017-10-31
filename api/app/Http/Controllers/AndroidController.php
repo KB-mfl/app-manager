@@ -39,6 +39,9 @@ class AndroidController extends Controller
         ]);
         $app = App::withTrashed()->find($app_id);
         if($app === null) abort(404);
+        $android = null;
+        $android = Android::withTrashed()->where('app_id', '=', $app_id)->first();
+        if($android !== null) abort(444);
         if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $path = $request->file('file')->store('public/imgs');
         $android = new Android;

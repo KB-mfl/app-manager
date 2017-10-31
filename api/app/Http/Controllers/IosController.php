@@ -40,6 +40,10 @@ class IosController extends Controller
         ]);
         $app = App::withTrashed()->find($app_id);
         if($app === null) abort(404);
+        $ios = null;
+        $ios = Ios::withTrashed()->where('app_id', '=', $app_id)->first();
+        if($ios !== null) abort(444);
+        if($app->user_id !== $request->now_user->id && $request->now_user->id !== 1) abort(403);
         $ios = new Ios;
         $pattern = '/id[0-9]*/';
         $pattern2 = '/[0-9]*/';

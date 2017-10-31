@@ -45,23 +45,42 @@ class FeedbackController extends Controller
     *        "created_at": "2017-08-21 16:00",
     *       }]
     */
-    public function showApp(Request $request, $app_id) {
+    public function showApp(Request $request, $app_id)
+    {
         $app = App::withTrashed()->find($app_id);
-        if($app === null) abort(404);
+        if ($app === null) abort(404);
         $response = [];
         $feedbacks = $app->feedback;
-        foreach($feedbacks as $key => $fb) {
-            $response[$key] = [
-                'id' => $fb->id,
-                'app_id' => $fb->app_id,
-                'email' => $fb->email,
-                'name' => $fb->name,
-                'phone' => $fb->phone,
-                'feedback_id' => $fb->feedback_id,
-                'title' => $fb->title,
-                'contents' => $fb->contents,
-                'created_at' => $fb->created_at->timestamp,
-            ];
+        $user = User::where('username', '=', $request->username)->first();
+        if($user !== null && ($user->id === $app->user_id || $user->id === 1)) {
+            foreach ($feedbacks as $key => $fb) {
+                $response[$key] = [
+                    'id' => $fb->id,
+                    'app_id' => $fb->app_id,
+                    'name' => $fb->name,
+                    'email' => $fb->email,
+                    'phone' => $fb->phone,
+                    'feedback_id' => $fb->feedback_id,
+                    'title' => $fb->title,
+                    'contents' => $fb->contents,
+                    'created_at' => $fb->created_at->timestamp,
+                ];
+            }
+        }
+        else {
+            foreach ($feedbacks as $key => $fb) {
+                $response[$key] = [
+                    'id' => $fb->id,
+                    'app_id' => $fb->app_id,
+                    'name' => $fb->name,
+                    'phone' => null,
+                    'email' => null,
+                    'feedback_id' => $fb->feedback_id,
+                    'title' => $fb->title,
+                    'contents' => $fb->contents,
+                    'created_at' => $fb->created_at->timestamp,
+                ];
+            }
         }
         return $response;
     }

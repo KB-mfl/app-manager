@@ -163,7 +163,7 @@ class AppController extends Controller {
         return $response;
     }
     /**
-     *  @api {get} /api/user/{user_id}/app 获取自己发布的app列表
+     *  @api {get} /api/user/app 获取自己发布的app列表
      *  @apiName show user's app
      *  @apiGroup App
      *  @apiVersion v2.0.0
@@ -203,7 +203,7 @@ class AppController extends Controller {
             if($user_id === 1) $apps = App::all();
             else $apps = App::where('user_id', '=', $user_id)->get();
         } else {
-            if($user_id === 1) $apps = App::withTranshed()->all();
+            if($user_id === 1) $apps = App::withTrashed()->get();
             else $apps = App::withTrashed()->where('user_id', '=', $user_id)->get();
         }
         $response = [];
@@ -320,7 +320,7 @@ class AppController extends Controller {
             $log = isset($ios_info->releaseNotes) ? $ios_info->releaseNotes : null;
             /**/
             $response['ios'] = [
-                'id' => $ios->id,
+                'ios_id' => $ios->id,
                 'itunes_url' => $ios->itunes,
                 'itunes_id' => $itunes_id,
                 'logo' => $logo,
@@ -344,7 +344,7 @@ class AppController extends Controller {
             $android->logo_url = str_replace("public/imgs/", "", $android->logo_url);
             $android->logo_url = str_replace(".", '_',$android->logo_url);
             $response['android'] = [
-                'id' => $android->id,
+                'android_id' => $android->id,
                 'identification' => $android->identification,
                 'logo' => $android->logo_url,
                 'created_at' => $android->created_at->timestamp,
@@ -354,6 +354,7 @@ class AppController extends Controller {
         } else {
             $response['android'] = null;
         }
+
         return $response;
     }
 }

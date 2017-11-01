@@ -29,8 +29,8 @@
         </table>
       </div>
       <p>
-        <button v-if="admin === 'true'" class="btn-create" @click="CreateNewData">Create</button>
-        <button v-if="admin === 'true'" class="btn-edit" @click="ShowEdit">Edit / Delete</button>
+        <button class="btn-create" @click="CreateNewData">Create</button>
+        <button class="btn-edit" @click="ShowEdit">Edit / Delete</button>
         <button class="btn-back" @click="Back">Back</button>
       </p>
     </div>

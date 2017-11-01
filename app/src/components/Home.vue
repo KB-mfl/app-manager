@@ -28,7 +28,9 @@ export default {
       this.IsActive = true
     },
     Searchapp: function () {
-      this.$router.push({path: '/' + this.appname})
+      if (this.appname !== 'login' && this.appname !== 'Login' && this.appname !== 'Register' && this.appname !== 'register') {
+        this.$router.push({path: '/' + this.appname})
+      }
     }
   }
 }

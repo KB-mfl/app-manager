@@ -214,7 +214,7 @@ export default {
       })
     },
     Download: function () {
-      this.version_id = this.content.version.id
+      this.version_id = this.allversion.version_id
       document.getElementById('download').submit()
     },
     Toios: function () {

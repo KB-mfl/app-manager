@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div class="title">
-      <span>CDOJ</span>
+      <span>{{appname}}</span>
     </div>
     <div class="maincontent">
       <div class="info">
@@ -105,12 +105,14 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: 'user',
   data () {
     return {
       content: [],
       Ios: [],
+      allversion: [],
       logo_url: '',
       logo: '',
       version_id: '',
@@ -123,6 +125,11 @@ export default {
       size: '',
       Feedback: [],
       Feedbackid: '',
+      Name: '',
+      Phone: '',
+      Email: '',
+      Title: '',
+      Contents: '',
       platform: this.$route.params.system,
       IsShowNewFeedback: false,
       IsActive: true
@@ -130,32 +137,42 @@ export default {
   },
   beforeMount: function () {
     this.Getlatestversion()
-    this.GetFeedbackList()
-    if (this.platform === 'Android') {
-      this.GetVersionList()
-    } else {
-      this.GetIOS()
-    }
   },
   methods: {
     Getlatestversion: function () {
-      this.$http.get('version', {params: {app_name: this.$route.params.appname, system_name: this.$route.params.system}})
+      this.$http.get('version', {params: {app_name: this.$route.params.appname}})
       .then((response) => {
         this.content = response.data
-        this.logo_url = this.content.logo_url
         this.appname = this.content.app_name
-        this.app_id = this.content.version.app_id
+        this.app_id = this.content.app_id
         console.log(this.content)
+        this.GetFeedbackList()
+        if (this.platform === 'Android') {
+          this.GetAndroid()
+          this.GetAndroidversion()
+        } else {
+          this.GetIOS()
+        }
       })
       .catch(function (error) {
         console.log(error)
       })
     },
-    GetVersionList: function () {
+    GetAndroid: function () {
+      this.$http.get('app/' + this.app_id, {params: {apiToken: this.apiToken, username: this.username, limit: 1}})
+      .then((response) => {
+        this.logo_url = response.data.android.logo
+        console.log(response.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    GetAndroidversion: function () {
       this.$http.get('app/' + this.app_id + '/version', {params: {apiToken: this.apiToken, username: this.username, limit: 1}})
       .then((response) => {
-        this.allversion = response.data
-        this.log = this.allversion.console.log
+        this.allversion = response.data[0]
+        this.log = this.allversion.log
         this.description = this.allversion.description
         this.version = this.allversion.version
         this.version_id = this.allversion.version_id
@@ -175,6 +192,7 @@ export default {
         this.version = this.Ios.version
         this.size = ((this.Ios.size / 1000000).toFixed(2))
         this.itunes_url = this.Ios.itunes_url
+        this.logo = this.Ios.logo
         console.log(this.Ios)
       })
       .catch(function (error) {
@@ -185,6 +203,10 @@ export default {
       this.$http.get('app/' + this.app_id + '/feedback')
       .then((response) => {
         this.Feedback = response.data
+        let i = 0
+        for (i = 0; i < this.Feedback.length; i++) {
+          this.Feedback[i].created_at = moment.unix(this.Feedback[i].created_at).format('YYYY-MM-DD HH:mm:ss')
+        }
         console.log(this.Feedback)
       })
       .catch(function (error) {
@@ -257,6 +279,10 @@ export default {
         this.$http.get('app/' + this.app_id + '/feedback')
         .then((response) => {
           this.Feedback = response.data
+          let i = 0
+          for (i = 0; i < this.Feedback.length; i++) {
+            this.Feedback[i].created_at = moment.unix(this.Feedback[i].created_at).format('YYYY-MM-DD HH:mm:ss')
+          }
           console.log(this.Feedback)
         })
         .catch(function (error) {
@@ -270,6 +296,9 @@ export default {
     },
     Back: function () {
       this.$router.push({path: '/'})
+    },
+    Inputback: function () {
+      this.IsActive = true
     }
   }
 }

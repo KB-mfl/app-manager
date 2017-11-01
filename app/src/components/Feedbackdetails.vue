@@ -11,8 +11,11 @@
         <tbody>
           <tr v-for="row in Feedback" v-if="row.id == feedbackid">
             <td>
+              <div class="name">
+                <span>User: {{row.name}}</span><span>Phone: {{row.phone}}</span><span>E-mail: {{row.email}}</span>
+              </div>
               <textarea class="input-default-feedback" name="contents" readonly="readonly">{{row.contents}}</textarea>
-              <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
+              <p class="time">created_at: {{row.created_at}}</p>
             </td>
           </tr>
         </tbody>
@@ -28,7 +31,7 @@
                 <p class="fdtitle">{{row.title}}</p>
               </div>
               <textarea class="input-default-reply" name="contents" rows="3" cols="60" readonly="readonly">{{row.contents}}</textarea>
-              <p class="time"><span>created_at: {{row.created_at}}</span> <span>updated_at: {{row.updated_at}}</span></p>
+              <p class="time">created_at: {{row.created_at}}</p>
               <button @click="DeleteFeedback(row)">Delete</button>
             </td>
           </tr>
@@ -51,9 +54,6 @@ export default {
   data () {
     return {
       Feedback: [],
-      Columns: ['id', 'username'],
-      Time: ['created_at', 'updated_at'],
-      Feedbackcontent: ['id', 'title', 'contents'],
       feedbackid: ''
     }
   },
@@ -102,6 +102,17 @@ export default {
 </script>
 
 <style scoped>
+.name{
+  text-align: left;
+  width: 100%;
+  height: auto;
+  margin: 0px;
+}
+
+.name span{
+  margin: 0px 3% 0px 0px;
+}
+
 .time{
   margin-left: 50%;
   font-size: 5px;
@@ -463,7 +474,6 @@ table {
 }
 
 table td{
-  text-transform: Capitalize;
   padding: 5px 10px;
   font-size: 15px;
   font-family: Verdana;

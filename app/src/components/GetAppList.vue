@@ -70,6 +70,7 @@
 
 <script>
 import Navbar from './Navbar'
+import moment from 'moment'
 export default {
   name: 'AppList',
   components: {
@@ -107,6 +108,11 @@ export default {
       this.$http.get('user/app', {params: {apiToken: this.apiToken, username: this.username}})
       .then((response) => {
         this.AppData = response.data
+        let i = 0
+        for (i = 0; i < this.AppData.length; i++) {
+          this.AppData[i].created_at = moment.unix(this.AppData[i].created_at).format('YYYY-MM-DD HH:mm:ss')
+          this.AppData[i].updated_at = moment.unix(this.AppData[i].updated_at).format('YYYY-MM-DD HH:mm:ss')
+        }
         console.log(response.data)
       })
       .catch(function (error) {
@@ -135,14 +141,7 @@ export default {
       this.$http.post('app/add', formData, config)
       .then((response) => {
         console.log('success')
-        this.$http.get('user/app', {params: {apiToken: this.apiToken, username: this.username}})
-        .then((response) => {
-          this.AppData = response.data
-          console.log(this.AppData)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+        this.GetAppList()
       })
       .catch(function (error) {
         console.log(error)
@@ -153,14 +152,7 @@ export default {
     DeleteApp: function (row) {
       this.$http.delete('app/delete', {params: {app_id: row.id, apiToken: this.apiToken, username: this.username}})
       .then((response) => {
-        this.$http.get('user/app', {params: {apiToken: this.apiToken, username: this.username}})
-        .then((response) => {
-          this.AppData = response.data
-          console.log(this.AppData)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+        this.GetAppList()
         console.log('success')
       })
       .catch(function (error) {
@@ -170,14 +162,7 @@ export default {
     ReviveApp: function (row) {
       this.$http.put('app/restore', {app_id: row.id, apiToken: this.apiToken, username: this.username})
       .then((response) => {
-        this.$http.get('user/app', {params: {want_deleted: true, apiToken: this.apiToken, username: this.username}})
-        .then((response) => {
-          this.AppData = response.data
-          console.log(this.AppData)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+        this.GetAppList()
         console.log('success')
       })
       .catch(function (error) {

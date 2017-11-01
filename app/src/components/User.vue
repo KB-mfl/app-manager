@@ -119,7 +119,7 @@ export default {
       version: '无最新版本',
       itunes_url: '',
       appname: '',
-      app_id: '',
+      app_id: '1',
       log: '',
       description: '',
       size: '',

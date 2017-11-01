@@ -65,10 +65,10 @@ class VersionController extends Controller
         $app = App::withTrashed()->find($app_id);
         if($app === null) abort(404);
         if(!isset($request['want_deleted']) || $request->want_deleted === 'false') {
-            $versions = Version::where('app_id', '=', $app_id)->take($request->limit)->get();
+            $versions = Version::where('app_id', '=', $app_id)->orderBy('build', 'desc')->take($request->limit)->get();
         }
         else {
-            $versions = Version::withTrashed()->where('app_id', '=', $app_id)->take($request->limit)->get();
+            $versions = Version::withTrashed()->where('app_id', '=', $app_id)->orderBy('build', 'desc')->take($request->limit)->get();
         }
         $response = [];
         foreach($versions as $key => $version) {
@@ -251,74 +251,34 @@ class VersionController extends Controller
         ];
         return $response;
     }
-    /*
-        不更新
-    */
     /**
-    *  @api {get} /api/version 根据短链接获取最新版本
-    *  @apiName version_list_by_alias
-    *  @apiGroup Version
-    *  @apiVersion v1.0.0
+    *  @api {get} /api/version 根据短链接获取app_id
+    *  @apiName get_app_id_by_alias
+    *  @apiGroup App
+    *  @apiVersion v2.0.0
     *  @apiParam (MUST) {string} app_name app的名字
-    *  @apiParam (MUST) {string="IOS", "Android"} system_name system的名字
     *  @apiParamExample {json} [example]
     *  {
     *    "app_name" = "example_app",
-    *    "system_name" = "example_system",
     *  }
     *  @apiSuccess {json} version 返回最新版本的信息
     *  @apiSuccessExample Success-Response:
     *    HTTP/1.1 200 OK
     *      {
-    *        "logo_url": "example_jpeg",
-    *        "version":
-    *        {
-    *           "app_id": "1",
-    *           "id": "1",
-    *           "build": "3",
-    *           "apk": "app/example.zip",
-    *           "version": "v1.0.1",
-    *           "created_at": "2017-08-21 16:00",
-    *        }
+    *        "app_id" = 1,
+    *        "app_name" = "cccc",
     *      }
     */
     public function seleteByName(Request $request) {
         $this->validate($request, [
             'app_name' => 'required|string',
-            'system_name' => 'required|string|in:IOS,Android',
         ]);
         $app = App::where('name', '=', $request->app_name)->first();
         if(! $app) abort(404);
-        $system = System::where('app_id', '=', $app->id)->where('system', '=', $request->system_name)->first();
-        if(! $system) abort(404);
-        
-        if($system->system === 'IOS') $version = Version::where('system_id', '=', $system->id)->where('build', '=', 0)->first();
-        else $version = $system->version()->orderBy('build', 'desc')->first();
-        $path = $system->logo_url;
-        $path = str_replace("public/imgs/", "", $path);
-        $path = str_replace(".", '_',$path);
-        $test = $app->system()->where('system', '=', 'IOS')->get()->where('build', '=', 0)->first();
-        $has_IOS = !(! $test);
-        $ts = $app->system()->where('system', '=', 'Android')->first();
-        if($ts !== null) {
-            $test = $ts->version()->orderBy('build', 'desc')->first();
-            $has_Android = !(! $test);
-        }
-        else $has_Android = false;
-        if(! $version) {
-            return response([
-                'app_name' => $app->name,
-                'logo_url' => $path,
-                'has_IOS' => $has_IOS,
-                'has_Android' => $has_Android,
-            ]);
-        }
-        return response([
+        $response = [
             'app_name' => $app->name,
-            'logo_url' => $path,
-            'version' => $version,
-            'has_IOS' => $has_IOS,
-            'has_Android' => $has_Android,
-        ]);
+            'app_id' => $app->id,
+        ];
+        return $response;
     }
 }

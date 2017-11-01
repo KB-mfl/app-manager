@@ -17,7 +17,7 @@ class CreateAppsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('name');
-            $table->string('alias');
+            $table->string('alias')->unique();
             $table->softDeletes();
             $table->timestamps();
         });

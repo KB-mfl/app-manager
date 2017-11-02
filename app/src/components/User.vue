@@ -221,36 +221,14 @@ export default {
       this.version = '无最新版本'
       this.platform = 'IOS'
       this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
-      this.$http.get('app/' + this.app_id, {params: {apiToken: this.apiToken, username: this.username}})
-      .then((response) => {
-        this.Ios = response.data.ios
-        this.log = this.Ios.log
-        this.description = this.Ios.description
-        this.version = this.Ios.version
-        this.size = ((this.Ios.size / 1000000).toFixed(2))
-        this.itunes_url = this.Ios.itunes_url
-        console.log(this.Ios)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+      this.GetIOS()
     },
     Toandroid: function () {
       this.version = '无最新版本'
       this.platform = 'Android'
       this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
-      this.$http.get('version', {params: {app_name: this.$route.params.appname}})
-      .then((response) => {
-        this.content = response.data
-        this.logo_url = this.content.logo_url
-        this.appname = this.content.app_name
-        this.app_id = this.content.version.app_id
-        this.GetVersionList()
-        console.log(this.content)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+      this.GetAndroid()
+      this.GetAndroidversion()
     },
     CreateNewFeedback: function () {
       this.IsShowNewFeedback = true

@@ -8,7 +8,7 @@
       <span>Appname</span>
     </div>
     <form class="search">
-      <input type="text" v-model="appname" class="input-default" v-bind:class="{inputback: IsActive }">
+      <input type="text" v-model="alias" class="input-default" v-bind:class="{inputback: IsActive }">
       <p><button name="search" @click="Searchapp">Search</button></p>
     </form>
   </div>
@@ -20,6 +20,7 @@ export default {
   data () {
     return {
       appname: '',
+      alias: '',
       IsActive: true
     }
   },
@@ -28,9 +29,7 @@ export default {
       this.IsActive = true
     },
     Searchapp: function () {
-      if (this.appname !== 'login' && this.appname !== 'Login' && this.appname !== 'Register' && this.appname !== 'register') {
-        this.$router.push({path: '/' + this.appname})
-      }
+      this.$router.push({path: '/App/' + this.alias})
     }
   }
 }

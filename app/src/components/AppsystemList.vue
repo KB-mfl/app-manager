@@ -139,7 +139,7 @@
               <p v-if="system === 'Android'" class="input-p">Identification</p>
               <p v-if="system === 'Android'"><input v-model="identification" class="input-default" v-bind:class="{inputback: IsActive }" type="text" name="identification"></p>
               <p v-if="system === 'Android'"><input id="uploadnewfile" type="file" name="uploadnewfile" @change="GetNewFile($event)"></p>
-              <p>···请选择App Logo···</p>
+              <p v-if="system === 'Android'">···请选择App Logo···</p>
               <p v-if="system === 'Android'">{{this.new_file.name}}</p>
               <p v-if="system === 'IOS'" class="input-p">iTunes Url</p>
               <p v-if="system === 'IOS'"><input v-model="itunes_url" type="text" name="itunes_url" class="input-default" v-bind:class="{inputback: IsActive }"></p>

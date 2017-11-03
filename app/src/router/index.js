@@ -76,12 +76,12 @@ export default new Router({
       component: Feedbackdetails
     },
     {
-      path: '/:appname',
+      path: '/App/:alias',
       name: 'Getplatform',
       component: Platform
     },
     {
-      path: '/:appname/:system',
+      path: '/App/:alias/:system',
       name: 'User',
       component: User
     },

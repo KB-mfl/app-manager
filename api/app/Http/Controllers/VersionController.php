@@ -256,10 +256,10 @@ class VersionController extends Controller
     *  @apiName get_app_id_by_alias
     *  @apiGroup App
     *  @apiVersion v2.0.0
-    *  @apiParam (MUST) {string} app_name app的名字
+    *  @apiParam (MUST) {string} alias app的短链接
     *  @apiParamExample {json} [example]
     *  {
-    *    "app_name" = "example_app",
+    *    "alias" = "cdoj",
     *  }
     *  @apiSuccess {json} version 返回最新版本的信息
     *  @apiSuccessExample Success-Response:
@@ -269,14 +269,15 @@ class VersionController extends Controller
     *        "app_name" = "cccc",
     *      }
     */
-    public function seleteByName(Request $request) {
+    public function seleteByAlias(Request $request) {
         $this->validate($request, [
-            'app_name' => 'required|string',
+            'alias' => 'required|string',
         ]);
-        $app = App::where('name', '=', $request->app_name)->first();
+        $app = App::where('alias', '=', $request->alias)->first();
         if(! $app) abort(404);
         $response = [
             'app_name' => $app->name,
+            'alias' => $app->alias,
             'app_id' => $app->id,
         ];
         return $response;

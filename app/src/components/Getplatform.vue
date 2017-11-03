@@ -21,19 +21,19 @@ export default {
       this.platform = navigator.platform
       if (this.user.indexOf('Windows') > -1) {
         this.system = 'Android'
-        this.$router.push({path: '/' + this.$route.params.appname + '/' + this.system})
+        this.$router.push({path: '/App/' + this.$route.params.alias + '/' + this.system})
       }
       if (this.platform === 'MacIntel') {
         this.system = 'IOS'
-        this.$router.push({path: '/' + this.$route.params.appname + '/' + this.system})
+        this.$router.push({path: '/App/' + this.$route.params.alias + '/' + this.system})
       }
       if (this.user.indexOf('Android') > -1) {
         this.system = 'Android'
-        this.$router.push({path: '/' + this.$route.params.appname + '/' + this.system})
+        this.$router.push({path: '/App/' + this.$route.params.alias + '/' + this.system})
       }
       if (this.user.indexOf('iPhone') > -1) {
         this.system = 'IOS'
-        this.$router.push({path: '/' + this.$route.params.appname + '/' + this.system})
+        this.$router.push({path: '/App/' + this.$route.params.alias + '/' + this.system})
       }
     }
   }

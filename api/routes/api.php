@@ -107,4 +107,4 @@ Route::delete('app/{app_id}/version', 'VersionController@delete')->middleware('C
 
 Route::put('app/{app_id}/version', 'VersionController@restore')->middleware('Check');
 
-Route::get('version', 'VersionController@seleteByName')->middleware('AddTime');
+Route::get('version', 'VersionController@seleteByAlias')->middleware('AddTime');

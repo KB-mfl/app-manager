@@ -119,6 +119,7 @@ export default {
       version: '无最新版本',
       itunes_url: '',
       appname: '',
+      alias: '',
       app_id: '1',
       log: '',
       description: '',
@@ -140,10 +141,11 @@ export default {
   },
   methods: {
     Getlatestversion: function () {
-      this.$http.get('version', {params: {app_name: this.$route.params.appname}})
+      this.$http.get('version', {params: {alias: this.$route.params.alias}})
       .then((response) => {
         this.content = response.data
         this.appname = this.content.app_name
+        this.alias = this.content.alias
         this.app_id = this.content.app_id
         console.log(this.content)
         this.GetFeedbackList()
@@ -220,13 +222,13 @@ export default {
     Toios: function () {
       this.version = '无最新版本'
       this.platform = 'IOS'
-      this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
+      this.$router.push({path: '/App/' + this.$route.params.alias + '/' + this.platform})
       this.GetIOS()
     },
     Toandroid: function () {
       this.version = '无最新版本'
       this.platform = 'Android'
-      this.$router.push({path: '/' + this.$route.params.appname + '/' + this.platform})
+      this.$router.push({path: '/App/' + this.$route.params.alias + '/' + this.platform})
       this.GetAndroid()
       this.GetAndroidversion()
     },
